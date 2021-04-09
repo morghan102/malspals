@@ -7,44 +7,81 @@ import Chat from './ChatComponent';
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const TopTabNav = createMaterialTopTabNavigator(
     {
         Directory: {
             screen: Directory,
+            navigationOptions: {
+                tabBarLabel: 'Home',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <Icon style={[{ color: tintColor }]} size={25} name={'ios-home'} />
+                    </View>
+                ),
+                initialRouteName: 'Home',
+                activeColor: '#C71585',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#FFC0CB' },
+            },
         },
         ServiceInfo: {
             screen: ServiceInfo,
+            navigationOptions: {
+                tabBarLabel: 'Service Info',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <MaterialCommunityIcons
+                            style={[{ color: tintColor }]}
+                            size={25}
+                            name={'dog'}
+                        />
+                    </View>
+                ),
+                activeColor: '#006400',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#8FBC8F' },
+
+            },
         },
         Chat: {
             screen: Chat,
+            navigationOptions: {
+                tabBarLabel: 'Chat',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <Icon
+                            style={[{ color: tintColor }]}
+                            size={25}
+                            name={'ios-chatboxes'}
+                        />
+                    </View>
+                ),
+                activeColor: '#4B0082',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#B0C4DE' },
+            },
         },
     },
     {
-        defaultNavigationOptions: ({navigation}) => ({
-            tabBarIcon: ({horizontal, tintColor}) => {
-                const {routeName} = navigation.state;
-                let iconName;
-                if (routeName === 'Directory') {
-                    iconName = 'ios-home';
-                } else if (routeName === 'Chat') {
-                    iconName = 'ios-chatboxes';
-                } else if (routeName === 'ServiceInfo') {
-                    iconName = 'ios-chatboxes';
-                }
-                return (
-                    <Ionicons
-                        name={iconName}
-                        size={horizontal ? 20 : 25}
-                        color={tintColor}
-                    />
-                    // icons not working
-                );
+        animationEnabled: true,
+        swipeEnabled: true,
+        tabBarOptions: {
+            pressColor: 'lightgray',
+            style: {
+                backgroundColor: 'white',
             },
-
-        }),
+            indicatorStyle: {
+                backgroundColor: 'black',
+            },
+            activeTintColor: '#000',
+            inactiveTintColor: '#d1cece',
+            showLabel: true,
+            showIcon: true,
+        },
     },
 );
 
@@ -58,7 +95,7 @@ class Main extends Component {
                 style={{
                     flex: 1,
                     paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
-            }}>
+                }}>
                 <AppNavigator />
             </View>
         );
@@ -66,3 +103,5 @@ class Main extends Component {
 }
 
 export default Main;
+// where i got the toptabnav help
+// https://jeffgukang.github.io/react-native-tutorial/docs/router-tutorial/02-react-navigation-tab/react-navigation-tab.html
