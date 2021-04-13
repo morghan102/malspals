@@ -1,28 +1,48 @@
 import React, { Component } from "react";
-import Directory from './DirectoryComponent';
+import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
 // import Settings from './SettingsComponent';
 import Chat from './ChatComponent';
+import ClientPetInfo from "./ClientPetComponent";
 
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'react-native-elements';
 
+// const HomeNavigator = createStackNavigator(
+//     { Home: { screen: Home } }, 
+// //     {
+// //         initialRouteName: 'Home',
+// // // i want to remove the header from the stack but cant figure it out :/
+
+// //         // headerMode: false,
+// //         // headerMode: none,
+// //         //     headerTintColor: '#fff',
+// //         //     headerTitleStyle: {
+// //         //         color: '#fff'
+// //         //     }
+// //         // }
+// //     }
+// );
 
 const TopTabNav = createMaterialTopTabNavigator(
     {
-        Directory: {
-            screen: Directory,
+        Home: {
+            screen: Home,
             navigationOptions: {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ tintColor }) => (
                     <View>
-                        <Icon style={[{ color: tintColor }]} size={25} name={'ios-home'} />
+                        <Icon 
+                            size={25} 
+                            name='ios-home' 
+                            type='ionicon' 
+                            color={tintColor}
+                        />
                     </View>
                 ),
-                initialRouteName: 'Home',
                 activeColor: '#C71585',
                 inactiveColor: '#226557',
                 barStyle: { backgroundColor: '#FFC0CB' },
@@ -31,13 +51,36 @@ const TopTabNav = createMaterialTopTabNavigator(
         ServiceInfo: {
             screen: ServiceInfo,
             navigationOptions: {
-                tabBarLabel: 'Service Info',
+                tabBarLabel: 'Services',
                 tabBarIcon: ({ tintColor }) => (
                     <View>
-                        <MaterialCommunityIcons
-                            style={[{ color: tintColor }]}
+                        <Icon
                             size={25}
-                            name={'dog'}
+                            name='bathtub'
+                            type='font-awesome'
+                            color={tintColor}
+                            // ideas: name'bone' type='material-community'
+                            // name 'heart' type=fone-awesome
+                        />
+                    </View>
+                ),
+                activeColor: '#006400',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#8FBC8F' },
+
+            },
+        },
+        ClientPetInfo: {
+            screen: ClientPetInfo,
+            navigationOptions: {
+                tabBarLabel: 'Your Pet',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <Icon
+                            size={25}
+                            name='dog'
+                            type='material-community'
+                            color={tintColor}
                         />
                     </View>
                 ),
@@ -54,9 +97,10 @@ const TopTabNav = createMaterialTopTabNavigator(
                 tabBarIcon: ({ tintColor }) => (
                     <View>
                         <Icon
-                            style={[{ color: tintColor }]}
                             size={25}
-                            name={'ios-chatboxes'}
+                            name='ios-chatboxes'
+                            type='ionicon'
+                            color={tintColor}
                         />
                     </View>
                 ),

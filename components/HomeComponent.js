@@ -3,24 +3,26 @@ import { FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { SERVICES } from '../shared/services';
 
-class Directory extends Component {
+class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            services: SERVICES
+            // THIS IS MY GUESS AS TO WHAT THE STATE WILL LOOK LIKE
+            services: SERVICES,
+            // reviews: REVIEWS,
+            // dogImages: DOGIMAGES NOT SURE THIS WILL NEED TO BE A PSRT OF THE STATE?
         };
     }
 
     render() {
-        // what does this do???
-        const { navigate } = this.props.navigation;
-        const renderDirectoryItem = ({item}) => {
+
+        const renderHomeItem = ({item}) => {
             return (
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
-                    onPress={() => navigate('ServiceInfo', { serviceId: item.id })}
+                    // onPress={() => navigate('ServiceInfo', { serviceId: item.id })}
                     leftAvatar={{ source: require('./images/arabica.jpg')}}
                 />
             );
@@ -28,10 +30,10 @@ class Directory extends Component {
         return (
         <FlatList
             data={this.state.services}
-            renderItem={renderDirectoryItem}
+            renderItem={renderHomeItem}
             keyExtractor={item => item.id.toString()}
         />)
         };
 }
 
-export default Directory;
+export default Home;
