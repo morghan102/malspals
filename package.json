@@ -8,8 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@date/holidays-us": "^0.4.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/material-top-tabs": "^5.3.15",
+    "date-holidays": "^3.1.0",
     "expo": "38",
     "expo-status-bar": "~1.0.3",
     "react": "16.11.0",

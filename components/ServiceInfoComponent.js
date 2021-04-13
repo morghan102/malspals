@@ -30,34 +30,20 @@ class ServiceInfo extends Component {
         };
     }
 
-    render() {
 
-        // function checkDate() {
-            const getDate = () => {
-                // this will need to be a select date thing, not the current day
-                var date = new Date().getDate();
-                var month = new Date().getMonth() + 1;
-                var today = (date, month)
-                // more holidays
-                if (today === xmas || today === xgiving || today === easter || today === mlkday) {
-                    // holiday rate
-                } else {
-                    // regular rate 
-                }
-                
-            };
-        // };
-            
-        const RenderService = ({ item }) => {        
-            
-
+    render() {            
+        const RenderService = ({ item }) => {   
+         // this will need to be a select date thing, not the current day           
+            const today = new Date();
+            var holidays = require('@date/holidays-us');
+            var serviceRate = (holidays.isHoliday(today) ? item.holidayRate : item.price);
 
             return (
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
                     // subtitleStyle={{marginLeft: 75}}
-                    rightSubtitle={`$${item.price}`}
+                    rightSubtitle={`$${serviceRate}`}
                 />
             );
         }
