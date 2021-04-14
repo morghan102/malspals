@@ -4,6 +4,9 @@ import { ListItem } from 'react-native-elements';
 import { SERVICES } from '../shared/services';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent'; 
+// not sure ill use loading comp here.
+// https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3925 referhere for how to connect the loading comp
 
 const mapStateToProps = state => {
     return {

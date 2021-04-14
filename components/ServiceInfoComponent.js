@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import { SERVICES } from '../shared/services';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent';
+
 
 const mapStateToProps = state => {
     return {
@@ -30,6 +31,28 @@ class ServiceInfo extends Component {
                 />
             );
         }
+
+        if (this.props.services.isLoading) {
+            return (
+                <ScrollView>
+                    <Card
+                        title='Services'>
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            );
+        }
+        if (this.props.services.errMess) {
+            return (
+                <ScrollView>
+                    <Card
+                        title='Services'>
+                        <Text>{this.props.services.errMess}</Text>
+                    </Card>
+                </ScrollView>
+            );
+        }
+
         // const serviceId = this.props.navigation.getParam('serviceId');
         // const service = this.state.services.filter(service => service.id === serviceId)[0];
         return (

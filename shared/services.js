@@ -1,3 +1,5 @@
+// no longer in use
+
 export const SERVICES = [
     {
         id: 0,
@@ -54,3 +56,4 @@ export const SERVICES = [
         holidayRate: null
     },
 ];
+
