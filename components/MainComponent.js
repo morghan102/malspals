@@ -11,6 +11,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
+import { connect } from 'react-redux';
+import { fetchServices, fetchComments } from '../redux/ActionCreators';
+
+
 // const HomeNavigator = createStackNavigator(
 //     { Home: { screen: Home } }, 
 // //     {
@@ -26,6 +30,11 @@ import { Icon } from 'react-native-elements';
 // //         // }
 // //     }
 // );
+
+const mapDispatchToProps = {
+    fetchComments,
+    fetchServices
+};
 
 const TopTabNav = createMaterialTopTabNavigator(
     {
@@ -133,6 +142,11 @@ const AppNavigator = createAppContainer(TopTabNav);
 
 class Main extends Component {
 
+    componentDidMount() {
+        this.props.fetchServices();
+        this.props.fetchComments();
+    }
+
     render() {
         return (
             <View
@@ -146,6 +160,6 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);
 // where i got the toptabnav help
 // https://jeffgukang.github.io/react-native-tutorial/docs/router-tutorial/02-react-navigation-tab/react-navigation-tab.html

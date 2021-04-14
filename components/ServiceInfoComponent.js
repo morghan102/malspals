@@ -3,33 +3,16 @@ import { Text, View } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SERVICES } from '../shared/services';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
-
-// function RenderService({services}) {
-//      {
-//         return (
-//             <Card 
-//                 featuredTitle={service.name}
-//                 image={require('./images/arabica.jpg')}
-//             >
-//                 <Text style={{margin: 50}}>
-//                     {service.description}
-//                 </Text>
-//             </Card>
-//         );
-//     }
-//     return <View />;
-// }
-
+const mapStateToProps = state => {
+    return {
+        services: state.services
+            // reviews: 
+    };
+};
 class ServiceInfo extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            services: SERVICES
-        };
-    }
-
 
     render() {            
         const RenderService = ({ item }) => {   
@@ -56,7 +39,7 @@ class ServiceInfo extends Component {
                 // title="What do you need?"
                 >
                     <FlatList
-                        data={this.state.services}
+                        data={this.props.services.services}
                         renderItem={RenderService}
                         keyExtractor={item => item.id.toString()}
                     />
@@ -66,4 +49,4 @@ class ServiceInfo extends Component {
     };
 }
 
-export default ServiceInfo;
+export default connect(mapStateToProps)(ServiceInfo);
