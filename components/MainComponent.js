@@ -4,6 +4,7 @@ import ServiceInfo from './ServiceInfoComponent';
 // import Settings from './SettingsComponent';
 import Chat from './ChatComponent';
 import ClientPetInfo from "./ClientPetComponent";
+import RequestService from './RequestService';
 
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
@@ -12,27 +13,10 @@ import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import { connect } from 'react-redux';
-import { fetchServices, fetchComments } from '../redux/ActionCreators';
-
-
-// const HomeNavigator = createStackNavigator(
-//     { Home: { screen: Home } }, 
-// //     {
-// //         initialRouteName: 'Home',
-// // // i want to remove the header from the stack but cant figure it out :/
-
-// //         // headerMode: false,
-// //         // headerMode: none,
-// //         //     headerTintColor: '#fff',
-// //         //     headerTitleStyle: {
-// //         //         color: '#fff'
-// //         //     }
-// //         // }
-// //     }
-// );
+import { fetchServices, fetchReviews } from '../redux/ActionCreators';
 
 const mapDispatchToProps = {
-    fetchComments,
+    fetchReviews,
     fetchServices
 };
 
@@ -58,6 +42,7 @@ const TopTabNav = createMaterialTopTabNavigator(
             },
         },
         ServiceInfo: {
+            // screen: ServicesNavigator,
             screen: ServiceInfo,
             navigationOptions: {
                 tabBarLabel: 'Services',
@@ -138,13 +123,35 @@ const TopTabNav = createMaterialTopTabNavigator(
     },
 );
 
+const ServicesNavigator = createStackNavigator(
+    { 
+        ServiceInfo: { 
+            screen: ServiceInfo 
+        },
+        RequestService: { screen: RequestService }
+    }, 
+    {
+        initialRouteName: 'ServiceInfo'
+// i want to remove the header from the stack but cant figure it out :/
+
+        // headerMode: false,
+        // headerMode: none,
+        //     headerTintColor: '#fff',
+        //     headerTitleStyle: {
+        //         color: '#fff'
+        //     }
+        // }
+    }
+);
+
+
 const AppNavigator = createAppContainer(TopTabNav);
 
 class Main extends Component {
 
     componentDidMount() {
         this.props.fetchServices();
-        this.props.fetchComments();
+        this.props.fetchReviews();
     }
 
     render() {

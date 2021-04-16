@@ -1,8 +1,8 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
-export const fetchComments = () => dispatch => {
-    return fetch(baseUrl + 'comments')
+export const fetchReviews = () => dispatch => {
+    return fetch(baseUrl + 'reviews')
         .then(response => {
                 if (response.ok) {
                     return response;
@@ -17,22 +17,22 @@ export const fetchComments = () => dispatch => {
                 throw errMess;
             })
         .then(response => response.json())
-        .then(comments => dispatch(addComments(comments)))
-        .catch(error => dispatch(commentsFailed(error.message)));
+        .then(reviews => dispatch(addReviews(reviews)))
+        .catch(error => dispatch(reviewsFailed(error.message)));
 };
 
-export const commentsFailed = errMess => ({
-    type: ActionTypes.COMMENTS_FAILED,
+export const reviewsFailed = errMess => ({
+    type: ActionTypes.REVIEWS_FAILED,
     payload: errMess
 });
 
-export const addComments = comments => ({
-    type: ActionTypes.ADD_COMMENTS,
-    payload: comments
+export const addReviews = reviews => ({
+    type: ActionTypes.ADD_REVIEWS,
+    payload: reviews
 });
 
-export const commentsLoading = () => ({
-    type: ActionTypes.COMMENTS_LOADING
+export const reviewsLoading = () => ({
+    type: ActionTypes.REVIEWS_LOADING
 });
 
 

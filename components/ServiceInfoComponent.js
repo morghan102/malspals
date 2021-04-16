@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 
+// could have a modal that will pull up the form for requesting service
 
 const mapStateToProps = state => {
     return {
@@ -17,7 +18,6 @@ class ServiceInfo extends Component {
 
     render() {            
         const RenderService = ({ item }) => {   
-         // this will need to be a select date thing, not the current day           
             const today = new Date();
             var holidays = require('@date/holidays-us');
             var serviceRate = (holidays.isHoliday(today) ? item.holidayRate : item.price);
