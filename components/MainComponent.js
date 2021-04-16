@@ -161,7 +161,8 @@ class Main extends Component {
             <View
                 style={{
                     flex: 1,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                    paddingBottom: Expo.Constants.statusBarHeight/2
                 }}>
                 <AppNavigator />
             </View>
