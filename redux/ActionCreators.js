@@ -75,3 +75,44 @@ export const addServices = services => ({
     type: ActionTypes.ADD_SERVICES,
     payload: services
 });
+
+
+
+
+
+export const fetchClientImages = () => dispatch => {
+
+    // dispatch(clientImagesLoading());
+
+    return fetch(baseUrl + 'clientImages')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            })
+        .then(response => response.json())
+        .then(clientImages => dispatch(addClientImages(clientImages)))
+        .catch(error => dispatch(clientImagesFailed(error.message)));
+};
+
+export const clientImagesLoading = () => ({
+    type: ActionTypes.CLIENTIMAGES_LOADING
+});
+
+export const clientImagesFailed = errMess => ({
+    type: ActionTypes.CLIENTIMAGES_FAILED,
+    payload: errMess
+});
+
+export const addClientImages = clientImages => ({
+    type: ActionTypes.ADD_CLIENTIMAGES,
+    payload: clientImages
+});

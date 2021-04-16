@@ -11,7 +11,6 @@ import Loading from './LoadingComponent';
 const mapStateToProps = state => {
     return {
         services: state.services
-            // reviews: 
     };
 };
 class ServiceInfo extends Component {
