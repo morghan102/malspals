@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, StyleSheet, Dimensions } from 'react-native';
+import { FlatList, View, Text, StyleSheet, Dimensions, Button, Linking } from 'react-native';
 // ImageBackground it DID NOT LIKE ithis one
 import { ListItem, Tile, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -7,6 +7,8 @@ import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
+import CollapsibleList from "react-native-collapsible-list";
+
 
 
 // not sure ill use loading comp here.
@@ -37,7 +39,7 @@ class Home extends Component {
                         title="What can Mal do for you?"
                         featured
                         onPress={() => navigate('ServiceInfo')}
-                        contentContainerStyle={styles.heroStyle}
+                        titleStyle={{marginBottom: 100}}
                     />
                 </View>
             );
@@ -90,15 +92,22 @@ class Home extends Component {
                 <HeroImage />
                 {/* fl is showing too many */}
                 {/* HI & FL are bleeding into each other. I added a background color to fl header to compensate */}
+                <View>
                 <FlatList
                     ListHeaderComponent={ListHeader("rvws")}
-                    data={this.props.reviews.reviews.slice(0,5)}
+                    data={this.props.reviews.reviews.slice(0,3)}
                     renderItem={renderReviews}
                     initialNumToRender={3}
                     // ItemSeparatorComponent={"highlighted"}
                     // onEndReached & onEndReachedThreshold
                     keyExtractor={item => item.id.toString()}
                 />
+                <Button 
+                    title="See more reviews"
+                    onPress={() => Linking.openURL('https://linktr.ee/malspals')}
+                    color='#A4C936'
+                />
+                </View>
                 <FlatList
                     ListHeaderComponent={ListHeader("pics")}
                     data={this.props.clientImages.clientImages}
@@ -125,7 +134,8 @@ const styles = StyleSheet.create({
         // flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 120
+        paddingTop: 120,
+        overflow: 'hidden'
         
     },
     // heroStyle: {
