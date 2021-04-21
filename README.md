@@ -4,6 +4,7 @@ Installed packages include (but aren't limited to):
 - **UNUSED yarn add react-native-collapsible-list ** UNUSED
        
 - expo install @react-native-community/datetimepicker
+- https://github.com/peacechen/react-native-modal-selector
 
 
 Components:

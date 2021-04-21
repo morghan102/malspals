@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
-import { Text, View, Button, Modal, Picker } from 'react-native';
+import { Text, View, Button, Modal, StyleSheet, Picker, TextInput } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
+import ModalSelector from 'react-native-modal-selector';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-// could have a modal that will pull up the form for requesting service
+
+// could have a modal that will pull up the modal for requesting service
 
 const mapStateToProps = state => {
     return {
         services: state.services
     };
 };
+// this might need an event handler, like oncelect, this input appears
+function PetInfo(props) {
+    return (
+        // <View style={styles.modalRow}>
+        //     <TextInput
+        //         // style={{ paddingTop: 10, height: 30 }}
+        //         editable={false}
+        //         placeholder="Name"
+        //         value={this.state.name}
+        //     />
+            <Text style={styles.modalLabel}>Species</Text>
+            // <Text style={styles.modalLabel}>Breed</Text>
+            // <Text style={styles.modalLabel}>Size</Text>
+        // </View>
+    );
+}
+
 class ServiceInfo extends Component {
 
     constructor(props) {
@@ -20,7 +40,10 @@ class ServiceInfo extends Component {
 
         this.state = {
             numPets: 1,
-            service: [],
+            name: [],
+            species: [],
+            breed: [],
+            selectedService: "",
             date: new Date(),
             showCalendar: false,
             showModal: false
@@ -37,11 +60,15 @@ class ServiceInfo extends Component {
         this.toggleModal();
     }
 
-    resetForm() {
+    resetmodal() {
         // and then resetting
         this.setState({
             numPets: 1,
-            service: [],
+            name: [],
+            species: [],
+            breed: [],
+            size: [],
+            selectedService: "",
             date: new Date(),
             showCalendar: false,
             showModal: false
@@ -85,11 +112,26 @@ class ServiceInfo extends Component {
                 </ScrollView>
             );
         }
+        const numbers = [
+            { key: 1, label: "1" },
+            { key: 2, label: "2" },
+            { key: 3, label: "3" },
+            { key: 4, label: "4" },
+            { key: 5, label: "5" },
+            { key: 6, label: "6" },
+        ];
 
         // const serviceId = this.props.navigation.getParam('serviceId');
         // const service = this.state.services.filter(service => service.id === serviceId)[0];
         return (
+
             <ScrollView>
+                <Button
+                    title="Make a Service Request"
+                    color='#A4C936'
+                    onPress={() => this.toggleModal()}
+                    style={styles.button}
+                />
                 <Card
                     containerStyle={{ marginBottom: 15 }}
                 >
@@ -100,11 +142,6 @@ class ServiceInfo extends Component {
 
                     />
                 </Card>
-                <Button
-                    title="Make a Service Request"
-                    color='#A4C936'
-                    onPress={() => this.toggleModal()}
-                />
 
                 <Modal
                     animationType={'slide'}
@@ -113,29 +150,63 @@ class ServiceInfo extends Component {
                     onRequestClose={() => this.toggleModal()}
                 >
                     <ScrollView>
-                        <View>
-                            <Text>Number of Pets</Text>
-                            <Picker>
-                                <Picker.Item label='1' value='1' />
-                                <Picker.Item label='2' value='2' />
-                                <Picker.Item label='3' value='3' />
-                                <Picker.Item label='4' value='4' />
-                                <Picker.Item label='5' value='5' />
-                                <Picker.Item label='6' value='6' />
-                            </Picker>
+                        <View style={styles.modal}>
+                            <Text style={styles.modalHeader}>Service Request</Text>
                         </View>
-                        <View>
-                            <Text>What service are you requesting?</Text>
+                        <View style={styles.modalRow}>
+                            <Text style={styles.modalLabel}>Number of Pets</Text>
+                            <ModalSelector
+                                style={styles.modalItem}
+                                data={numbers}
+                                onChange={itemValue => {
+                                    this.setState({ numPets: itemValue.label });
+                                    (<PetInfo /> * itemValue.key)
+
+                                }}
+                                cancelButtonAccessibilityLabel={'Cancel Button'}
+                                initValue="How many pets?"
+                                supportedOrientations={['landscape']}
+                                accessible={true}
+                                scrollViewAccessibilityLabel={'Scrollable options'}
+                            >
+                                <TextInput
+                                    style={{ paddingTop: 10, height: 30 }}
+                                    editable={false}
+                                    placeholder="Select"
+                                    value={this.state.numPets}
+                                />
+                            </ModalSelector>
                         </View>
-                        <View>
-                            <Text>Date</Text>
+
+
+                        <View style={styles.modalRow}>
+                            <Text style={styles.modalLabel}>What service are you requesting?</Text>
+                            <ModalSelector
+                                style={styles.modalItem}
+                                data={this.props.services.services}
+                                onChange={itemValue => this.setState({ selectedService: itemValue.name })}
+                                cancelButtonAccessibilityLabel={'Cancel Button'}
+                                initValue="Which service?"
+                                supportedOrientations={['landscape']}
+                                accessible={true}
+                                scrollViewAccessibilityLabel={'Scrollable options'}
+                            >
+                                <TextInput
+                                    style={{ paddingTop: 10, height: 30 }}
+                                    editable={false}
+                                    placeholder="Select"
+                                    value={this.state.selectedService} />
+                            </ModalSelector>
+
+                        </View>
+                        <View style={styles.modalRow}>
+                            <Text style={styles.modalLabel}>Date</Text>
                             <Button
                                 onPress={() =>
                                     this.setState({ showCalendar: !this.state.showCalendar })
                                 }
-                                // this title sets the label on the btn
                                 title={this.state.date.toLocaleDateString('en-US')}
-                                color='#5637DD'
+                                color='#A4C936'
                                 accessibilityLabel='Tap me to select a date'
                             />
                         </View>
@@ -148,17 +219,17 @@ class ServiceInfo extends Component {
                                     // the && below is for if the user exits out of the modal w/o selecting, bc then the value passed wd be like null and cause weird things to happen
                                     selectedDate && this.setState({ date: selectedDate, showCalendar: false });
                                 }}
-                                style={styles.formItem}
+                                style={styles.modalItem}
                             />
                         )}
                         <View>
                             <Button
                                 onPress={() => {
                                     this.handleRequest();
-                                    this.resetForm();
+                                    this.resetmodal();
                                 }}
                                 title='Submit Request'
-                                color='#5637DD'
+                                color='#A4C936'
                                 accessibilityLabel='Tap me'
                             />
                         </View>
@@ -169,5 +240,34 @@ class ServiceInfo extends Component {
         );
     };
 }
+
+const styles = StyleSheet.create({
+    modal: {
+        justifyContent: 'center',
+        marginTop: 20
+    },
+    modalHeader: {
+        fontSize: 23,
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderBottomWidth: 1.5,
+        marginBottom: 5,
+    },
+    modalRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        margin: 20
+    },
+    modalLabel: {
+        fontSize: 18,
+        flex: 2
+    },
+    modalItem: {
+        flex: 1
+    },
+})
 
 export default connect(mapStateToProps)(ServiceInfo);
