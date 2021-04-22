@@ -6,32 +6,14 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import ModalSelector from 'react-native-modal-selector';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import CalendarPicker from 'react-native-calendar-picker';
 
-
-// could have a modal that will pull up the modal for requesting service
 
 const mapStateToProps = state => {
     return {
         services: state.services
     };
 };
-// this might need an event handler, like oncelect, this input appears
-function PetInfo(props) {
-    return (
-        // <View style={styles.modalRow}>
-        //     <TextInput
-        //         // style={{ paddingTop: 10, height: 30 }}
-        //         editable={false}
-        //         placeholder="Name"
-        //         value={this.state.name}
-        //     />
-            <Text style={styles.modalLabel}>Species</Text>
-            // <Text style={styles.modalLabel}>Breed</Text>
-            // <Text style={styles.modalLabel}>Size</Text>
-        // </View>
-    );
-}
 
 class ServiceInfo extends Component {
 
@@ -44,10 +26,15 @@ class ServiceInfo extends Component {
             species: [],
             breed: [],
             selectedService: "",
-            date: new Date(),
+            selectedStartDate: null,
+            selectedEndDate: null,
             showCalendar: false,
-            showModal: false
+            showModal: false,
+            endDateViewAppear: false,
         };
+        this.onDateChange = this.onDateChange.bind(this);
+        // idk if i need that?
+
     }
 
     toggleModal() {
@@ -69,16 +56,38 @@ class ServiceInfo extends Component {
             breed: [],
             size: [],
             selectedService: "",
-            date: new Date(),
+            selectedStartDate: null,
+            selectedEndDate: null,
             showCalendar: false,
-            showModal: false
+            showModal: false,
+            endDateViewAppear: false,
         });
+    }
+
+    onDateChange(date, type) {
+        if (type === 'END_DATE') {
+            this.setState({
+                selectedEndDate: date.toString().slice(4,15),
+            });
+        } else {
+            this.setState({
+                selectedStartDate: date.toString(0,15).slice(4,15),
+                // endDate: null,
+                // meybs I want to comment enddate null out
+            });
+        }
     }
 
 
     render() {
+        const { selectedStartDate, selectedEndDate } = this.state;
+        const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+        const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+
+
+
         const RenderService = ({ item }) => {
-            const today = this.state.date;
+            const today = new Date();
             var holidays = require('@date/holidays-us');
             var serviceRate = (holidays.isHoliday(today) ? item.holidayRate : item.price);
 
@@ -200,28 +209,33 @@ class ServiceInfo extends Component {
 
                         </View>
                         <View style={styles.modalRow}>
-                            <Text style={styles.modalLabel}>Date</Text>
+                            <Text style={styles.modalLabel}>Date(s)</Text>
                             <Button
                                 onPress={() =>
                                     this.setState({ showCalendar: !this.state.showCalendar })
                                 }
-                                title={this.state.date.toLocaleDateString('en-US')}
+                                title={`${this.state.selectedStartDate === null ? new Date().toDateString() : this.state.selectedStartDate}${this.state.selectedEndDate === null ? "" : ", " + this.state.selectedEndDate}`}
                                 color='#A4C936'
-                                accessibilityLabel='Tap me to select a date'
+                                accessibilityLabel='Tap me to select a date(s)'
                             />
                         </View>
                         {this.state.showCalendar && (
-                            <DateTimePicker
-                                value={this.state.date}
-                                mode={'date'}
-                                display='default'
-                                onChange={(event, selectedDate) => {
-                                    // the && below is for if the user exits out of the modal w/o selecting, bc then the value passed wd be like null and cause weird things to happen
-                                    selectedDate && this.setState({ date: selectedDate, showCalendar: false });
-                                }}
-                                style={styles.modalItem}
+                            <CalendarPicker
+                                allowRangeSelection={true}
+                                minDate={new Date()}
+                                todayBackgroundColor="#f2e6ff"
+                                selectedDayColor="#7300e6"
+                                selectedDayTextColor="#FFFFFF"
+                                // value={this.state.startDate}
+                                // mode={'date'}
+                                // display='default'
+                                onDateChange={this.onDateChange}
+                            // style={styles.modalItem}
                             />
                         )}
+
+
+
                         <View>
                             <Button
                                 onPress={() => {
