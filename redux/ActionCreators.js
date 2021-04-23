@@ -116,3 +116,98 @@ export const addClientImages = clientImages => ({
     type: ActionTypes.ADD_CLIENTIMAGES,
     payload: clientImages
 });
+
+
+
+
+
+
+export const fetchPets = () => dispatch => {
+    return fetch(baseUrl + 'pets')
+        .then(response => {
+                if (response.ok) {
+                    // console.log(response);
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            })
+        .then(response => response.json())
+        .then(pets => dispatch(addPets(pets)))
+        .catch(error => dispatch(petsFailed(error.message)));
+};
+
+export const petsFailed = errMess => ({
+    type: ActionTypes.PETS_FAILED,
+    payload: errMess
+});
+
+export const addPets = pets => ({
+    type: ActionTypes.ADD_PETS,
+    payload: pets
+});
+
+export const postPets = (ownerId, name, species, size, special_requirements ) => dispatch => {
+    const date = new Date();
+
+    const newPet = {
+        ownerId,
+        name,
+        species,
+        size,
+        special_requirements?
+    };
+
+    setTimeout(() => {
+        dispatch(addPet(newPet));
+    }, 2000);
+};
+
+export const addPet = (pet) => ({
+    type: ActionTypes.ADD_PET,
+    payload: pet
+
+});
+
+export const fetchUsers = () => dispatch => {
+
+    dispatch(usersLoading());
+
+    return fetch(baseUrl + 'users')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            })
+        .then(response => response.json())
+        .then(users => dispatch(addusers(users)))
+        .catch(error => dispatch(usersFailed(error.message)));
+};
+
+export const usersLoading = () => ({
+    type: ActionTypes.USERS_LOADING
+});
+
+export const usersFailed = errMess => ({
+    type: ActionTypes.USERS_FAILED,
+    payload: errMess
+});
+
+export const addUsers = users => ({
+    type: ActionTypes.ADD_USERS,
+    payload: users
+});

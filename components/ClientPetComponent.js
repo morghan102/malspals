@@ -2,9 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 
+// this will look like campsiteinfo comp in numcapsite, postcomment
 
-
-// the pic for their personal pet could just be an icon for now
 const mapStateToProps = state => {
     return {
     };
@@ -14,7 +13,7 @@ const mapStateToProps = state => {
 function ClientPetInfo(props) {
     return (
         <View>
-            <Text>Your Pet</Text>
+            <Text>Please enter your pets here</Text>
         </View>
     );
 }

@@ -13,12 +13,14 @@ import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import { connect } from 'react-redux';
-import { fetchServices, fetchReviews, fetchClientImages } from '../redux/ActionCreators';
+import { fetchServices, fetchReviews, fetchClientImages, fetchPets, fetchUsers } from '../redux/ActionCreators';
 
 const mapDispatchToProps = {
     fetchReviews,
     fetchServices,
-    fetchClientImages
+    fetchClientImages,
+    fetchUsers,
+    fetchPets
 };
 
 const TopTabNav = createMaterialTopTabNavigator(
@@ -154,6 +156,8 @@ class Main extends Component {
         this.props.fetchServices();
         this.props.fetchReviews();
         this.props.fetchClientImages();
+        this.props.fetchPets();
+        this.props.fetchUsers();
     }
 
     render() {
