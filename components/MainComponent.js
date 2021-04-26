@@ -23,6 +23,8 @@ const mapDispatchToProps = {
     fetchPets
 };
 
+// i have the login component ready, i just dont want to put it in the nav. I want it to initialize to that screen
+
 const TopTabNav = createMaterialTopTabNavigator(
     {
         Home: {
