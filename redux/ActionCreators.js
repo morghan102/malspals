@@ -161,7 +161,7 @@ export const postPets = (ownerId, name, species, size, special_requirements ) =>
         name,
         species,
         size,
-        special_requirements?
+        special_requirements
     };
 
     setTimeout(() => {

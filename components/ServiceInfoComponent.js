@@ -7,6 +7,8 @@ import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import ModalSelector from 'react-native-modal-selector';
 import CalendarPicker from 'react-native-calendar-picker';
+import * as Notifications from 'expo-notifications';
+
 
 
 const mapStateToProps = state => {
@@ -42,8 +44,8 @@ class ServiceInfo extends Component {
     }
 
     handleRequest() {
-        // rn it's just echoing the selections back to us
         console.log(JSON.stringify(this.state));
+        this.presentLocalNotification(this.state.selectedStartDate, this.state.selectedService);
         this.toggleModal();
     }
 
@@ -51,6 +53,7 @@ class ServiceInfo extends Component {
         // and then resetting
         this.setState({
             numPets: 1,
+            // id like to get rid of this at some pt, replacing num w a dropdwn of pets on the clients acct
             name: [],
             species: [],
             breed: [],
@@ -67,16 +70,50 @@ class ServiceInfo extends Component {
     onDateChange(date, type) {
         if (type === 'END_DATE') {
             this.setState({
-                selectedEndDate: date.toString().slice(4,15),
+                selectedEndDate: date.toString().slice(4, 15),
             });
         } else {
             this.setState({
-                selectedStartDate: date.toString(0,15).slice(4,15),
+                selectedStartDate: date.toString(0, 15).slice(4, 15),
                 // endDate: null,
                 // meybs I want to comment enddate null out
             });
         }
     }
+
+
+    // aync bc permiss have to be requested, and then must wait to hear back abt those permissions
+    // aync is a special function that always returns a promise
+    async presentLocalNotification(date, selectedService) {
+        // since we're waiting for the pesmiss, have to have the code for sending the notif in another func that we'll call when ready
+        function sendNotification() {
+            // overrides default that no notifs will show when app is in foregruond
+            Notifications.setNotificationHandler({
+                handleNotification: async () => ({
+                    shouldShowAlert: true
+                })
+            });
+
+            Notifications.scheduleNotificationAsync({
+                content: {
+                    title: 'Your Service Request',
+                    body: `Your request for ${selectedService}, ${date} has been submitted`
+                },
+                // causes notif to fire immed. cd also set to future or repeat or both
+                trigger: null
+            });
+        }
+
+        let permissions = await Notifications.getPermissionsAsync();
+        if (!permissions.granted) {
+            permissions = await Notifications.requestPermissionsAsync();
+        }
+        if (permissions.granted) {
+            sendNotification();
+        }
+    }
+
+
 
 
     render() {
@@ -95,7 +132,6 @@ class ServiceInfo extends Component {
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
-                    // subtitleStyle={{marginLeft: 75}}
                     rightSubtitle={`$${serviceRate}`}
                 />
             );
@@ -130,16 +166,14 @@ class ServiceInfo extends Component {
             { key: 6, label: "6" },
         ];
 
-        // const serviceId = this.props.navigation.getParam('serviceId');
-        // const service = this.state.services.filter(service => service.id === serviceId)[0];
         return (
-
             <ScrollView>
                 <Button
                     title="Make a Service Request"
                     color='#A4C936'
                     onPress={() => this.toggleModal()}
                     style={styles.button}
+                // cancel btn?
                 />
                 <Card
                     containerStyle={{ marginBottom: 15 }}
@@ -169,7 +203,7 @@ class ServiceInfo extends Component {
                                 data={numbers}
                                 onChange={itemValue => {
                                     this.setState({ numPets: itemValue.label });
-                                    (<PetInfo /> * itemValue.key)
+                                    // (<PetInfo /> * itemValue.key)
 
                                 }}
                                 cancelButtonAccessibilityLabel={'Cancel Button'}
