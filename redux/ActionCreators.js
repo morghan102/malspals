@@ -1,17 +1,20 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
+// import { LoginUrl } from '../constants/Api'; this doesnt exist and the tutorial ddnt explain where this came from
+import { Alert } from 'react-native';
+
 
 export const fetchReviews = () => dispatch => {
     return fetch(baseUrl + 'reviews')
         .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
             error => {
                 const errMess = new Error(error.message);
                 throw errMess;
@@ -45,14 +48,14 @@ export const fetchServices = () => dispatch => {
 
     return fetch(baseUrl + 'services')
         .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
             error => {
                 const errMess = new Error(error.message);
                 throw errMess;
@@ -86,14 +89,14 @@ export const fetchClientImages = () => dispatch => {
 
     return fetch(baseUrl + 'clientImages')
         .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
             error => {
                 const errMess = new Error(error.message);
                 throw errMess;
@@ -125,15 +128,15 @@ export const addClientImages = clientImages => ({
 export const fetchPets = () => dispatch => {
     return fetch(baseUrl + 'pets')
         .then(response => {
-                if (response.ok) {
-                    // console.log(response);
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
+            if (response.ok) {
+                // console.log(response);
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
             error => {
                 const errMess = new Error(error.message);
                 throw errMess;
@@ -153,7 +156,7 @@ export const addPets = pets => ({
     payload: pets
 });
 
-export const postPets = (ownerId, name, species, size, special_requirements ) => dispatch => {
+export const postPets = (ownerId, name, species, size, special_requirements) => dispatch => {
     const date = new Date();
 
     const newPet = {
@@ -181,14 +184,14 @@ export const fetchUsers = () => dispatch => {
 
     return fetch(baseUrl + 'users')
         .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
             error => {
                 const errMess = new Error(error.message);
                 throw errMess;
@@ -211,3 +214,39 @@ export const addUsers = users => ({
     type: ActionTypes.ADD_USERS,
     payload: users
 });
+
+
+// for login. Not being used as of 4/28
+// const setLoginState = loginData => {
+//     return {
+//         type: ActionTypes.SET_LOGIN_STATE,
+//         payload: loginData,
+//     };
+// };
+
+// export const login = loginInput => {
+//     const { username, password } = loginInput;
+//     return dispatch => {
+//         return fetch(LoginUrl, {
+//             method: 'POST',
+//             // this involves a server or backend I think... causes errors rn bc i dont have anything more set up beyond this
+//             headers: {
+//                 Accept: 'application/json',
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(loginInput),
+//         })
+//             .then((response) => response.json())
+//             .then((json) => {
+//                 if (json.msg === 'success') { // response success checking logic could differ
+//                     dispatch(setLoginState({ ...json, userId: username })); // our action is called here
+//                 } else {
+//                     Alert.alert('Login Failed', 'Username or Password is incorrect');
+//                 }
+//             })
+//             .catch((err) => {
+//                 Alert.alert('Login Failed', 'Some error occured, please retry');
+//                 console.log(err);
+//             });
+//     };
+// };

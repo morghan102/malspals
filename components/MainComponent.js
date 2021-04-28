@@ -4,11 +4,12 @@ import ServiceInfo from './ServiceInfoComponent';
 // import Settings from './SettingsComponent';
 import Chat from './ChatComponent';
 import ClientPetInfo from "./ClientPetComponent";
+import Login from "./LoginComponent";
 import RequestService from './RequestService';
 
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createSwitchNavigator } from 'react-navigation';
 import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
@@ -20,10 +21,9 @@ const mapDispatchToProps = {
     fetchServices,
     fetchClientImages,
     fetchUsers,
-    fetchPets
+    fetchPets,
 };
 
-// i have the login component ready, i just dont want to put it in the nav. I want it to initialize to that screen
 
 const TopTabNav = createMaterialTopTabNavigator(
     {
@@ -128,26 +128,16 @@ const TopTabNav = createMaterialTopTabNavigator(
     },
 );
 
-const ServicesNavigator = createStackNavigator(
-    { 
-        ServiceInfo: { 
-            screen: ServiceInfo 
-        },
-        RequestService: { screen: RequestService }
-    }, 
-    {
-        initialRouteName: 'ServiceInfo'
-// i want to remove the header from the stack but cant figure it out :/
-
-        // headerMode: false,
-        // headerMode: none,
-        //     headerTintColor: '#fff',
-        //     headerTitleStyle: {
-        //         color: '#fff'
-        //     }
-        // }
-    }
-);
+// i can incorporate this later when I have the login page working correctly
+// const switchNavigator = createSwitchNavigator(
+//     {
+//       Login,
+//       TopTabNav
+//     },
+//     {
+//       initialRouteName: 'Login',
+//     },
+//   );
 
 
 const AppNavigator = createAppContainer(TopTabNav);

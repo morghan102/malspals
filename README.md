@@ -18,3 +18,6 @@ TODO:
 6. fix comments
 7. error & loading messages
 8. make reviews on homepage collapsible
+9. Add share capabilities & email contact
+10. Cancel btn for service request
+11. add login page that appears on app startup
