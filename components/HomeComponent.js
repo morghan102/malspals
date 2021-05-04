@@ -10,6 +10,9 @@ import { withNavigation } from 'react-navigation';
 import CollapsibleList from "react-native-collapsible-list";
 import * as MailComposer from 'expo-mail-composer';
 
+import ViewMoreText from 'react-native-view-more-text';
+import Accordion from 'react-native-collapsible/Accordion';
+import LottieView from 'lottie-react-native';
 
 
 
@@ -25,12 +28,57 @@ const mapStateToProps = state => {
 };
 
 
+
 class Home extends Component {
+    state = {
+        activeSections: [],
+    };
+
+
     static navigationOptions = {
         title: 'Home'
     }
 
+        // eveything for the accordan
 
+// this renders for eaxh list item
+    // renderSectionTitle = (section) => {
+    //     return (
+    //         <View>
+    //             <Text>Rave Reviews</Text>
+    //         </View>
+    //     );
+    // };
+
+    renderHeader = (section) => {
+        return (
+            <View >
+                <Text>{section.author}</Text>
+            </View>
+        );
+    };
+
+    renderContent = (section) => {
+        return (
+            <View>
+                <Text>{section.text}</Text>
+            </View>
+        );
+    };
+
+    updateSections = (activeSections) => {
+        this.setState({ activeSections });
+    };
+
+
+
+
+
+
+
+
+
+    // ******
     sendMail() {
         MailComposer.composeAsync({
             recipients: ['malspals@gmail.com'],
@@ -38,6 +86,24 @@ class Home extends Component {
             body: 'To whom it may concern:'
         })
     }
+
+
+
+
+    renderViewMore(onPress){
+        return(
+          <Text onPress={onPress}>View more</Text>
+        )
+      };
+      renderViewLess(onPress){
+        return(
+          <Text onPress={onPress}>View less</Text>
+        )
+      };
+
+      
+
+
 
 
     render() {
@@ -59,6 +125,12 @@ class Home extends Component {
 
         const renderReviews = ({ item }) => {
             return (
+            //     <ViewMoreText
+            //     numberOfLines={3}
+            //     renderViewMore={this.renderViewMore}
+            //     renderViewLess={this.renderViewLess}
+            //     textStyle={{textAlign: 'center'}}
+            //   >
                 <ListItem
                     title={item.author}
                     subtitle={item.text}
@@ -68,7 +140,9 @@ class Home extends Component {
                 // i can change the image source to be the server. refer to instructions
                 // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3923
                 />
-            );
+            //   </ViewMoreText>
+      
+ );
         };
 
         const ListHeader = (src) => {
@@ -111,11 +185,20 @@ class Home extends Component {
             <ScrollView>
                 <HeroImage />
                 {/* fl is showing too many */}
-                {/* HI & FL are bleeding into each other. I added a background color to fl header to compensate */}
                 <View>
+                    {/* <Accordion
+                        sections={this.props.reviews.reviews}
+                        activeSections={this.state.activeSections}
+                        renderSectionTitle={this.renderSectionTitle}
+                        renderHeader={this.renderHeader}
+                        renderContent={this.renderContent}
+                        onChange={this.updateSections}
+                        underlayColor='white'
+                        renderAsFlatList='true'
+                    /> */}
                     <FlatList
                         ListHeaderComponent={ListHeader("rvws")}
-                        data={this.props.reviews.reviews.slice(0, 3)}
+                        data={this.props.reviews.reviews}
                         renderItem={renderReviews}
                         initialNumToRender={3}
                         // ItemSeparatorComponent={"highlighted"}
@@ -136,10 +219,11 @@ class Home extends Component {
                     // ItemSeparatorComponent={"highlighted"}
                     keyExtractor={item => item.id.toString()}
                 />
-                <View style={{margin:10}}>
-{/* THIS IS V UGLY */}
-                    <Text style={styles.shareText}>Free money? Share Mal with your friends, or contact her off the app!</Text>
-                    <View style={styles.shareBox}>
+                <View style={styles.shareBox}>
+                    <Text style={styles.shareText}>Share Mal and get a free walk!</Text>
+                    {/* move email to the reservation thing.
+                    stylize the share thing */}
+                    <View style={styles.shareIcons}>
                         <Icon
                             name={'share'}
                             type='font-awesome'
@@ -148,7 +232,7 @@ class Home extends Component {
                             reverse
                             onPress={() => shareMal()}
                         />
-                        <Button
+                        {/* <Button
                             title="Send Email"
                             buttonStyle={{ backgroundColor: '#A4C936', margin: 40 }}
                             icon={<Icon
@@ -158,8 +242,14 @@ class Home extends Component {
                                 iconStyle={{ marginRight: 10 }}
                             />}
                             onPress={() => this.sendMail()}
-                        />
+                        /> */}
                     </View>
+                    {/* { source: { uri: baseUrl + item.image } } */}
+                    {/* <LottieView
+                        source={require("../assets/56997-dog-walking.json")}
+                        loop
+                        autoplay
+                    /> */}
                 </View>
             </ScrollView>
         )
@@ -183,7 +273,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
 
     },
-    shareBox: {
+    shareIcons: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -194,6 +284,9 @@ const styles = StyleSheet.create({
         // margin: 0,
         // marginBottom: 0,
         // marginTop: 10
+    },
+    shareBox: { 
+        margin: 10,
     },
     // heroStyle: {
     //     // height:((MAX_WIDTH-22)/7),
@@ -218,8 +311,8 @@ const styles = StyleSheet.create({
         padding: 7,
     },
     shareText: {
-        textAlign:'center', 
-        marginHorizontal: MAX_WIDTH/10,
+        textAlign: 'center',
+        marginHorizontal: MAX_WIDTH / 10,
         fontSize: 18
     }
 });

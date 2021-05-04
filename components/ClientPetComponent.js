@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 function ClientPetInfo(props) {
     return (
         <View>
-            <Text>Please enter your pets here</Text>
+            <Text>Coming soon once the backend is set up</Text>
         </View>
     );
 }

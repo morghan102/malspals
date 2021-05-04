@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, Button, Modal, StyleSheet, Picker, TextInput } from 'react-native';
+import { Text, View, Button, Modal, StyleSheet, TextInput, Alert } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import ModalSelector from 'react-native-modal-selector';
 import CalendarPicker from 'react-native-calendar-picker';
 import * as Notifications from 'expo-notifications';
+import * as SMS from 'expo-sms';
+import { Platform } from 'react-native';
 
 
 
@@ -23,19 +24,17 @@ class ServiceInfo extends Component {
         super(props);
 
         this.state = {
-            numPets: 1,
-            name: [],
-            species: [],
-            breed: [],
+            numPets: 0,
+            names: [],
+            breeds: [],
+            sizes: [],
             selectedService: "",
-            selectedStartDate: null,
-            selectedEndDate: null,
+            startDate: null,
+            endDate: null,
             showCalendar: false,
             showModal: false,
-            endDateViewAppear: false,
         };
         this.onDateChange = this.onDateChange.bind(this);
-        // idk if i need that?
 
     }
 
@@ -45,38 +44,34 @@ class ServiceInfo extends Component {
 
     handleRequest() {
         console.log(JSON.stringify(this.state));
-        this.presentLocalNotification(this.state.selectedStartDate, this.state.selectedService);
         this.toggleModal();
+        this.resetmodal();
+        this.sendMessage(this.state);
     }
 
     resetmodal() {
-        // and then resetting
         this.setState({
-            numPets: 1,
-            // id like to get rid of this at some pt, replacing num w a dropdwn of pets on the clients acct
-            name: [],
-            species: [],
-            breed: [],
-            size: [],
+            numPets: 0,
+            names: [],
+            breeds: [],
+            sizes: [],
             selectedService: "",
-            selectedStartDate: null,
-            selectedEndDate: null,
+            startDate: null,
+            endDate: null,
             showCalendar: false,
             showModal: false,
-            endDateViewAppear: false,
         });
     }
 
     onDateChange(date, type) {
         if (type === 'END_DATE') {
             this.setState({
-                selectedEndDate: date.toString().slice(4, 15),
+                endDate: date.toString().slice(4, 15),
             });
         } else {
             this.setState({
-                selectedStartDate: date.toString(0, 15).slice(4, 15),
-                // endDate: null,
-                // meybs I want to comment enddate null out
+                startDate: date.toString(0, 15).slice(4, 15),
+
             });
         }
     }
@@ -114,14 +109,35 @@ class ServiceInfo extends Component {
     }
 
 
+    async sendMessage(props) {
+        const isAvailable = await SMS.isAvailableAsync(); // returns promise of t/f
+        if (isAvailable) {
+            const { result } = await SMS.sendSMSAsync( // returns promise of "sent", "canceled", or "unknown"
+                "5094949647", //array of strings of recipients 
+                `MP app: I am requesting a ${props.selectedService} on ${props.startDate} ${props.endDate != null ? ("to " + props.endDate) : ""}. There is ${props.numPets} pets: ${props.names}, ${props.breeds}, weighing ${props.sizes}.`
+            );
 
+            if (result != null && result === "sent") {
+                console.log("message went through");
+                this.presentLocalNotification(props.startDate, props.selectedService);
+            } else if (Platform.OS === 'android') {
+                console.log("Note: Device OS is android, message status unknown due to Expo SMS & Android interaction");
+            } else {
+                Alert.alert(
+                    "Message",
+                    "Message has been canceled or there was an unforeseen error."
+                );
+            };
+        } else {
+            Alert.alert(
+                "Sms request",
+                "Sms is unavailable on this device"
+            );
+        }
+
+    }
 
     render() {
-        const { selectedStartDate, selectedEndDate } = this.state;
-        const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-        const endDate = selectedEndDate ? selectedEndDate.toString() : '';
-
-
 
         const RenderService = ({ item }) => {
             const today = new Date();
@@ -166,6 +182,7 @@ class ServiceInfo extends Component {
             { key: 6, label: "6" },
         ];
 
+
         return (
             <ScrollView>
                 <Button
@@ -175,9 +192,7 @@ class ServiceInfo extends Component {
                     style={styles.button}
                 // cancel btn?
                 />
-                <Card
-                    containerStyle={{ marginBottom: 15 }}
-                >
+                <Card containerStyle={{ marginBottom: 15 }} >
                     <FlatList
                         data={this.props.services.services}
                         renderItem={RenderService}
@@ -223,7 +238,7 @@ class ServiceInfo extends Component {
 
 
                         <View style={styles.modalRow}>
-                            <Text style={styles.modalLabel}>What service are you requesting?</Text>
+                            <Text style={styles.modalLabel}>Service</Text>
                             <ModalSelector
                                 style={styles.modalItem}
                                 data={this.props.services.services}
@@ -242,17 +257,58 @@ class ServiceInfo extends Component {
                             </ModalSelector>
 
                         </View>
+
+
+                        <View style={styles.modalRow}>
+                            <Text style={styles.modalLabel}>Pet Name</Text>
+                            <TextInput
+                                onChangeText={itemValue => this.setState({ names: itemValue.split(", ") })}
+                                value={this.state.names}
+                                supportedOrientations={['landscape']}
+                                placeholder="Enter"
+                                keyboardType="default"
+                                style={styles.modalItem}
+                            />
+                        </View>
+                        <View style={styles.modalRow}>
+                            <Text style={styles.modalLabel}>Pet Breed/Species</Text>
+                            <TextInput
+                                onChangeText={itemValue => this.setState({ breeds: itemValue.split(", ") })}
+                                value={this.state.breeds}
+                                supportedOrientations={['landscape']}
+                                placeholder="Enter"
+                                keyboardType="default"
+                                style={styles.modalItem}
+                            />
+                        </View>
+                        <View style={styles.modalRowWFoot}>
+                            <Text style={styles.modalLabel}>Pet Size</Text>
+                            <TextInput
+                                onChangeText={itemValue => this.setState({ sizes: itemValue.split(", ") })}
+                                value={this.state.sizes}
+                                supportedOrientations={['landscape']}
+                                placeholder="Enter"
+                                keyboardType="default"
+                                style={styles.modalItem}
+                            />
+                        </View>
+                        <Text style={styles.footerLabel}>If multiple, please seperate with a comma</Text>
+
+
                         <View style={styles.modalRow}>
                             <Text style={styles.modalLabel}>Date(s)</Text>
                             <Button
                                 onPress={() =>
                                     this.setState({ showCalendar: !this.state.showCalendar })
                                 }
-                                title={`${this.state.selectedStartDate === null ? new Date().toDateString() : this.state.selectedStartDate}${this.state.selectedEndDate === null ? "" : ", " + this.state.selectedEndDate}`}
+                                title={`${this.state.startDate === null ? 'Select' : this.state.startDate}${this.state.endDate === null ? "" : " - " + this.state.endDate}`}
                                 color='#A4C936'
                                 accessibilityLabel='Tap me to select a date(s)'
                             />
                         </View>
+                        <View style={{marginBottom: 20}}></View>
+
+                        
                         {this.state.showCalendar && (
                             <CalendarPicker
                                 allowRangeSelection={true}
@@ -260,12 +316,11 @@ class ServiceInfo extends Component {
                                 todayBackgroundColor="#f2e6ff"
                                 selectedDayColor="#7300e6"
                                 selectedDayTextColor="#FFFFFF"
-                                // value={this.state.startDate}
-                                // mode={'date'}
-                                // display='default'
                                 onDateChange={this.onDateChange}
-                            // style={styles.modalItem}
                             />
+                        )}
+                        {!!this.state.error && (
+                            <Text style={{ color: "red", marginLeft: 20, marginBottom: 10 }}>{this.state.error}</Text>
                         )}
 
 
@@ -273,13 +328,19 @@ class ServiceInfo extends Component {
                         <View>
                             <Button
                                 onPress={() => {
-                                    this.handleRequest();
-                                    this.resetmodal();
+                                    if (this.state.numPets === 0 || this.state.names === "" || this.state.breeds === "" || this.state.sizes === "" || this.state.selectedService === "" || this.state.startDate === null) {
+                                        this.setState(() => ({ error: "Please complete form." }));
+                                    } else {
+                                        this.setState(() => ({ error: null }));
+                                        this.handleRequest();
+
+                                    }
                                 }}
-                                title='Submit Request'
+                                title='Compose request message'
                                 color='#A4C936'
                                 accessibilityLabel='Tap me'
                             />
+                            <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message. {"\n"}If your pet has special requirements, please send as seperate message.</Text>
                         </View>
 
                     </ScrollView>
@@ -292,30 +353,52 @@ class ServiceInfo extends Component {
 const styles = StyleSheet.create({
     modal: {
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 10
     },
     modalHeader: {
-        fontSize: 23,
+        fontSize: 20,
         flex: 1,
         justifyContent: 'center',
         alignSelf: 'center',
         borderBottomWidth: 1.5,
-        marginBottom: 5,
+        marginBottom: 8,
     },
     modalRow: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        margin: 20,
+        marginBottom: 3
+    },
+    modalRowWFoot: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 15
     },
     modalLabel: {
         fontSize: 18,
         flex: 2
     },
     modalItem: {
-        flex: 1
+        flex: 1,
     },
+    footerLabel: {
+        color: 'gray',
+        marginLeft: 20,
+        fontSize: 13,
+        marginBottom: 3
+    },
+    footerMessage: { 
+        color: 'gray',
+        fontSize: 12, 
+        marginTop: 10, 
+        textAlign: 'center' 
+    }
 })
 
 export default connect(mapStateToProps)(ServiceInfo);
