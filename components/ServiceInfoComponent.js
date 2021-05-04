@@ -192,12 +192,12 @@ class ServiceInfo extends Component {
                     style={styles.button}
                 // cancel btn?
                 />
+                <Text style={{margin: 20, color: 'gray', marginBottom: -3}}>Please note that prices increase during holidays and for multiple pets.</Text>
                 <Card containerStyle={{ marginBottom: 15 }} >
                     <FlatList
                         data={this.props.services.services}
                         renderItem={RenderService}
                         keyExtractor={item => item.id.toString()}
-
                     />
                 </Card>
 
