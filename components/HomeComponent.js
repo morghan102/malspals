@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, StyleSheet, Dimensions, Button, Linking, Share } from 'react-native';
+import { FlatList, View, Text, StyleSheet, Dimensions, Button, Linking, Share, TouchableOpacity } from 'react-native';
 // ImageBackground it DID NOT LIKE ithis one
-import { ListItem, Tile, Icon, Card } from 'react-native-elements';
+import { Tile, Icon, Rating } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import Loading from './LoadingComponent';
+// import Loading from './LoadingComponent';
 import { ScrollView } from 'react-native-gesture-handler';
-import { withNavigation } from 'react-navigation';
-import CollapsibleList from "react-native-collapsible-list";
-import * as MailComposer from 'expo-mail-composer';
+// import { withNavigation } from 'react-navigation';
+// import CollapsibleList from "react-native-collapsible-list";
+// import * as MailComposer from 'expo-mail-composer';
 
 import ViewMoreText from 'react-native-view-more-text';
-import Accordion from 'react-native-collapsible/Accordion';
-import LottieView from 'lottie-react-native';
+// import Accordion from 'react-native-collapsible/Accordion';
+// import LottieView from 'lottie-react-native';
 
 
 
@@ -39,9 +39,9 @@ class Home extends Component {
         title: 'Home'
     }
 
-        // eveything for the accordan
+    // eveything for the accordan
 
-// this renders for eaxh list item
+    // this renders for eaxh list item
     // renderSectionTitle = (section) => {
     //     return (
     //         <View>
@@ -50,25 +50,25 @@ class Home extends Component {
     //     );
     // };
 
-    renderHeader = (section) => {
-        return (
-            <View >
-                <Text>{section.author}</Text>
-            </View>
-        );
-    };
+    // renderHeader = (section) => {
+    //     return (
+    //         <View >
+    //             <Text>{section.author}</Text>
+    //         </View>
+    //     );
+    // };
 
-    renderContent = (section) => {
-        return (
-            <View>
-                <Text>{section.text}</Text>
-            </View>
-        );
-    };
+    // renderContent = (section) => {
+    //     return (
+    //         <View>
+    //             <Text>{section.text}</Text>
+    //         </View>
+    //     );
+    // };
 
-    updateSections = (activeSections) => {
-        this.setState({ activeSections });
-    };
+    // updateSections = (activeSections) => {
+    //     this.setState({ activeSections });
+    // };
 
 
 
@@ -79,32 +79,13 @@ class Home extends Component {
 
 
     // ******
-    sendMail() {
-        MailComposer.composeAsync({
-            recipients: ['malspals@gmail.com'],
-            subject: 'Inquiry',
-            body: 'To whom it may concern:'
-        })
-    }
-
-
-
-
-    renderViewMore(onPress){
-        return(
-          <Text onPress={onPress}>View more</Text>
-        )
-      };
-      renderViewLess(onPress){
-        return(
-          <Text onPress={onPress}>View less</Text>
-        )
-      };
-
-      
-
-
-
+    // sendMail() {
+    //     MailComposer.composeAsync({
+    //         recipients: ['malspals@gmail.com'],
+    //         subject: 'Inquiry',
+    //         body: 'To whom it may concern:'
+    //     })
+    // }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -123,26 +104,67 @@ class Home extends Component {
             );
         }
 
-        const renderReviews = ({ item }) => {
+        function ReviewButtons() {
             return (
-            //     <ViewMoreText
-            //     numberOfLines={3}
-            //     renderViewMore={this.renderViewMore}
-            //     renderViewLess={this.renderViewLess}
-            //     textStyle={{textAlign: 'center'}}
-            //   >
-                <ListItem
-                    title={item.author}
-                    subtitle={item.text}
-                    rightSubtitle={item.date}
-                // onPress={() => navigate('ServiceInfo', { serviceId: item.id })}
-                // leftAvatar={{ source: require('./images/arabica.jpg') }}
-                // i can change the image source to be the server. refer to instructions
-                // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3923
-                />
-            //   </ViewMoreText>
-      
- );
+                <View>
+                    <Text style={styles.moreReviews}>See more reviews:</Text>
+                    <View style={styles.reviewButtons}>
+                        <Button
+                            title="    Wag    "
+                            onPress={() => Linking.openURL('https://wagwalking.com/walker-profile/MALLORY48314')}
+                            color='#28B78C'
+                            style={{ width: '200' }}
+                        />
+                        <Button
+                            title="   Rover   "
+                            onPress={() => Linking.openURL('https://www.rover.com/members/mallory-m-love-animals-lots-of-experience/?utm_medium=direct&utm_campaign=977262825&utm_content=ssp&utm_source=sit-link&utm_term=7811029')}
+                            color='#00BD70'
+                        />
+                    </View>
+                </View>
+
+            );
+        }
+
+        function RenderReviews({ comments }) {
+
+            const reviewItem = ({ item }) => {
+                return (
+                    <View style={styles.reviewsText}>
+                        <ViewMoreText
+                            numberOfLines={3}
+                            renderViewMore={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View more</Text>) })}
+                            renderViewLess={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View less</Text>) })}
+                        >
+                            <Text stmayle={{ fontSize: 14.5 }}>{item.text}{"\n"}</Text>
+                            {/* <Rating
+                                style={{ alignItems: 'flex-start', paddingVertical: '5%' }}
+                                startingValue={item.rating}
+                                imageSize={10}
+                                readonly
+                            /> */}
+                            <Text style={{ fontSize: 13 }}>{`-- ${item.author}, ${item.date}`}</Text>
+                        </ViewMoreText>
+                    </View>
+                );
+            };
+
+            return (
+                <View>
+                    <FlatList
+                        ListHeaderComponent={ListHeader("rvws")}
+                        data={comments}
+                        renderItem={reviewItem}
+                        keyExtractor={item => item.id.toString()}
+                    />
+                </View>
+            );
+
+            // leftAvatar={{ source: require('./images/arabica.jpg') }}
+            // i can change the image source to be the server. refer to instructions
+            // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3923
+            // />
+
         };
 
         const ListHeader = (src) => {
@@ -184,7 +206,6 @@ class Home extends Component {
         return (
             <ScrollView>
                 <HeroImage />
-                {/* fl is showing too many */}
                 <View>
                     {/* <Accordion
                         sections={this.props.reviews.reviews}
@@ -196,7 +217,9 @@ class Home extends Component {
                         underlayColor='white'
                         renderAsFlatList='true'
                     /> */}
-                    <FlatList
+                    {/* {ListHeader("rvws")} */}
+                    <RenderReviews comments={this.props.reviews.reviews.slice(0, 3)} />
+                    {/* <FlatList
                         ListHeaderComponent={ListHeader("rvws")}
                         data={this.props.reviews.reviews}
                         renderItem={renderReviews}
@@ -204,12 +227,8 @@ class Home extends Component {
                         // ItemSeparatorComponent={"highlighted"}
                         // onEndReached & onEndReachedThreshold
                         keyExtractor={item => item.id.toString()}
-                    />
-                    <Button
-                        title="See more reviews"
-                        onPress={() => Linking.openURL('https://linktr.ee/malspals')}
-                        color='#A4C936'
-                    />
+                    /> */}
+                    <ReviewButtons />
                 </View>
                 <FlatList
                     ListHeaderComponent={ListHeader("pics")}
@@ -245,11 +264,14 @@ class Home extends Component {
                         /> */}
                     </View>
                     {/* { source: { uri: baseUrl + item.image } } */}
-                    {/* <LottieView
-                        source={require("../assets/56997-dog-walking.json")}
-                        loop
-                        autoplay
-                    /> */}
+                    {/* <TouchableOpacity>
+                        <LottieView
+                            source={require('../assets/lottie/dog-walking.json')}
+                            style={{ width: 75, height: 75 }}
+                            loop={true}
+                            autoplay={true}
+                        />
+                    </TouchableOpacity> */}
                 </View>
             </ScrollView>
         )
@@ -285,7 +307,7 @@ const styles = StyleSheet.create({
         // marginBottom: 0,
         // marginTop: 10
     },
-    shareBox: { 
+    shareBox: {
         margin: 10,
     },
     // heroStyle: {
@@ -314,6 +336,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginHorizontal: MAX_WIDTH / 10,
         fontSize: 18
+    },
+    reviewsText: {
+        marginBottom: 15,
+        marginLeft: 20,
+        marginRight: 20
+    },
+    moreReviews: {
+        marginLeft: 20,
+        marginBottom: 10,
+        fontSize: 18,
+    },
+    reviewButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginRight: 100,
+        marginLeft: 100
     }
 });
 

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
-// import Settings from './SettingsComponent';
-// import Chat from './ChatComponent';
-// import ClientPetInfo from "./ClientPetComponent";
+import Chat from './ChatComponent';
+import ClientPetInfo from "./ClientPetComponent";
 // import Login from "./LoginComponent";
 
 import { View, Platform } from 'react-native';
@@ -33,10 +32,10 @@ const TopTabNav = createMaterialTopTabNavigator(
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ tintColor }) => (
                     <View>
-                        <Icon 
-                            size={25} 
-                            name='ios-home' 
-                            type='ionicon' 
+                        <Icon
+                            size={25}
+                            name='ios-home'
+                            type='ionicon'
                             color={tintColor}
                         />
                     </View>
@@ -57,8 +56,8 @@ const TopTabNav = createMaterialTopTabNavigator(
                             name='bathtub'
                             type='font-awesome'
                             color={tintColor}
-                            // ideas: name'bone' type='material-community'
-                            // name 'heart' type=fone-awesome
+                        // ideas: name'bone' type='material-community'
+                        // name 'heart' type=fone-awesome
                         />
                     </View>
                 ),
@@ -71,45 +70,45 @@ const TopTabNav = createMaterialTopTabNavigator(
 
         // these 2 are diabled until the backend is connected
 
-        // ClientPetInfo: {
-        //     screen: ClientPetInfo,
-        //     navigationOptions: {
-        //         tabBarLabel: 'Your Pet',
-        //         tabBarIcon: ({ tintColor }) => (
-        //             <View>
-        //                 <Icon
-        //                     size={25}
-        //                     name='dog'
-        //                     type='material-community'
-        //                     color={tintColor}
-        //                 />
-        //             </View>
-        //         ),
-        //         activeColor: '#006400',
-        //         inactiveColor: '#226557',
-        //         barStyle: { backgroundColor: '#8FBC8F' },
+        ClientPetInfo: {
+            screen: ClientPetInfo,
+            navigationOptions: {
+                tabBarLabel: 'Your Pet',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <Icon
+                            size={25}
+                            name='dog'
+                            type='material-community'
+                            color={tintColor}
+                        />
+                    </View>
+                ),
+                activeColor: '#006400',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#8FBC8F' },
 
-        //     },
-        // },
-        // Chat: {
-        //     screen: Chat,
-        //     navigationOptions: {
-        //         tabBarLabel: 'Chat',
-        //         tabBarIcon: ({ tintColor }) => (
-        //             <View>
-        //                 <Icon
-        //                     size={25}
-        //                     name='ios-chatboxes'
-        //                     type='ionicon'
-        //                     color={tintColor}
-        //                 />
-        //             </View>
-        //         ),
-        //         activeColor: '#4B0082',
-        //         inactiveColor: '#226557',
-        //         barStyle: { backgroundColor: '#B0C4DE' },
-        //     },
-        // },
+            },
+        },
+        Chat: {
+            screen: Chat,
+            navigationOptions: {
+                tabBarLabel: 'Chat',
+                tabBarIcon: ({ tintColor }) => (
+                    <View>
+                        <Icon
+                            size={25}
+                            name='ios-chatboxes'
+                            type='ionicon'
+                            color={tintColor}
+                        />
+                    </View>
+                ),
+                activeColor: '#4B0082',
+                inactiveColor: '#226557',
+                barStyle: { backgroundColor: '#B0C4DE' },
+            },
+        },
     },
     {
         animationEnabled: true,
@@ -160,7 +159,7 @@ class Main extends Component {
                 style={{
                     flex: 1,
                     paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
-                    paddingBottom: Expo.Constants.statusBarHeight/2
+                    paddingBottom: Expo.Constants.statusBarHeight / 2
                 }}>
                 <AppNavigator />
             </View>
