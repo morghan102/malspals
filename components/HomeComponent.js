@@ -104,33 +104,66 @@ class Home extends Component {
             );
         }
 
-        function ReviewButtons() {
+
+        function RenderExperience() {
             return (
                 <View>
-                    <Text style={styles.moreReviews}>See more reviews:</Text>
-                    <View style={styles.reviewButtons}>
-                        <Button
-                            title="    Wag    "
-                            onPress={() => Linking.openURL('https://wagwalking.com/walker-profile/MALLORY48314')}
-                            color='#28B78C'
-                            style={{ width: '200' }}
-                        />
-                        <Button
-                            title="   Rover   "
-                            onPress={() => Linking.openURL('https://www.rover.com/members/mallory-m-love-animals-lots-of-experience/?utm_medium=direct&utm_campaign=977262825&utm_content=ssp&utm_source=sit-link&utm_term=7811029')}
-                            color='#00BD70'
-                        />
+                    <View style={styles.headerStyle}>
+                        <Text style={styles.textStyle}>My Experience</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.smallText}>
+                            {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+                        </Text>
                     </View>
                 </View>
-
             );
         }
+
+
+        function RenderBio() {
+            //i may want to put this on the server instead of right here
+            return (
+                <View>
+                    <View style={styles.headerStyle}>
+                        <Text style={styles.textStyle}>About Me</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.smallText}>
+                            {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+                        </Text>
+                    </View>
+                </View>
+            );
+        }
+
+        // function ReviewButtons() {
+        //     return (
+        //         <View>
+        //             <Text style={styles.moreReviews}>See more reviews:</Text>
+        //             <View style={styles.reviewButtons}>
+        //                 <Button
+        //                     title="    Wag    "
+        //                     onPress={() => Linking.openURL('https://wagwalking.com/walker-profile/MALLORY48314')}
+        //                     color='#28B78C'
+        //                     style={{ width: '200' }}
+        //                 />
+        //                 <Button
+        //                     title="   Rover   "
+        //                     onPress={() => Linking.openURL('https://www.rover.com/members/mallory-m-love-animals-lots-of-experience/?utm_medium=direct&utm_campaign=977262825&utm_content=ssp&utm_source=sit-link&utm_term=7811029')}
+        //                     color='#00BD70'
+        //                 />
+        //             </View>
+        //         </View>
+
+        //     );
+        // }
 
         function RenderReviews({ comments }) {
 
             const reviewItem = ({ item }) => {
                 return (
-                    <View style={styles.reviewsText}>
+                    <View style={styles.smallText}>
                         <ViewMoreText
                             numberOfLines={3}
                             renderViewMore={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View more</Text>) })}
@@ -157,6 +190,7 @@ class Home extends Component {
                         renderItem={reviewItem}
                         keyExtractor={item => item.id.toString()}
                     />
+                    <Text style={styles.smallText}>{`More reviews avaiable upon request.`}</Text>
                 </View>
             );
 
@@ -218,6 +252,8 @@ class Home extends Component {
                         renderAsFlatList='true'
                     /> */}
                     {/* {ListHeader("rvws")} */}
+                    <RenderExperience />
+                    <RenderBio />
                     <RenderReviews comments={this.props.reviews.reviews.slice(0, 3)} />
                     {/* <FlatList
                         ListHeaderComponent={ListHeader("rvws")}
@@ -228,9 +264,11 @@ class Home extends Component {
                         // onEndReached & onEndReachedThreshold
                         keyExtractor={item => item.id.toString()}
                     /> */}
-                    <ReviewButtons />
+                    {/* <ReviewButtons /> */}
                 </View>
+                
                 <FlatList
+                //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
                     ListHeaderComponent={ListHeader("pics")}
                     data={this.props.clientImages.clientImages}
                     renderItem={renderClientImages}
@@ -337,7 +375,7 @@ const styles = StyleSheet.create({
         marginHorizontal: MAX_WIDTH / 10,
         fontSize: 18
     },
-    reviewsText: {
+    smallText: {
         marginBottom: 15,
         marginLeft: 20,
         marginRight: 20
