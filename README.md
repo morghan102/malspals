@@ -47,6 +47,13 @@ Installed packages include (but aren't limited to):
 - yarn add react-native-calendar-picker & yarn add moment
 <!-- - yarn add lottie-react-native ??? but this doesnt work??? idgi -->
     - expo install expo-sms
+- yarn add react-native-awesome-alerts https://www.npmjs.com/package/react-native-awesome-alerts
+--->>> will need to alter that code a bit for pretty-ing up
+----->>> as an alternate idea to the btn, having a popup that displays when the screen 1st focuses on that tab would be cool, couldnt figure it out.
+    https://medium.com/technoetics/creating-first-time-user-welcome-screen-in-react-native-42f08cb0ebbe (async storage want working initially): https://react-native-async-storage.github.io/async-storage/docs/usage : https://stackoverflow.com/questions/47954666/the-bind-value-at-index-1-is-null-getting-data-from-from-asyncstorage-in-react : https://blog.jscrambler.com/how-to-use-react-native-asyncstorage/ : 
+    https://reactjs.org/docs/react-component.html#componentdidmount
+    https://stackoverflow.com/questions/56808330/componentdidmount-working-only-at-first-time-screen-load-in-react-native
+    https://reactnavigation.org/docs/4.x/function-after-focusing-screen/
 
 
 

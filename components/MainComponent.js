@@ -53,10 +53,12 @@ const TopTabNav = createMaterialTopTabNavigator(
                     <View>
                         <Icon
                             size={25}
-                            name='bathtub'
-                            type='font-awesome'
+                            name='bone'
+                            type='material-community'
                             color={tintColor}
                         // ideas: name'bone' type='material-community'
+                        // name='bathtub'
+                        // type='font-awesome'
                         // name 'heart' type=fone-awesome
                         />
                     </View>

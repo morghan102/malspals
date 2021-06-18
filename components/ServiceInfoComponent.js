@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, Button, Modal, StyleSheet, TextInput, Alert } from 'react-native';
-import { Card, ListItem } from 'react-native-elements';
+import { Text, View, Button, Modal, StyleSheet, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { Card, ListItem, Icon } from 'react-native-elements';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import Loading from './LoadingComponent';
 import ModalSelector from 'react-native-modal-selector';
 import CalendarPicker from 'react-native-calendar-picker';
 import * as Notifications from 'expo-notifications';
 import * as SMS from 'expo-sms';
 import { Platform } from 'react-native';
-
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Loading from './LoadingComponent';
 
 
 const mapStateToProps = state => {
@@ -33,10 +33,23 @@ class ServiceInfo extends Component {
             endDate: null,
             showCalendar: false,
             showModal: false,
+            showAlert: false
         };
         this.onDateChange = this.onDateChange.bind(this);
 
     }
+    //for the alert popup
+    showAlert = () => {
+        this.setState({
+            showAlert: true
+        });
+    };
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        });
+    };    //end popup
 
     toggleModal() {
         this.setState({ showModal: !this.state.showModal });
@@ -60,6 +73,7 @@ class ServiceInfo extends Component {
             endDate: null,
             showCalendar: false,
             showModal: false,
+            showAlert: false
         });
     }
 
@@ -75,7 +89,6 @@ class ServiceInfo extends Component {
             });
         }
     }
-
 
     // aync bc permiss have to be requested, and then must wait to hear back abt those permissions
     // aync is a special function that always returns a promise
@@ -138,17 +151,66 @@ class ServiceInfo extends Component {
     }
 
     render() {
+        //this is not working bc the navigation thing is just for an entire componenet. i need meybs the usefocus effect hook
+        // https://reactnavigation.org/docs/function-after-focusing-screen/
+        // function ToggleAlert(navigation) {
+        //     return (
+        //     React.useEffect(() => {
+        //         const unsub = navigation.addListener('focus', () => {
+        //             Alert.alert("title", "message");
+        //         });
+        //     }, [navigation])
+        //     );
+        // }
+        // function AlertPopup() {
+        //     return (this.props.isFocused ? Alert.alert("hi") : "");
+        // }
+
+        const { showAlert } = this.state;
+
+        function PricingAlert() {
+            return (
+                <View style={styles.container}>
+
+                    <Text>I'm AwesomeAlert</Text>
+                    <TouchableOpacity onPress={() => {
+                        this.showAlert();
+                    }}>
+                        <View style={styles.button}>
+                            <Text style={styles.text}>Try me!</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <AwesomeAlert
+                        show={showAlert}
+                        showProgress={false}
+                        title="AwesomeAlert"
+                        message="I have a message for you!"
+                        closeOnTouchOutside={true}
+                        closeOnHardwareBackPress={false}
+                        showCancelButton={true}
+                        showConfirmButton={true}
+                        cancelText="No, cancel"
+                        confirmText="Yes, delete it"
+                        confirmButtonColor="#DD6B55"
+                        onCancelPressed={() => {
+                            this.hideAlert();
+                        }}
+                        onConfirmPressed={() => {
+                            this.hideAlert();
+                        }}
+                    />
+                </View>
+            );
+        };
 
         const RenderService = ({ item }) => {
-            const today = new Date();
-            var holidays = require('@date/holidays-us');
-            var serviceRate = (holidays.isHoliday(today) ? item.holidayRate : item.price);
-
             return (
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
-                    rightSubtitle={`$${serviceRate}`}
+                    rightSubtitle={`$${item.price}`}
+                    icon={{ name: 'fa-question-circle', type: 'font-awesome' }}
                 />
             );
         }
@@ -182,7 +244,6 @@ class ServiceInfo extends Component {
             { key: 6, label: "6" },
         ];
 
-
         return (
             <ScrollView>
                 <Button
@@ -192,7 +253,37 @@ class ServiceInfo extends Component {
                     style={styles.button}
                 // cancel btn?
                 />
-                <Text style={{margin: 20, color: 'gray', marginBottom: -3}}>Please note that prices increase during holidays, for multiple pets, and for pets with special needs.</Text>
+                <Text style={{ margin: 20, color: 'gray', marginBottom: -3 }}>Please note that prices increase during holidays, for multiple pets, and for pets with special needs.</Text>
+                
+                {/* i would like to put the btn in itrs own custom component but couldnt get that working */}
+                <View style={styles.container}>
+                    <TouchableOpacity onPress={() => {
+                        this.showAlert();
+                    }}>
+                    {/* <Icon name='question-circle' type='font-awesome'/> */}
+                        <View style={styles.button}>
+                            <Text style={styles.text}>What do those prices mean?</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <AwesomeAlert
+                        show={showAlert}
+                        showProgress={false}
+                        title="Why is there a range of prices shown?"
+                        message="Mal has chosen to offer range pricing, based on clients' income. Mal asks that you pay what you can."
+                        closeOnTouchOutside={true}
+                        closeOnHardwareBackPress={false}
+                        showCancelButton={true}
+                        showConfirmButton={false}
+                        cancelText="Got i!"
+                        cancelButtonColor="#DD6B90"
+                        onCancelPressed={() => {
+                            this.hideAlert();
+                        }}
+                    />
+                </View>
+
+
+
                 <Card containerStyle={{ marginBottom: 15 }} >
                     <FlatList
                         data={this.props.services.services}
@@ -306,9 +397,9 @@ class ServiceInfo extends Component {
                                 accessibilityLabel='Tap me to select a date(s)'
                             />
                         </View>
-                        <View style={{marginBottom: 20}}></View>
+                        <View style={{ marginBottom: 20 }}></View>
 
-                        
+
                         {this.state.showCalendar && (
                             <CalendarPicker
                                 allowRangeSelection={true}
@@ -351,6 +442,27 @@ class ServiceInfo extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        margin: 10,
+        // paddingBottom: 0,
+        marginBottom: 0
+        // i want this flush with the top of the card
+    },
+    button: {
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        borderRadius: 5,
+        backgroundColor: "#F57E4A",
+    },
+    text: {
+        color: '#fff',
+        fontSize: 15
+    },
     modal: {
         justifyContent: 'center',
         marginTop: 10
@@ -393,11 +505,11 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 3
     },
-    footerMessage: { 
+    footerMessage: {
         color: 'gray',
-        fontSize: 12, 
-        marginTop: 10, 
-        textAlign: 'center' 
+        fontSize: 12,
+        marginTop: 10,
+        textAlign: 'center'
     }
 })
 
