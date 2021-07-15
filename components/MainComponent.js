@@ -57,8 +57,7 @@ const TopTabNav = createMaterialTopTabNavigator(
                             type='material-community'
                             color={tintColor}
                         // ideas: name'bone' type='material-community'
-                        // name='bathtub'
-                        // type='font-awesome'
+                        // name='bathtub' type='font-awesome'
                         // name 'heart' type=fone-awesome
                         />
                     </View>

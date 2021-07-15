@@ -45,6 +45,8 @@ Installed packages include (but aren't limited to):
 
 - https://github.com/peacechen/react-native-modal-selector
 - yarn add react-native-calendar-picker & yarn add moment
+- @aws-sdk/client-s3
+- @aws-sdk/client-cognito-identity @aws-sdk/credential-provider-cognito-identity
 <!-- - yarn add lottie-react-native ??? but this doesnt work??? idgi -->
     - expo install expo-sms
 - yarn add react-native-awesome-alerts https://www.npmjs.com/package/react-native-awesome-alerts
