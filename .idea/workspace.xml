@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="88b0016d-969b-43ce-aa9f-4438133eea76" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1vYGa5rlo8trRzxfe4uv0egpGxV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="file.status.colors" />
+  </component>
+  <component name="RunManager">
+    <configuration name="/home/user/morghan/nucamp/4-React-Native/malspals/android/app/build.gradle" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/android/app/build.gradle" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle./home/user/morghan/nucamp/4-React-Native/malspals/android/app/build.gradle" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="88b0016d-969b-43ce-aa9f-4438133eea76" name="Default Changelist" comment="" />
+      <created>1626731668370</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1626731668370</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="747" y="421" width="488" height="271" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1626734583461">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="747" y="421" width="488" height="271" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734583461" />
+    <state width="1825" height="275" key="GridCell.Tab.0.bottom" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.0.bottom/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state width="1825" height="275" key="GridCell.Tab.0.center" timestamp="1626734782778">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.0.center/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782778" />
+    <state width="1825" height="275" key="GridCell.Tab.0.left" timestamp="1626734782778">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.0.left/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782778" />
+    <state width="1825" height="275" key="GridCell.Tab.0.right" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.0.right/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state width="1825" height="275" key="GridCell.Tab.1.bottom" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.1.bottom/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state width="1825" height="275" key="GridCell.Tab.1.center" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.1.center/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state width="1825" height="275" key="GridCell.Tab.1.left" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.1.left/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state width="1825" height="275" key="GridCell.Tab.1.right" timestamp="1626734782779">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1825" height="275" key="GridCell.Tab.1.right/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734782779" />
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1626734047547">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734047547" />
+    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1626734563356">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup/72.27.1848.1053/1920.0.1920.1200@72.27.1848.1053" timestamp="1626734563356" />
+  </component>
+</project>

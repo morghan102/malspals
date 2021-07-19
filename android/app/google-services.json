@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "194718958525",
+    "project_id": "malspals-723a3",
+    "storage_bucket": "malspals-723a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194718958525:android:9d84af5b80f1a821aa88d4",
+        "android_client_info": {
+          "package_name": "com.morghan102.malspals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194718958525-igug8j7pptn9d0qd2rkikqif4kfmlaq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Ley4BWDMoGV-i4XvvyNHYAtr0r4_7FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194718958525-igug8j7pptn9d0qd2rkikqif4kfmlaq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
