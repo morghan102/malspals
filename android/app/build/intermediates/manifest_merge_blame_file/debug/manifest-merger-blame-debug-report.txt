@@ -1,0 +1,133 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.malspals"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="30" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/debug/AndroidManifest.xml:5:5-77
+11-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/debug/AndroidManifest.xml:5:22-75
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:4:5-67
+12-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:4:22-64
+13    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+13-->[com.facebook.flipper:flipper:0.75.1] /home/user/.gradle/caches/transforms-2/files-2.1/e1d669587456380c8d4e62dfc92484ee/jetified-flipper-0.75.1/AndroidManifest.xml:16:5-76
+13-->[com.facebook.flipper:flipper:0.75.1] /home/user/.gradle/caches/transforms-2/files-2.1/e1d669587456380c8d4e62dfc92484ee/jetified-flipper-0.75.1/AndroidManifest.xml:16:22-73
+14    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+14-->[:react-native-community_netinfo] /home/user/morghan/nucamp/4-React-Native/malspals/node_modules/@react-native-community/netinfo/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
+14-->[:react-native-community_netinfo] /home/user/morghan/nucamp/4-React-Native/malspals/node_modules/@react-native-community/netinfo/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:22-76
+15
+16    <application
+16-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:6:5-24:19
+17        android:name="com.malspals.MainApplication"
+17-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:7:7-38
+18        android:allowBackup="false"
+18-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:11:7-34
+19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+19-->[androidx.core:core:1.7.0-alpha01] /home/user/.gradle/caches/transforms-2/files-2.1/f80abac3125716a03967540cd8b31b09/core-1.7.0-alpha01/AndroidManifest.xml:24:18-86
+20        android:debuggable="true"
+21        android:icon="@mipmap/ic_launcher"
+21-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:9:7-41
+22        android:label="@string/app_name"
+22-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:8:7-39
+23        android:roundIcon="@mipmap/ic_launcher_round"
+23-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:10:7-52
+24        android:theme="@style/AppTheme"
+24-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:12:7-38
+25        android:usesCleartextTraffic="true" >
+25-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/debug/AndroidManifest.xml:8:9-44
+26        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+26-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/debug/AndroidManifest.xml:11:9-86
+26-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/debug/AndroidManifest.xml:11:19-83
+27        <activity
+27-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:13:7-23:18
+28            android:name="com.malspals.MainActivity"
+28-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:14:9-37
+29            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+29-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:16:9-86
+30            android:label="@string/app_name"
+30-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:15:9-41
+31            android:launchMode="singleTask"
+31-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:17:9-40
+32            android:windowSoftInputMode="adjustResize" >
+32-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:18:9-51
+33            <intent-filter>
+33-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:19:9-22:25
+34                <action android:name="android.intent.action.MAIN" />
+34-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:20:13-65
+34-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:20:21-62
+35
+36                <category android:name="android.intent.category.LAUNCHER" />
+36-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:21:13-73
+36-->/home/user/morghan/nucamp/4-React-Native/malspals/android/app/src/main/AndroidManifest.xml:21:23-70
+37            </intent-filter>
+38        </activity>
+39        <activity
+39-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:23:9-27:75
+40            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+40-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:24:13-93
+41            android:excludeFromRecents="true"
+41-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:25:13-46
+42            android:exported="false"
+42-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:26:13-37
+43            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+43-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:27:13-72
+44        <!--
+45            Service handling Google Sign-In user revocation. For apps that do not integrate with
+46            Google Sign-In, this service will never be started.
+47        -->
+48        <service
+48-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:33:9-37:51
+49            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+49-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:34:13-89
+50            android:exported="true"
+50-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:35:13-36
+51            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+51-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:36:13-107
+52            android:visibleToInstantApps="true" />
+52-->[com.google.android.gms:play-services-auth:19.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/8e7f701a8d3a5faf19f2e2c092105b6b/jetified-play-services-auth-19.0.0/AndroidManifest.xml:37:13-48
+53
+54        <activity
+54-->[com.google.android.gms:play-services-base:17.1.0] /home/user/.gradle/caches/transforms-2/files-2.1/9417d41dde92678ab8488ec0684ca850/jetified-play-services-base-17.1.0/AndroidManifest.xml:23:9-26:75
+55            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+55-->[com.google.android.gms:play-services-base:17.1.0] /home/user/.gradle/caches/transforms-2/files-2.1/9417d41dde92678ab8488ec0684ca850/jetified-play-services-base-17.1.0/AndroidManifest.xml:24:13-79
+56            android:exported="false"
+56-->[com.google.android.gms:play-services-base:17.1.0] /home/user/.gradle/caches/transforms-2/files-2.1/9417d41dde92678ab8488ec0684ca850/jetified-play-services-base-17.1.0/AndroidManifest.xml:25:13-37
+57            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+57-->[com.google.android.gms:play-services-base:17.1.0] /home/user/.gradle/caches/transforms-2/files-2.1/9417d41dde92678ab8488ec0684ca850/jetified-play-services-base-17.1.0/AndroidManifest.xml:26:13-72
+58
+59        <provider
+59-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
+60            android:name="com.google.firebase.provider.FirebaseInitProvider"
+60-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
+61            android:authorities="com.malspals.firebaseinitprovider"
+61-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
+62            android:directBootAware="true"
+62-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43
+63            android:exported="false"
+63-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:30:13-37
+64            android:initOrder="100" />
+64-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:31:13-36
+65
+66        <service
+66-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:33:9-37:35
+67            android:name="com.google.firebase.components.ComponentDiscoveryService"
+67-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:34:13-84
+68            android:directBootAware="true"
+68-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:35:13-43
+69            android:exported="false" />
+69-->[com.google.firebase:firebase-common:20.0.0] /home/user/.gradle/caches/transforms-2/files-2.1/dd3c2617c0f6359f3b13e51ce6c2db19/jetified-firebase-common-20.0.0/AndroidManifest.xml:36:13-37
+70
+71        <meta-data
+71-->[com.google.android.gms:play-services-basement:17.1.1] /home/user/.gradle/caches/transforms-2/files-2.1/80e5d0ed6b9a943bf2a9b1012d164ae7/jetified-play-services-basement-17.1.1/AndroidManifest.xml:23:9-25:69
+72            android:name="com.google.android.gms.version"
+72-->[com.google.android.gms:play-services-basement:17.1.1] /home/user/.gradle/caches/transforms-2/files-2.1/80e5d0ed6b9a943bf2a9b1012d164ae7/jetified-play-services-basement-17.1.1/AndroidManifest.xml:24:13-58
+73            android:value="@integer/google_play_services_version" />
+73-->[com.google.android.gms:play-services-basement:17.1.1] /home/user/.gradle/caches/transforms-2/files-2.1/80e5d0ed6b9a943bf2a9b1012d164ae7/jetified-play-services-basement-17.1.1/AndroidManifest.xml:25:13-66
+74    </application>
+75
+76</manifest>

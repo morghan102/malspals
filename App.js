@@ -14,9 +14,9 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 // Initialize Firebase. I cannot find these values
 const firebaseConfig = {
     apiKey: "AIzaSyDAPKZZPwH4byxTWnHMawwCnsbufZvpuKk",
-    authDomain: "<your-auth-domain>",
-    databaseURL: "<your-database-url>",
-    storageBucket: "<your-storage-bucket>",
+    // authDomain: "<your-auth-domain>",
+    // databaseURL: "<your-database-url>",
+    // storageBucket: "<your-storage-bucket>",
   };
   const firebaseApp = firebase.initializeApp(firebaseConfig);
 

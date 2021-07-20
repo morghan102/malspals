@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">194718958525-igug8j7pptn9d0qd2rkikqif4kfmlaq7.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">194718958525</string>
+    <string name="google_api_key" translatable="false">AIzaSyA4Ley4BWDMoGV-i4XvvyNHYAtr0r4_7FM</string>
+    <string name="google_app_id" translatable="false">1:194718958525:android:a58e9b5c2a515b77aa88d4</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA4Ley4BWDMoGV-i4XvvyNHYAtr0r4_7FM</string>
+    <string name="google_storage_bucket" translatable="false">malspals-723a3.appspot.com</string>
+    <string name="project_id" translatable="false">malspals-723a3</string>
+</resources>

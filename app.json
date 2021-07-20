@@ -1,6 +1,7 @@
 {
+  "name": "Malspals",
+  "displayName": "MalsPals",
   "expo": {
-    "name": "malspals",
     "slug": "malspals",
     "version": "1.0.0",
     "orientation": "portrait",

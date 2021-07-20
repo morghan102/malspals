@@ -1,0 +1,14 @@
+com/malspals/MainActivity.java
+ com.malspals.MainActivity
+com/malspals/BuildConfig.java
+ com.malspals.BuildConfig
+com/malspals/ReactNativeFlipper.java
+ com.malspals.ReactNativeFlipper
+ com.malspals.ReactNativeFlipper$1
+ com.malspals.ReactNativeFlipper$2
+ com.malspals.ReactNativeFlipper$2$1
+com/malspals/MainApplication.java
+ com.malspals.MainApplication
+ com.malspals.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
