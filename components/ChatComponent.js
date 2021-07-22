@@ -1,13 +1,15 @@
+// = find specific demo for rn and firebase, ~ im using. Lots of muddling through until I get tere
+
 import React from "react";
 import { View, Text, StyleSheet, Button} from 'react-native';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import * as firebase from 'firebase'; // idk if i want these here...
+// import * as firebase from 'firebase'; // idk if i want these here...
 import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+// import 'firebase/firestore';
+// import 'firebase/auth';
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
@@ -19,7 +21,7 @@ function SignIn() {
         auth.signInWithPopup(provider);
     }
     return (
-        <Button onClick={signInWithGoogle}>Signin with Google</Button>
+        <Button title={"Signin with Google"} onClick={signInWithGoogle}/>
     );
 }
 

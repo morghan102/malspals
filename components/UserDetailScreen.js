@@ -1,3 +1,5 @@
+// i changed the name of this comp to UserDetail from clientpetinfocomponent
+
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,7 +12,7 @@ const mapStateToProps = state => {
 };
 
 
-function ClientPetInfo(props) {
+function UserDetail(props) {
     return (
         <View>
             <Text>Coming soon once the backend is set up</Text>
@@ -18,4 +20,4 @@ function ClientPetInfo(props) {
     );
 }
 
-export default connect(mapStateToProps)(ClientPetInfo);
+export default connect(mapStateToProps)(UserDetail);

@@ -23,8 +23,6 @@ import com.reactnativecommunity.netinfo.NetInfoPackage;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // @react-native-picker/picker
 import com.reactnativecommunity.picker.RNCPickerPackage;
-// lottie-react-native
-import com.airbnb.android.react.lottie.LottiePackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-reanimated
@@ -86,7 +84,6 @@ public class PackageList {
       new NetInfoPackage(),
       new ReactNativeFirebaseAppPackage(),
       new RNCPickerPackage(),
-      new LottiePackage(),
       new RNGestureHandlerPackage(),
       new ReanimatedPackage(),
       new SafeAreaContextPackage(),
