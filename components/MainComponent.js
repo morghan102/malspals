@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Constants from 'expo-constants';
 import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
 import Chat from './ChatComponent';
@@ -159,8 +160,8 @@ class Main extends Component {
             <View
                 style={{
                     flex: 1,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
-                    paddingBottom: Expo.Constants.statusBarHeight / 2
+                    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
+                    paddingBottom: Constants.statusBarHeight / 2
                 }}>
                 <AppNavigator />
             </View>
