@@ -100,8 +100,8 @@ const TopTabNav = createMaterialTopTabNavigator(
                     <View>
                         <Icon
                             size={25}
-                            name='ios-chatboxes'
-                            type='ionicon'
+                            name='forum'
+                            type='material-community'
                             color={tintColor}
                         />
                     </View>
