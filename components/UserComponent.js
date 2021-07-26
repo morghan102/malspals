@@ -7,7 +7,7 @@ class UserScreen extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button
           title="Users List"
-          onPress={() => this.props.navigation.navigate('UserDetailScreen')}
+          onPress={() => this.props.navigation.navigate('UserDetailComponent')}
           color="#19AC52"
         />
     </View>
