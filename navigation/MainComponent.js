@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Home from './HomeComponent';
-import ServiceInfo from './ServiceInfoComponent';
-import Chat from './ChatComponent';
-import ClientPetInfo from "./ClientPetComponent";
+import Home from '../components/HomeComponent';
+import ServiceInfo from '../components/ServiceInfoComponent';
+import Chat from '../components/ChatComponent';
+import ClientPetInfo from "../components/ClientPetComponent";
 // import Login from "./LoginComponent";
 
 import { View, Platform } from 'react-native';

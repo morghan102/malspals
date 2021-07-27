@@ -4,25 +4,25 @@ import { windowHeight, windowWidth } from '../utils/Dimensions'; //Dimensions fr
 
 export default function FormButton({ buttonTitle, ...rest }) { //The ...rest props must be the last prop passed as a parameter, otherwise, you are going to get an error. The purpose of passing this prop is to allow the component to have other props value. ???? idgi
     return (
-      <TouchableOpacity style={styles.buttonContainer} {...rest}>
-        <Text style={styles.buttonText}>{buttonTitle}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} {...rest}>
+            <Text style={styles.buttonText}>{buttonTitle}</Text>
+        </TouchableOpacity>
     );
-  }
+}
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     buttonContainer: {
-      marginTop: 10,
-      width: windowWidth / 2,
-      height: windowHeight / 15,
-      backgroundColor: '#6646ee',
-      padding: 10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8
+        marginTop: 10,
+        width: windowWidth / 2,
+        height: windowHeight / 15,
+        backgroundColor: '#6646ee',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 8
     },
     buttonText: {
-      fontSize: 28,
-      color: '#ffffff'
+        fontSize: 28,
+        color: '#ffffff'
     }
-  });
+});
