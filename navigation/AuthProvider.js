@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
+import firebase from '../database/firebaseDb';
+
 
 // Create an AuthContext. Export it since it is going to provide the user’s state and other helper functions that are 
 // necessary to perform authentication actions throughout the different app screens

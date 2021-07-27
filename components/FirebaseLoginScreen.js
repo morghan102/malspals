@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FormButton from './FormButton';
 import FormInput from './FormInput';
 import { AuthContext } from '../navigation/AuthProvider';
+import firebase from '../database/firebaseDb';
 
 
 export default function LoginScreen({ navigation }) {

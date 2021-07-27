@@ -5,6 +5,8 @@ import AuthStack from './AuthStack';
 import MainComponent from './MainComponent';
 import { AuthContext } from './AuthProvider';
 import Loading from '../components/LoadingComponent';
+import firebase from '../database/firebaseDb';
+
 
 export default function Routes() {
     const { user, setUser } = useContext(AuthContext);
