@@ -2,14 +2,17 @@
 // It is going to ask for the user’s credentials to enter the app and view the home screen or any other screens that are only 
 // allowed for the user to interact with when they are authorized to do so.
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FormButton from './FormButton';
 import FormInput from './FormInput';
+import { AuthContext } from '../navigation/AuthProvider';
+
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useContext(AuthContext);
 
     return (
         <View style={styles.container}>
@@ -30,7 +33,7 @@ export default function LoginScreen({ navigation }) {
             />
             <FormButton
                 buttonTitle='Login'
-                onPress={() => alert('Login button')}
+                onPress={() => login(email, password)}
             />
             <TouchableOpacity
                 style={styles.navButton}
