@@ -73,3 +73,6 @@ TODO:
 9. Add share capabilities & email contact
 10. Cancel btn for service request
 11. add login page that appears on app startup
+
+thank you to:
+https://blog.logrocket.com/how-to-set-up-email-authentication-with-react-native-react-navigation-and-firebase/
