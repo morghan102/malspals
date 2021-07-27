@@ -54,7 +54,7 @@ class UserDetailComponent extends Component {
                 mobile: '',
                 isLoading: false,
             });
-            this.props.navigation.navigate('UserScreen');
+            this.props.navigation.navigate('UserComponent');
         })
             .catch((err) => {
                 console.log("Error: ", err);
@@ -68,7 +68,7 @@ class UserDetailComponent extends Component {
         const dbRef = firebase.firestore().collection('users').doc(this.props.route.params.userKey) //what is this?
         dbRef.delete().then((res) => {
             console.log('Item removed from database');
-            this.props.navigation.navigate('UserScreen');
+            this.props.navigation.navigate('UserComponent');
         })
     }
 

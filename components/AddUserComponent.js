@@ -85,7 +85,7 @@ class AddUserComponent extends Component {
                 <View style={styles.button}>
                     <Button
                         title='Add User'
-                        onPress={() => this.storeUser}
+                        onPress={() => this.storeUser()}
                         color="#19AC52"
                     />
                 </View>
