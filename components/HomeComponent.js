@@ -15,7 +15,7 @@ import ViewMoreText from 'react-native-view-more-text';
 // import LottieView from 'lottie-react-native';
 
 
-
+import FormButton from './FormButton';
 // not sure ill use loading comp here.
 // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3925 referhere for how to connect the loading comp
 
@@ -241,6 +241,10 @@ class Home extends Component {
             <ScrollView>
                 <HeroImage />
                 <View>
+                    <View style={styles.loginContainer}>
+                        <Text style={styles.loginText}>Home screen</Text>
+                        <FormButton buttonTitle='Logout' />
+                    </View>
                     {/* <Accordion
                         sections={this.props.reviews.reviews}
                         activeSections={this.state.activeSections}
@@ -266,9 +270,9 @@ class Home extends Component {
                     /> */}
                     {/* <ReviewButtons /> */}
                 </View>
-                
+
                 <FlatList
-                //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
+                    //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
                     ListHeaderComponent={ListHeader("pics")}
                     data={this.props.clientImages.clientImages}
                     renderItem={renderClientImages}
