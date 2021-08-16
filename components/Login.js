@@ -4,11 +4,21 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'rea
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 // import Login from '../screens/Login'
 import Signup from './Signup'
-// import Profile from './Profile'
+import Profile from './Profile'
+import Firebase from '../config/Firebase'
 class Login extends React.Component {
     state = {
         email: '',
         password: ''
+    }
+
+    handleLogin = () => {
+        const { email, password } = this.state;
+
+        Firebase.auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => this.props.navigation.navigate('Profile'))
+        .catch(error => console.log(error))
     }
 
     render() {
@@ -28,7 +38,7 @@ class Login extends React.Component {
                     placeholder='Password'
                     secureTextEntry={true}
                 />
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 <Button 
@@ -48,9 +58,9 @@ const SwitchNavigator = createSwitchNavigator(
         Signup: {
             screen: Signup
         },
-        // Profile: {
-        //     screen: Profile
-        // }
+        Profile: {
+            screen: Profile
+        }
     },
     {
         initialRouteName: 'Login'
