@@ -2,6 +2,8 @@ import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 // import { LoginUrl } from '../constants/Api'; this doesnt exist and the tutorial ddnt explain where this came from
 import { Alert } from 'react-native';
+import Firebase from '../config/Firebase.js'
+
 
 
 export const fetchReviews = () => dispatch => {
@@ -250,3 +252,44 @@ export const addUsers = users => ({
 //             });
 //     };
 // };
+
+
+// added 8/16 from https://heartbeat.fritz.ai/how-to-build-an-email-authentication-app-with-firebase-firestore-and-react-native-a18a8ba78574
+export const updateEmail = email => {
+    return {
+        type: ActionTypes.UPDATE_EMAIL,
+        payload: email
+    }
+}
+
+export const updatePassword = password => {
+    return {
+        type: ActionTypes.UPDATE_PASSWORD,
+        payload: password
+    }
+}
+
+export const login = () => {
+    return async (dispatch, getState) => {
+        try {
+            const { email, password } = getState().user
+            const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
+            dispatch({ type: ActionTypes.LOGIN, payload: response.user })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+export const signup = () => {
+    return async (dispatch, getState) => {
+        try {
+            const { email, password } = getState().user
+            const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
+            dispatch({ type: ActionTypes.SIGNUP, payload: response.user })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+// Inside the methods login and signup, we’re writing the same business logic to interact with the Firebase authentication service that we did previously in Login and Signup components separately. Also, we’re dispatching the user from each of these actions in order to trigger the changes in the app's state. The only way to change the app's state is through action. The getState method used in the above snippet allows accessing the current state of the application.

@@ -6,7 +6,7 @@ import { reviews } from './reviews';
 import { services } from './services';
 import { clientImages } from './clientImages';
 import { pets } from './pets';
-import { users } from './users';
+import { user } from './user';
 import { login } from './login';
 
 
@@ -18,7 +18,7 @@ export const ConfigureStore = () => {
             reviews,
             clientImages,
             pets,
-            users,
+            user,
             login,
         }),
         applyMiddleware(thunk, logger),
