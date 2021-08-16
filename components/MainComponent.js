@@ -3,7 +3,8 @@ import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
 import Chat from './ChatComponent';
 import ClientPetInfo from "./ClientPetComponent";
-// import Login from "./LoginComponent";
+import Login from "./Login";
+import Signup from "./Signup";
 
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
@@ -94,7 +95,7 @@ const TopTabNav = createMaterialTopTabNavigator(
             },
         },
         Chat: {
-            screen: Chat,
+            screen: Login,
             navigationOptions: {
                 tabBarLabel: 'Chat',
                 tabBarIcon: ({ tintColor }) => (
