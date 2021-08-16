@@ -10,6 +10,8 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 // import { createSwitchNavigator } from 'react-navigation'; disabled until true login works
 import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
+import Constants from 'expo-constants';
+
 
 
 import { connect } from 'react-redux';
@@ -159,8 +161,8 @@ class Main extends Component {
             <View
                 style={{
                     flex: 1,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
-                    paddingBottom: Expo.Constants.statusBarHeight / 2
+                    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
+                    paddingBottom: Constants.statusBarHeight / 2
                 }}>
                 <AppNavigator />
             </View>
