@@ -1,6 +1,3 @@
-import Firebase from '../config/Firebase.js'
-
-
 export const REVIEWS_LOADING = 'reviews_loading';
 export const ADD_REVIEWS = 'add_reviews';
 export const REVIEWS_FAILED = 'reviews_failed';

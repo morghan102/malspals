@@ -257,14 +257,14 @@ export const addUsers = users => ({
 // added 8/16 from https://heartbeat.fritz.ai/how-to-build-an-email-authentication-app-with-firebase-firestore-and-react-native-a18a8ba78574
 export const updateEmail = email => {
     return {
-        type: ActionTypes.UPDATE_EMAIL,
+        type: UPDATE_EMAIL,
         payload: email
     }
 }
 
 export const updatePassword = password => {
     return {
-        type: ActionTypes.UPDATE_PASSWORD,
+        type: UPDATE_PASSWORD,
         payload: password
     }
 }
@@ -274,7 +274,7 @@ export const login = () => {
         try {
             const { email, password } = getState().user
             const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
-            dispatch({ type: ActionTypes.LOGIN, payload: response.user })
+            dispatch({ type: LOGIN, payload: response.user })
         } catch (e) {
             console.log(e)
         }
@@ -286,7 +286,7 @@ export const signup = () => {
         try {
             const { email, password } = getState().user
             const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
-            dispatch({ type: ActionTypes.SIGNUP, payload: response.user })
+            dispatch({ type: SIGNUP, payload: response.user })
         } catch (e) {
             console.log(e)
         }
