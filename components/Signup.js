@@ -29,7 +29,7 @@ class Signup extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.container}> 
                 <TextInput
                     style={styles.inputBox}
                     value={this.state.name}
