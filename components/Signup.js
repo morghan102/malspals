@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import Firebase from '../config/Firebase';
+import Firebase, { db } from '../config/Firebase';
+import firestore from '@react-native-firebase/firestore';
 
 class Signup extends React.Component {
     state = {
@@ -13,6 +14,15 @@ class Signup extends React.Component {
         const { email, password } = this.state
         Firebase.auth()
             .createUserWithEmailAndPassword(email, password)
+            .then(() => { if (firestore().collection('Users')) { //if the collectuon exists
+                firestore().collection('Users').add({//add a user document to the collection
+                    name: this.state.name,
+                    email: this.state.email
+                })
+                .then(() => {
+                    console.log('user added to firestore db!');
+                })
+            }})
             .then(() => this.props.navigation.navigate('Profile'))
             .catch(error => console.log(error))
     }
