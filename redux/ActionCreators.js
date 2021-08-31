@@ -2,7 +2,7 @@ import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 // import { LoginUrl } from '../constants/Api'; this doesnt exist and the tutorial ddnt explain where this came from
 import { Alert } from 'react-native';
-import Firebase from '../config/Firebase.js'
+import Firebase, { db } from '../config/Firebase.js'
 
 
 
@@ -180,42 +180,47 @@ export const addPet = (pet) => ({
 
 });
 
-export const fetchUsers = () => dispatch => {
 
-    dispatch(usersLoading());
+// i think this would be useful for the admin side
+// export const fetchUsers = () => dispatch => {
 
-    return fetch(baseUrl + 'users')
-        .then(response => {
-            if (response.ok) {
-                return response;
-            } else {
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                error.response = response;
-                throw error;
-            }
-        },
-            error => {
-                const errMess = new Error(error.message);
-                throw errMess;
-            })
-        .then(response => response.json())
-        .then(users => dispatch(addusers(users)))
-        .catch(error => dispatch(usersFailed(error.message)));
-};
+//     dispatch(usersLoading());
 
-export const usersLoading = () => ({
-    type: ActionTypes.USERS_LOADING
-});
+//     return fetch(baseUrl + 'users')
+//         .then(response => {
+//             if (response.ok) {
+//                 return response;
+//             } else {
+//                 const error = new Error(`Error ${response.status}: ${response.statusText}`);
+//                 error.response = response;
+//                 throw error;
+//             }
+//         },
+//             error => {
+//                 const errMess = new Error(error.message);
+//                 throw errMess;
+//             })
+//         .then(response => response.json())
+//         .then(users => dispatch(addusers(users)))
+//         .catch(error => dispatch(usersFailed(error.message)));
+// };
 
-export const usersFailed = errMess => ({
-    type: ActionTypes.USERS_FAILED,
-    payload: errMess
-});
+// export const usersLoading = () => ({
+//     type: ActionTypes.USERS_LOADING
+// });
 
-export const addUsers = users => ({
-    type: ActionTypes.ADD_USERS,
-    payload: users
-});
+// export const usersFailed = errMess => ({
+//     type: ActionTypes.USERS_FAILED,
+//     payload: errMess
+// });
+
+// export const addUsers = users => ({
+//     type: ActionTypes.ADD_USERS,
+//     payload: users
+// });
+
+
+
 
 
 // for login. Not being used as of 4/28
@@ -255,41 +260,67 @@ export const addUsers = users => ({
 
 
 // added 8/16 from https://heartbeat.fritz.ai/how-to-build-an-email-authentication-app-with-firebase-firestore-and-react-native-a18a8ba78574
-export const updateEmail = email => {
-    return {
-        type: UPDATE_EMAIL,
-        payload: email
-    }
-}
+// export const updateEmail = email => {
+//     return {
+//         type: ActionTypes.UPDATE_EMAIL,
+//         payload: email
+//     }
+// }
 
-export const updatePassword = password => {
-    return {
-        type: UPDATE_PASSWORD,
-        payload: password
-    }
-}
+// export const updatePassword = password => {
+//     return {
+//         type: ActionTypes.UPDATE_PASSWORD,
+//         payload: password
+//     }
+// }
 
+//those 2 aren't working so i'm removing them ALL
+
+//this is diff in the final result, check!!!
 export const login = () => {
     return async (dispatch, getState) => {
         try {
             const { email, password } = getState().user
             const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
-            dispatch({ type: LOGIN, payload: response.user })
+            dispatch({ type: ActionTypes.LOGIN, payload: response.user })
         } catch (e) {
-            console.log(e)
+            console.log(e) 
         }
     }
 }
 
-export const signup = () => {
-    return async (dispatch, getState) => {
-        try {
-            const { email, password } = getState().user
-            const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
-            dispatch({ type: SIGNUP, payload: response.user })
-        } catch (e) {
-            console.log(e)
-        }
-    }
-}
+// export const signup = () => {
+//     return async (dispatch, getState) => {
+//         try {
+//             const { email, password } = getState().user
+//             const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
+//             dispatch({ type: ActionTypes.SIGNUP, payload: response.user })
+//         } catch (e) {
+//             console.log(e)
+//         }
+//     }
+// }
+// export const signup = () => {
+// 	return async (dispatch, getState) => {
+// 		try {
+// 			const { email, password } = getState().user
+// 			const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
+// 			if (response.user.uid) {
+// 				const user = {
+// 					uid: response.user.uid,
+// 					email: email
+// 				}
+
+// 				db.collection('users')
+// 					.doc(response.user.uid)
+// 					.set(user)
+
+// 				dispatch({ type: SIGNUP, payload: user })
+// 			}
+// 		} catch (e) {
+// 			alert(e)
+// 		}
+// 	}
+// }
+
 // Inside the methods login and signup, we’re writing the same business logic to interact with the Firebase authentication service that we did previously in Login and Signup components separately. Also, we’re dispatching the user from each of these actions in order to trigger the changes in the app's state. The only way to change the app's state is through action. The getState method used in the above snippet allows accessing the current state of the application.

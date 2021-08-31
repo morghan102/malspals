@@ -16,13 +16,13 @@ import Constants from 'expo-constants';
 
 
 import { connect } from 'react-redux';
-import { fetchServices, fetchReviews, fetchClientImages, fetchPets, fetchUsers } from '../redux/ActionCreators';
+import { fetchServices, fetchReviews, fetchClientImages, fetchPets } from '../redux/ActionCreators';
 
 const mapDispatchToProps = {
     fetchReviews,
     fetchServices,
     fetchClientImages,
-    fetchUsers,
+    // fetchUsers,
     fetchPets,
 };
 
@@ -75,7 +75,7 @@ const TopTabNav = createMaterialTopTabNavigator(
         // these 2 are diabled until the backend is connected
 
         ClientPetInfo: {
-            screen: ClientPetInfo,
+            screen: Login,
             navigationOptions: {
                 tabBarLabel: 'Your Pet',
                 tabBarIcon: ({ tintColor }) => (
@@ -95,7 +95,7 @@ const TopTabNav = createMaterialTopTabNavigator(
             },
         },
         Chat: {
-            screen: Login,
+            screen: Chat,
             navigationOptions: {
                 tabBarLabel: 'Chat',
                 tabBarIcon: ({ tintColor }) => (
@@ -154,7 +154,7 @@ class Main extends Component {
         this.props.fetchReviews();
         this.props.fetchClientImages();
         this.props.fetchPets();
-        this.props.fetchUsers();
+        // this.props.fetchUsers();
     }
 
     render() {

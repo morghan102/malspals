@@ -24,8 +24,9 @@ export const USERS_FAILED = 'users_failed';
 
 
 // added 8/16 from https://heartbeat.fritz.ai/how-to-build-an-email-authentication-app-with-firebase-firestore-and-react-native-a18a8ba78574
-export const UPDATE_EMAIL = 'UPDATE_EMAIL';
-export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+//can't get those 2 to work so removing them
+// export const UPDATE_EMAIL = 'UPDATE_EMAIL';
+// export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 
