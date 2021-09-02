@@ -173,7 +173,7 @@ function Main() {
                 paddingBottom: Constants.statusBarHeight / 2
             }}>
                 { user ? (
-            <AppNavigator />
+            <AppNavigator /> //can add props like this {...props} extraData={user}
             ) : (
                 <Login />
             )}

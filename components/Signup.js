@@ -1,6 +1,7 @@
-import React, { useEffect, useState }  from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import Firebase, { db } from '../config/Firebase';
+import Firebase from '../config/Firebase';
+import Login from './Login';
 // import firestore from '@react-native-firebase/firestore'; //this is an issue
 // import Reactfrom 'react';
 
@@ -17,15 +18,20 @@ import Firebase, { db } from '../config/Firebase';
 
 
 
-class Signup extends React.Component {
-    state = {
-        name: '',
-        email: '',
-        password: ''
-    }
+function Signup({ navigation }) {
+    // state = {
+    //     name: '',
+    //     email: '',
+    //     password: ''
+    // }
+
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
 
-    handleSignUp = () => {
+    const handleSignUp = () => {
         const { email, password } = this.state
         Firebase.auth()
             .createUserWithEmailAndPassword(email, password)
@@ -40,39 +46,48 @@ class Signup extends React.Component {
                         })
                 }
             })
-            .then(() => this.props.navigation.navigate('Profile'))
+            .then(() => navigation.navigate('Profile'))
             .catch(error => console.log(error))
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <TextInput
-                    style={styles.inputBox}
-                    value={this.state.name}
-                    onChangeText={name => this.setState({ name })}
-                    placeholder='Full Name'
-                />
-                <TextInput
-                    style={styles.inputBox}
-                    value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
-                    placeholder='Email'
-                    autoCapitalize='none'
-                />
-                <TextInput
-                    style={styles.inputBox}
-                    value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
-                    placeholder='Password'
-                    secureTextEntry={true}
-                />
-                <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-                    <Text style={styles.buttonText}>Signup</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={styles.inputBox}
+                value={fullName}
+                onChangeText={name => setFullName({ fullName })}
+                placeholder='Full Name'
+            />
+            <TextInput
+                style={styles.inputBox}
+                value={email}
+                onChangeText={email => setEmail({ email })}
+                placeholder='Email'
+                autoCapitalize='none'
+            />
+            <TextInput
+                style={styles.inputBox}
+                value={password}
+                onChangeText={password => setPassword({ password })}
+                placeholder='Password'
+                secureTextEntry={true}
+            />
+            <TextInput
+                style={styles.inputBox}
+                value={confirmPassword}
+                onChangeText={password => setConfirmPassword({ password })}
+                placeholder='Confirm Password'
+                secureTextEntry={true}
+            />
+            <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+                <Text style={styles.buttonText}>Signup</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.buttonText}>Already have an account?</Text>
+            </TouchableOpacity>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

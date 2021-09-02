@@ -1,54 +1,61 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 // import Login from '../screens/Login'
 import Signup from './Signup'
 import Profile from './Profile'
 import Firebase from '../config/Firebase'
-class Login extends React.Component {
-    state = {
-        email: '',
-        password: ''
-    }
 
-    handleLogin = () => {
-        const { email, password } = this.state;
+
+function Login({ navigation }) {
+    // class Login extends React.Component {
+    // state = {
+    //     email: '',
+    //     password: ''
+    // }
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+
+    const handleLogin = () => {
+        const { email, password } = this.state; //w switch to functional comp this has to change
 
         Firebase.auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(() => this.props.navigation.navigate('Profile'))
-        .catch(error => console.log(error))
+            .signInWithEmailAndPassword(email, password)
+            .then(() => navigation.navigate('Profile')) //w switch to functional comp this has to change
+            .catch(error => console.log(error))
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <TextInput
-                    style={styles.inputBox}
-                    value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
-                    placeholder='Email'
-                    autoCapitalize='none'
-                />
-                <TextInput
-                    style={styles.inputBox}
-                    value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
-                    placeholder='Password'
-                    secureTextEntry={true}
-                />
-                <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                <Button 
-                    title="Don't have an account yet? Sign up"
-                    onPress={() => this.props.navigation.navigate('Signup')}
-                />
-            </View>
-        )
-    }
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={styles.inputBox}
+                value={email}
+                onChangeText={email => setEmail({ email })}
+                placeholder='Email'
+                autoCapitalize='none'
+            />
+            <TextInput
+                style={styles.inputBox}
+                value={password}
+                onChangeText={password => setPassword({ password })}
+                placeholder='Password'
+                secureTextEntry={true}
+            />
+            <TouchableOpacity style={styles.button} onPress={() => handleLogin()}> 
+            {/* onPress={() => onLoginPress()}>   thats what they have w funcional comp */}
+                <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <Button
+                title="Don't have an account yet? Sign up"
+                onPress={() => navigation.navigate('Signup')}
+            />
+        </View>
+    )
 }
+
 
 const LoginNavigator = createSwitchNavigator(
     {
