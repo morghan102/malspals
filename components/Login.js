@@ -50,7 +50,7 @@ class Login extends React.Component {
     }
 }
 
-const SwitchNavigator = createSwitchNavigator(
+const LoginNavigator = createSwitchNavigator(
     {
         Login: {
             screen: Login
@@ -104,4 +104,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default createAppContainer(SwitchNavigator);
+export default createAppContainer(LoginNavigator);
+//this will no longer be for the your pet screen 9.1.21

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
 import Chat from './ChatComponent';
@@ -147,28 +147,38 @@ const TopTabNav = createMaterialTopTabNavigator(
 
 const AppNavigator = createAppContainer(TopTabNav);
 
-class Main extends Component {
+function Main() {
 
-    componentDidMount() {
-        this.props.fetchServices();
-        this.props.fetchReviews();
-        this.props.fetchClientImages();
-        this.props.fetchPets();
-        // this.props.fetchUsers();
-    }
 
-    render() {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
-                    paddingBottom: Constants.statusBarHeight / 2
-                }}>
-                <AppNavigator />
-            </View>
-        );
-    }
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
+
+
+//ignoring this for now bc i want to focus on the tutorial 9/1/21
+    //*************************************************** */
+    // useEffect((props) => { //in function components, useEffect is used. (componentDidMount() {} )is for class components
+    //     this.props.fetchServices();
+    //     this.props.fetchReviews();
+    //     this.props.fetchClientImages();
+    //     this.props.fetchPets();
+    //     // this.props.fetchUsers();
+    // })
+    // **********************************************************8
+
+    return (
+        <View
+            style={{
+                flex: 1,
+                paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
+                paddingBottom: Constants.statusBarHeight / 2
+            }}>
+                { user ? (
+            <AppNavigator />
+            ) : (
+                <Login />
+            )}
+        </View>
+    );
 }
 
 export default connect(null, mapDispatchToProps)(Main);

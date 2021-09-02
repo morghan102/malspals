@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Firebase, { db } from '../config/Firebase';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore'; //this is an issue
+// import Reactfrom 'react';
+
+
+
+// function something(props) {
+//     const [entityText, setEntityText] = useState('');
+//     const [entities, setEntities] = useState('');
+
+//     const entityRef = firebase.firestore().collection('entities');
+//     const userId = props.user.id; //??? i need to set this. what will be passed down through props and jow?
+
+// }
+
+
 
 class Signup extends React.Component {
     state = {
@@ -10,19 +24,22 @@ class Signup extends React.Component {
         password: ''
     }
 
+
     handleSignUp = () => {
         const { email, password } = this.state
         Firebase.auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => { if (firestore().collection('Users')) { //if the collectuon exists
-                firestore().collection('Users').add({//add a user document to the collection
-                    name: this.state.name,
-                    email: this.state.email
-                })
-                .then(() => {
-                    console.log('user added to firestore db!');
-                })
-            }})
+            .then(() => {
+                if (firestore().collection('Users')) { //if the collectuon exists
+                    firestore().collection('Users').add({//add a user document to the collection
+                        name: this.state.name,
+                        email: this.state.email
+                    })
+                        .then(() => {
+                            console.log('user added to firestore db!');
+                        })
+                }
+            })
             .then(() => this.props.navigation.navigate('Profile'))
             .catch(error => console.log(error))
     }
