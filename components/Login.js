@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+// import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 // import Login from '../screens/Login'
 import Signup from './Signup'
 import Profile from './Profile'
-import Firebase from '../config/Firebase'
+import { firebase } from '../config/Firebase'
 
 
 function Login({ navigation }) {
@@ -20,12 +20,28 @@ function Login({ navigation }) {
 
 
     const handleLogin = () => {
-        const { email, password } = this.state; //w switch to functional comp this has to change
 
-        Firebase.auth()
+        firebase.auth()
             .signInWithEmailAndPassword(email, password)
-            .then(() => navigation.navigate('Profile')) //w switch to functional comp this has to change
-            .catch(error => console.log(error))
+            .then((res) => {
+                // console.log(res);
+
+                // navigation.navigate('Main')
+                const uid = res.user.uid
+                const usersRef = firebase.firestore().collection('users')
+                usersRef.doc(uid).get().then(firestoreDocument => {
+                    if (!firestoreDocument.exists) {
+                        alert("User does not exist")
+                        return;
+                    }
+                    const user = firestoreDocument.data()
+                    navigation.navigate('Main', { user }) //return false
+                })
+                    .catch(err => {
+                        alert(err)
+                    });
+            }) 
+            .catch(error => alert(error))
     }
 
     return (
@@ -33,19 +49,18 @@ function Login({ navigation }) {
             <TextInput
                 style={styles.inputBox}
                 value={email}
-                onChangeText={email => setEmail({ email })}
+                onChangeText={email => setEmail( email )}
                 placeholder='Email'
                 autoCapitalize='none'
             />
             <TextInput
                 style={styles.inputBox}
                 value={password}
-                onChangeText={password => setPassword({ password })}
+                onChangeText={password => setPassword( password )}
                 placeholder='Password'
                 secureTextEntry={true}
             />
-            <TouchableOpacity style={styles.button} onPress={() => handleLogin()}> 
-            {/* onPress={() => onLoginPress()}>   thats what they have w funcional comp */}
+            <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <Button
@@ -57,22 +72,22 @@ function Login({ navigation }) {
 }
 
 
-const LoginNavigator = createSwitchNavigator(
-    {
-        Login: {
-            screen: Login
-        },
-        Signup: {
-            screen: Signup
-        },
-        Profile: {
-            screen: Profile
-        }
-    },
-    {
-        initialRouteName: 'Login'
-    }
-)
+// const LoginNavigator = createSwitchNavigator(
+//     {
+//         Login: {
+//             screen: Login
+//         },
+//         Signup: {
+//             screen: Signup
+//         },
+//         Profile: {
+//             screen: Profile
+//         }
+//     },
+//     {
+//         initialRouteName: 'Login'
+//     }
+// )
 
 const styles = StyleSheet.create({
     container: {
@@ -111,5 +126,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default createAppContainer(LoginNavigator);
+export default Login;
 //this will no longer be for the your pet screen 9.1.21

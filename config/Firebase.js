@@ -1,4 +1,7 @@
 import * as firebase from 'firebase';
+import '@firebase/auth';
+import '@firebase/firestore';
+
 import {
     API_KEY,
     AUTH_DOMAIN,
@@ -7,7 +10,6 @@ import {
     MESSAGE_SENDER_ID,
     APP_ID
 } from '@env'; //importing as so from the .env file allows us to store sensitive api keys
-import 'firebase/firestore'
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

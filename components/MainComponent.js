@@ -9,7 +9,7 @@ import Signup from "./Signup";
 import { View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 // import { createSwitchNavigator } from 'react-navigation'; disabled until true login works
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import Constants from 'expo-constants';
 
@@ -75,7 +75,7 @@ const TopTabNav = createMaterialTopTabNavigator(
         // these 2 are diabled until the backend is connected
 
         ClientPetInfo: {
-            screen: Login,
+            screen: ClientPetInfo,
             navigationOptions: {
                 tabBarLabel: 'Your Pet',
                 tabBarIcon: ({ tintColor }) => (
@@ -133,6 +133,23 @@ const TopTabNav = createMaterialTopTabNavigator(
     },
 );
 
+const LoginNavigator = createAppContainer(createSwitchNavigator(
+    {
+        Login: {
+            screen: Login
+        },
+        Signup: {
+            screen: Signup
+        },
+        Main: {
+            screen: TopTabNav
+        }
+    },
+    {
+        initialRouteName: 'Login'
+    }
+))
+
 // i can incorporate this later when I have the login page working correctly
 // const switchNavigator = createSwitchNavigator(
 //     {
@@ -147,14 +164,14 @@ const TopTabNav = createMaterialTopTabNavigator(
 
 const AppNavigator = createAppContainer(TopTabNav);
 
-function Main() {
+function Main(props) {
 
 
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
 
 
-//ignoring this for now bc i want to focus on the tutorial 9/1/21
+    //ignoring this for now bc i want to focus on the tutorial 9/1/21
     //*************************************************** */
     // useEffect((props) => { //in function components, useEffect is used. (componentDidMount() {} )is for class components
     //     this.props.fetchServices();
@@ -172,14 +189,38 @@ function Main() {
                 paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
                 paddingBottom: Constants.statusBarHeight / 2
             }}>
-                { user ? (
-            <AppNavigator /> //can add props like this {...props} extraData={user}
+                {console.log(props)}
+            {user ? (
+                (props => <AppNavigator {...props} extraData={user}/>) //can add props like this {...props} extraData={user}
             ) : (
-                <Login />
+                <LoginNavigator />
             )}
         </View>
     );
 }
+
+
+{/* <View
+style={{
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
+    paddingBottom: Constants.statusBarHeight / 2
+}}>
+<NavigationContainer>
+    <Stack.Navigator>
+        {user ? (
+            <Stack.Screen name="Home">
+                {props => <Main {...props} extraData={user} />}
+            </Stack.Screen>
+        ) : (
+            <>
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Signup" component={Signup} />
+            </>
+        )}
+    </Stack.Navigator>
+</NavigationContainer>
+</View> */}
 
 export default connect(null, mapDispatchToProps)(Main);
 // where i got the toptabnav help

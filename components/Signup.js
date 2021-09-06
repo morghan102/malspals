@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import Firebase from '../config/Firebase';
-import Login from './Login';
+import { firebase } from '../config/Firebase';
+import { AppNavigator } from './MainComponent';
 // import firestore from '@react-native-firebase/firestore'; //this is an issue
 // import Reactfrom 'react';
 
@@ -19,76 +19,99 @@ import Login from './Login';
 
 
 function Signup({ navigation }) {
-    // state = {
-    //     name: '',
-    //     email: '',
-    //     password: ''
-    // }
+        // state = {
+        //     name: '',
+        //     email: '',
+        //     password: ''
+        // }
 
-    const [fullName, setFullName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+        const [fullName, setFullName] = useState('')
+        const [email, setEmail] = useState('')
+        const [password, setPassword] = useState('')
+        const [confirmPassword, setConfirmPassword] = useState('')
 
 
-    const handleSignUp = () => {
-        const { email, password } = this.state
-        Firebase.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                if (firestore().collection('Users')) { //if the collectuon exists
-                    firestore().collection('Users').add({//add a user document to the collection
-                        name: this.state.name,
-                        email: this.state.email
+        const handleSignUp = () => {
+            if (password !== confirmPassword) {
+                alert("Passwords don't match.")
+                return
+            }
+
+            firebase.auth()
+                .createUserWithEmailAndPassword(email, password)
+                .then((res) => {
+                    console.log("res" + res);
+                    const uid = res.user.uid;
+                    const account = {
+                        id: uid,
+                        email,
+                        fullName,
+                    };
+                    const usersRef = firebase.firestore().collection('users')
+                    usersRef.doc(uid).set(account).then(() => {
+                        navigation.navigate('Main', { user: account }) //this naviagtion isnt working
+                        console.log(account)
+
                     })
-                        .then(() => {
-                            console.log('user added to firestore db!');
-                        })
-                }
-            })
-            .then(() => navigation.navigate('Profile'))
-            .catch(error => console.log(error))
+                        .catch((error) => {
+                            alert(error)
+                        });
+                })
+                //     if (firestore().collection('Users')) { //if the collectuon exists
+                //         firestore().collection('Users').add({//add a user document to the collection
+                //             name: this.state.name,
+                //             email: this.state.email
+                //         })
+                //             .then(() => {
+                //                 console.log('user added to firestore db!');
+                //             })
+                //     }
+                // })
+                // .then(() => navigation.navigate('Profile'))
+                .catch(error => {
+                    alert(error)
+                });
+        }
+
+        return (
+            <View style={styles.container}>
+                <TextInput
+                    style={styles.inputBox}
+                    value={fullName}
+                    onChangeText={fullName => setFullName(fullName)}
+                    placeholder='Full Name'
+                />
+                <TextInput
+                    style={styles.inputBox}
+                    value={email}
+                    onChangeText={email => setEmail(email)}
+                    placeholder='Email'
+                    autoCapitalize='none'
+                />
+                <TextInput
+                    style={styles.inputBox}
+                    value={password}
+                    onChangeText={password => setPassword(password)}
+                    placeholder='Password'
+                    secureTextEntry={true}
+                />
+                <TextInput
+                    style={styles.inputBox}
+                    value={confirmPassword}
+                    onChangeText={password => setConfirmPassword(password)}
+                    placeholder='Confirm Password'
+                    secureTextEntry={true}
+                />
+                <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+                    <Text style={styles.buttonText}>Signup</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.buttonText}>Already have an account?</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
-
-    return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.inputBox}
-                value={fullName}
-                onChangeText={name => setFullName({ fullName })}
-                placeholder='Full Name'
-            />
-            <TextInput
-                style={styles.inputBox}
-                value={email}
-                onChangeText={email => setEmail({ email })}
-                placeholder='Email'
-                autoCapitalize='none'
-            />
-            <TextInput
-                style={styles.inputBox}
-                value={password}
-                onChangeText={password => setPassword({ password })}
-                placeholder='Password'
-                secureTextEntry={true}
-            />
-            <TextInput
-                style={styles.inputBox}
-                value={confirmPassword}
-                onChangeText={password => setConfirmPassword({ password })}
-                placeholder='Confirm Password'
-                secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
-                <Text style={styles.buttonText}>Signup</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.buttonText}>Already have an account?</Text>
-            </TouchableOpacity>
-        </View>
-    )
-}
 
 const styles = StyleSheet.create({
     container: {
