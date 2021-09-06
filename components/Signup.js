@@ -49,7 +49,7 @@ function Signup({ navigation }) {
                     };
                     const usersRef = firebase.firestore().collection('users')
                     usersRef.doc(uid).set(account).then(() => {
-                        navigation.navigate('Main', { user: account }) //this naviagtion isnt working
+                        navigation.navigate('ClientPetInfo', { user: account }) //this naviagtion isnt working
                         console.log(account)
 
                     })

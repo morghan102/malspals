@@ -32,6 +32,7 @@ const mapStateToProps = state => {
 class Home extends Component {
     state = {
         activeSections: [],
+        extraData: this.props.extraData
     };
 
 
@@ -92,6 +93,7 @@ class Home extends Component {
 
         function HeroImage() {
             return (
+                
                 <View style={styles.heroContStyle}>
                     <Tile
                         imageSrc={require('./images/malWFlag.jpg')}
@@ -241,6 +243,7 @@ class Home extends Component {
             <ScrollView>
                 <HeroImage />
                 <View>
+                    {/* {console.log(this.props.extraData)} */}
                     {/* <Accordion
                         sections={this.props.reviews.reviews}
                         activeSections={this.state.activeSections}

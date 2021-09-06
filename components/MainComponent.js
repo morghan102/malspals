@@ -13,7 +13,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import Constants from 'expo-constants';
 
-
+import { firebase } from "../config/Firebase";
 
 import { connect } from 'react-redux';
 import { fetchServices, fetchReviews, fetchClientImages, fetchPets } from '../redux/ActionCreators';
@@ -167,7 +167,6 @@ const AppNavigator = createAppContainer(TopTabNav);
 function Main(props) {
 
 
-    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
 
 
@@ -182,6 +181,7 @@ function Main(props) {
     // })
     // **********************************************************8
 
+
     return (
         <View
             style={{
@@ -189,9 +189,9 @@ function Main(props) {
                 paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
                 paddingBottom: Constants.statusBarHeight / 2
             }}>
-                {console.log(props)}
+            {/* {console.log(props)} */}
             {user ? (
-                (props => <AppNavigator {...props} extraData={user}/>) //can add props like this {...props} extraData={user}
+                (props => <AppNavigator {...props} extraData={user} />) //can add props like this {...props} extraData={user}
             ) : (
                 <LoginNavigator />
             )}

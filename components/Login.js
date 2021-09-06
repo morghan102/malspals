@@ -35,7 +35,7 @@ function Login({ navigation }) {
                         return;
                     }
                     const user = firestoreDocument.data()
-                    navigation.navigate('Main', { user }) //return false
+                    navigation.navigate('ClientPetInfo', { user })
                 })
                     .catch(err => {
                         alert(err)
