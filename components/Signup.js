@@ -49,7 +49,7 @@ function Signup({ navigation }) {
                     };
                     const usersRef = firebase.firestore().collection('users')
                     usersRef.doc(uid).set(account).then(() => {
-                        navigation.navigate('ClientPetInfo', { user: account }) //this naviagtion isnt working
+                        navigation.navigate('App', { user: account })
                         console.log(account)
 
                     })
@@ -84,7 +84,7 @@ function Signup({ navigation }) {
                 <TextInput
                     style={styles.inputBox}
                     value={email}
-                    onChangeText={email => setEmail(email)}
+                    onChangeText={email => setEmail(email.trim())}
                     placeholder='Email'
                     autoCapitalize='none'
                 />

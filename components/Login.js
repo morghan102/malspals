@@ -20,7 +20,7 @@ function Login({ navigation }) {
 
 
     const handleLogin = () => {
-
+        
         firebase.auth()
             .signInWithEmailAndPassword(email, password)
             .then((res) => {
@@ -35,7 +35,7 @@ function Login({ navigation }) {
                         return;
                     }
                     const user = firestoreDocument.data()
-                    navigation.navigate('ClientPetInfo', { user })
+                    navigation.navigate('App', { user })
                 })
                     .catch(err => {
                         alert(err)
@@ -49,7 +49,7 @@ function Login({ navigation }) {
             <TextInput
                 style={styles.inputBox}
                 value={email}
-                onChangeText={email => setEmail( email )}
+                onChangeText={email => setEmail( email.trim() )}
                 placeholder='Email'
                 autoCapitalize='none'
             />

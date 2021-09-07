@@ -5,29 +5,31 @@ import Chat from './ChatComponent';
 import ClientPetInfo from "./ClientPetComponent";
 import Login from "./Login";
 import Signup from "./Signup";
+// import AuthLoadingScreen from './AuthLoading';
 
-import { View, Platform } from 'react-native';
+import { View, Platform, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 // import { createSwitchNavigator } from 'react-navigation'; disabled until true login works
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import Constants from 'expo-constants';
+import { createStackNavigator } from "react-navigation-stack";
 
 import { firebase } from "../config/Firebase";
 
 import { connect } from 'react-redux';
 import { fetchServices, fetchReviews, fetchClientImages, fetchPets } from '../redux/ActionCreators';
 
-const mapDispatchToProps = {
-    fetchReviews,
-    fetchServices,
-    fetchClientImages,
-    // fetchUsers,
-    fetchPets,
-};
+// const mapDispatchToProps = {
+//     fetchReviews,
+//     fetchServices,
+//     fetchClientImages,
+//     // fetchUsers,
+//     fetchPets,
+// };
 
 
-const TopTabNav = createMaterialTopTabNavigator(
+const AppNav = createMaterialTopTabNavigator(
     {
         Home: {
             screen: Home,
@@ -71,9 +73,6 @@ const TopTabNav = createMaterialTopTabNavigator(
 
             },
         },
-
-        // these 2 are diabled until the backend is connected
-
         ClientPetInfo: {
             screen: ClientPetInfo,
             navigationOptions: {
@@ -132,43 +131,79 @@ const TopTabNav = createMaterialTopTabNavigator(
         },
     },
 );
+// const AppNavigator = createAppContainer(TopTabNav);
 
-const LoginNavigator = createAppContainer(createSwitchNavigator(
+// const AuthNav = createAppContainer(createSwitchNavigator(
+const AuthNav = createStackNavigator(
     {
         Login: {
             screen: Login
         },
         Signup: {
             screen: Signup
-        },
-        Main: {
-            screen: TopTabNav
         }
     },
     {
         initialRouteName: 'Login'
     }
-))
+)
 
-// i can incorporate this later when I have the login page working correctly
-// const switchNavigator = createSwitchNavigator(
-//     {
-//       Login,
-//       TopTabNav
-//     },
-//     {
-//       initialRouteName: 'Login',
-//     },
-//   );
+const FullNav = createAppContainer(
+    createSwitchNavigator(
+        {
+            AuthCheck: AuthCheck,
+            App: AppNav,
+            Auth: AuthNav,
+        },
+        {
+            initialRouteName: 'AuthCheck',
+        }
+    )
+);
+
+function AuthCheck(props) {
+    console.log(props.screenProps.user) //not sure this is working?? v confused
+    if (props.screenProps.user == null) {
+        props.navigation.navigate('Auth')
+    } else {
+        props.navigation.navigate('App');
+    }
+    return null;
+}
 
 
-const AppNavigator = createAppContainer(TopTabNav);
+function Main() {
 
-function Main(props) {
-
+    const [loading, setLoading] = useState(true);
 
     const [user, setUser] = useState(null);
 
+
+    useEffect(() => { //we call this the first time the app loads w useEffect
+        const usersRef = firebase.firestore().collection('users');
+        firebase.auth().onAuthStateChanged(user => { //oASC returns curently logged in user
+            // We then fetch all the extra user data that we stored in Firestore, and set it on the current component’s state.
+            if (user) {
+                usersRef.doc(user.uid).get().then((document) => {
+                    const userData = document.data();
+                    setLoading(false);
+                    setUser(userData);
+                })
+                    .catch((err) => {
+                        setLoading(false)
+                    });
+            } else {
+                setLoading(false)
+            }
+        });
+    }, []);
+
+    if (loading) {
+        console.log("loading from main")
+        return (
+            <></>
+        )
+    }
 
     //ignoring this for now bc i want to focus on the tutorial 9/1/21
     //*************************************************** */
@@ -189,12 +224,18 @@ function Main(props) {
                 paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
                 paddingBottom: Constants.statusBarHeight / 2
             }}>
-            {/* {console.log(props)} */}
-            {user ? (
-                (props => <AppNavigator {...props} extraData={user} />) //can add props like this {...props} extraData={user}
+            <FullNav screenProps={{ user: user }} />
+            {/* {user ? (
+                (<AppNavigator {...props} extraData={user} />)
+                // (console.log('in appnav'))
             ) : (
-                <LoginNavigator />
-            )}
+
+                // <LoginNavigator {...props} extraData={user} /> //////// we'll try this thing below for now/>
+                <View>
+                    <Login {...props} extraData={user} />
+                    <Signup />
+                </View>
+            )} */}
         </View>
     );
 }
@@ -222,6 +263,9 @@ style={{
 </NavigationContainer>
 </View> */}
 
-export default connect(null, mapDispatchToProps)(Main);
+export default Main;
+
+
+// export default connect(null, mapDispatchToProps)(Main);
 // where i got the toptabnav help
 // https://jeffgukang.github.io/react-native-tutorial/docs/router-tutorial/02-react-navigation-tab/react-navigation-tab.html
