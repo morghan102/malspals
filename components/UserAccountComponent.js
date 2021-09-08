@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
 // import styles from './styles';
 import { firebase } from '../config/Firebase';
+import EditUserAccount from './EditUserAccount';
 
-export default function ClientPetComponent(props) {
+export default function UserAccount(props) {
 
     const [petName, setPetName] = useState('')
     const [entities, setEntities] = useState([])
@@ -11,6 +12,8 @@ export default function ClientPetComponent(props) {
     const [petSize, setPetSize] = useState('')
     const [specialNeeds, setSpecialNeeds] = useState('')
     const [petBreed, setPetBreed] = useState('')
+
+    const [editing, setEditing] = useState(false)
 
 
     const petRef = firebase.firestore().collection('pets')
@@ -84,6 +87,14 @@ export default function ClientPetComponent(props) {
 
     return (
         <View style={styles.container}>
+            {!editing ? (ee) : (cc)}
+            <View>
+                <Text>Header</Text>
+            </View>
+            <View>
+                <Text>info they inputted when signed up</Text>
+            </View>
+
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}
@@ -145,9 +156,15 @@ export default function ClientPetComponent(props) {
                     />
                 </View>
             )}
+            <View>
+                <TouchableOpacity style={styles.button} onPress={() => setEditing(true)}>
+                    <Text style={styles.buttonText}>Edit info</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
+
 
 
 const styles = StyleSheet.create({

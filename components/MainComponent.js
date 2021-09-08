@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import Home from './HomeComponent';
 import ServiceInfo from './ServiceInfoComponent';
 import Chat from './ChatComponent';
-import ClientPetInfo from "./ClientPetComponent";
+import UserAccount from "./UserAccountComponent";
 import Login from "./Login";
 import Signup from "./Signup";
 // import AuthLoadingScreen from './AuthLoading';
@@ -73,8 +73,8 @@ const AppNav = createMaterialTopTabNavigator(
 
             },
         },
-        ClientPetInfo: {
-            screen: ClientPetInfo,
+        UserAccount: {
+            screen: UserAccount,
             navigationOptions: {
                 tabBarLabel: 'Your Pet',
                 tabBarIcon: ({ tintColor }) => (
