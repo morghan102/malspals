@@ -162,7 +162,7 @@ const FullNav = createAppContainer(
 );
 
 function AuthCheck(props) {
-    console.log(props.screenProps.user) //not sure this is working?? v confused
+    // console.log(props.screenProps.user) //not sure this is working?? v confused
     if (props.screenProps.user == null) {
         props.navigation.navigate('Auth')
     } else {

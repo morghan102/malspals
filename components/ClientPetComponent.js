@@ -1,83 +1,206 @@
-import React, { useEffect, useState } from "react";
-import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { firebase } from "../config/Firebase";
+import React, { useEffect, useState } from 'react'
+import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+// import styles from './styles';
+import { firebase } from '../config/Firebase';
 
-// this will look like campsiteinfo comp in numcapsite, postcomment
+export default function ClientPetComponent(props) {
 
-const mapStateToProps = state => {
-    return {
-    };
-};
-
-
-
-//navigation.setOptions could be useful here  https://reactnavigation.org/docs/navigation-prop/#setoptions
-//for now login and signup navigate here in order to send user info here. I would like to change this
-
-function ClientPetInfo(props) {
-    // const [loading, setLoading] = useState(true);
-    // const [user, setUser] = useState(null);
-    
-    // const [entityText, setEntityText] = useState('')
-    // const [entities, setEntities] = useState([])
-
-    // const entityRef = firebase.firestore().collection('entities')
-    // // const userID = user.id //i'll have to call this at the portion of the code i get to as I cant initialize w this
+    const [petName, setPetName] = useState('')
+    const [entities, setEntities] = useState([])
+    const [petSpecies, setPetSpecies] = useState('')
+    const [petSize, setPetSize] = useState('')
+    const [specialNeeds, setSpecialNeeds] = useState('')
+    const [petBreed, setPetBreed] = useState('')
 
 
+    const petRef = firebase.firestore().collection('pets')
+    const userID = props.screenProps.user.id
+
+    useEffect(() => {
+        petRef
+            .where("authorID", "==", userID) //find correct user for the data
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(
+                querySnapshot => {
+                    const newPets = []
+                    querySnapshot.forEach(doc => {
+                        const pet = doc.data()
+                        pet.id = doc.id
+                        newPets.push(pet)
+                    });
+                    setEntities(newPets)
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+    }, [])
+
+    const onAddButtonPress = () => {
+        if (petName && petName.length > 0) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            const data = {
+                name: petName,
+                species: petSpecies,
+                size: petSize,
+                breed: petBreed,
+                specialNeeds: specialNeeds,
+                authorID: userID,
+                createdAt: timestamp,
+            };
 
 
-    // useEffect(() => { //we call this the first time the app loads w useEffect
-    //     const usersRef = firebase.firestore().collection('users');
-    //     firebase.auth().onAuthStateChanged(user => { //oASC returns curently logged in user
-    //         // We then fetch all the extra user data that we stored in Firestore, and set it on the current component’s state.
-    //         if (user) {
-    //             usersRef.doc(user.uid).get().then((document) => {
-    //                 const userData = document.data()
-    //                 setLoading(false)
-    //                 setUser(userData)
-    //             })
-    //             .catch((err) => {
-    //                 setLoading(false)
-    //             });
-    //         } else {
-    //             setLoading(false)
-    //         }
-    //     });
+            // const usersRef = firebase.firestore().collection('users')
+            // petRef.doc(uid).set(account).then(() => {
+            //     navigation.navigate('App', { user: account })
+            //     console.log(account)
 
-    //     entityRef
-    //     .where("authorID", "==", user.id)
-    //         .orderBy('createdAt', 'desc')
-    //         .onSnapshot(
-    //             querySnapshot => {
-    //                 const newEntities = []
-    //                 querySnapshot.forEach(doc => {
-    //                     const entity = doc.data()
-    //                     entity.id = doc.id
-    //                     newEntities.push(entity)
-    //                 });
-    //                 setEntities(newEntities)
-    //             },
-    //             error => {
-    //                 console.log(error)
-    //             }
-    //         )
-    // }, []);
+            // })
+            petRef
+                .add(data)
+                .then(_doc => {
+                    setPetName('')
+                    setPetSize('')
+                    setPetSpecies('')
+                    setSpecialNeeds('')
+                    setPetBreed('')
+                    Keyboard.dismiss()
+                })
+                .catch((error) => {
+                    alert(error)
+                });
+        }
+    }
 
-    // if (loading) {
-    //     console.log("loading from clientpet")
-    //     return (
-    //         <></>
-    //     )
-    // }
+    const renderPet = ({ item, index }) => { //this is rendered w flatlist
+        return (
+            <View style={styles.entityContainer}>
+                <Text style={styles.entityText}>
+                    {index}. {item.name}
+                </Text>
+            </View>
+        )
+    }
 
     return (
-        <View>
-            {/* {console.log(props.navigation.getParam('extraData'))} */}
-            <Text>Coming soon once the backend is set up</Text>
+        <View style={styles.container}>
+            <View style={styles.formContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Pet name'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setPetName(text)}
+                    value={petName}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder='Species'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setPetSpecies(text)}
+                    value={petSpecies}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder='Breed'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setPetBreed(text)}
+                    value={petBreed}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder='Size (lbs)'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setPetSize(text)}
+                    value={petSize}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder='Special needs?'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setSpecialNeeds(text)}
+                    value={specialNeeds}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+                    <Text style={styles.buttonText}>Save Changes</Text>
+                </TouchableOpacity>
+            </View>
+            {/* below this needs to change */}
+            {entities && (
+                <View style={styles.listContainer}>
+                    <FlatList
+                        data={entities}
+                        renderItem={renderPet}
+                        keyExtractor={(item) => item.id}
+                        removeClippedSubviews={true}
+                    />
+                </View>
+            )}
         </View>
-    );
+    )
 }
 
-export default connect(mapStateToProps)(ClientPetInfo);
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    formContainer: {
+        flexDirection: 'row',
+        height: 80,
+        marginTop: 40,
+        marginBottom: 20,
+        flex: 1,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    input: {
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        paddingLeft: 16,
+        flex: 1,
+        marginRight: 5
+    },
+    button: {
+        height: 47,
+        borderRadius: 5,
+        backgroundColor: '#788eec',
+        width: 80,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16
+    },
+    listContainer: {
+        marginTop: 20,
+        padding: 20,
+    },
+    entityContainer: {
+        marginTop: 16,
+        borderBottomColor: '#cccccc',
+        borderBottomWidth: 1,
+        paddingBottom: 16
+    },
+    entityText: {
+        fontSize: 20,
+        color: '#333333'
+    }
+})
