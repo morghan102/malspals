@@ -64,7 +64,7 @@ class ServiceInfo extends Component {
 
     resetmodal() {
         this.setState({
-            numPets: 0,
+            numPets: 0, //fetch all this info from firebase for the current user
             names: [],
             breeds: [],
             sizes: [],
@@ -274,7 +274,7 @@ class ServiceInfo extends Component {
                         closeOnHardwareBackPress={false}
                         showCancelButton={true}
                         showConfirmButton={false}
-                        cancelText="Got i!"
+                        cancelText="Got it!"
                         cancelButtonColor="#DD6B90"
                         onCancelPressed={() => {
                             this.hideAlert();

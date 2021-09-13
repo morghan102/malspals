@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
-// import styles from './styles';
 import { firebase } from '../config/Firebase';
 import EditUserAccount from './EditUserAccount';
 
@@ -75,6 +74,14 @@ export default function UserAccount(props) {
         }
     }
 
+    const onBeginEditBtnPress = () => {
+
+    }
+
+    const onConfirmEditBtnPress = () => {
+
+    }
+
     const renderPet = ({ item, index }) => { //this is rendered w flatlist
         return (
             <View style={styles.entityContainer}>
@@ -85,9 +92,39 @@ export default function UserAccount(props) {
         )
     }
 
+    toggleModal = () => {
+        this.setState({ showModal: !this.state.showModal });
+    }
+
+    handleSubmitEdit = () => {
+        console.log(JSON.stringify(this.state));
+        this.toggleModal();
+        this.resetmodal();
+    }
+
+    resetmodal = () => {
+        this.setState({
+            // this will all be the setState hooks for whatever info gets put into the modal.
+            // it is whatever's fetched from firebase, so I guess it'll just be reading from that
+
+
+            // numPets: 0,
+            // names: [],
+            // breeds: [],
+            // sizes: [],
+            // selectedService: "",
+            // startDate: null,
+            // endDate: null,
+            // showCalendar: false,
+            // showModal: false,
+            // showAlert: false
+        });
+    }
+
+
     return (
         <View style={styles.container}>
-            {!editing ? (ee) : (cc)}
+            {/* {!editing ? (ee) : (cc)} //trying to add ability to conditionall render either acct info or edit info screen */}
             <View>
                 <Text>Header</Text>
             </View>
@@ -161,6 +198,151 @@ export default function UserAccount(props) {
                     <Text style={styles.buttonText}>Edit info</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                animationType={'slide'}
+                transparent={false}
+                visible={this.state.showModal}
+                onRequestClose={() => this.toggleModal()}
+            >
+                <ScrollView>
+                    <View style={styles.modal}>
+                        <Text style={styles.modalHeader}>Service Request</Text>
+                    </View>
+                    <View style={styles.modalRow}>
+                        <Text style={styles.modalLabel}>Number of Pets</Text>
+                        <ModalSelector
+                            style={styles.modalItem}
+                            data={numbers}
+                            onChange={itemValue => {
+                                this.setState({ numPets: itemValue.label });
+                                // (<PetInfo /> * itemValue.key)
+
+                            }}
+                            cancelButtonAccessibilityLabel={'Cancel Button'}
+                            initValue="How many pets?"
+                            supportedOrientations={['landscape']}
+                            accessible={true}
+                            scrollViewAccessibilityLabel={'Scrollable options'}
+                        >
+                            <TextInput
+                                style={{ paddingTop: 10, height: 30 }}
+                                editable={false}
+                                placeholder="Select"
+                                value={this.state.numPets}
+                            />
+                        </ModalSelector>
+                    </View>
+
+
+                    <View style={styles.modalRow}>
+                        <Text style={styles.modalLabel}>Service</Text>
+                        <ModalSelector
+                            style={styles.modalItem}
+                            data={this.props.services.services}
+                            onChange={itemValue => this.setState({ selectedService: itemValue.name })}
+                            cancelButtonAccessibilityLabel={'Cancel Button'}
+                            initValue="Which service?"
+                            supportedOrientations={['landscape']}
+                            accessible={true}
+                            scrollViewAccessibilityLabel={'Scrollable options'}
+                        >
+                            <TextInput
+                                style={{ paddingTop: 10, height: 30 }}
+                                editable={false}
+                                placeholder="Select"
+                                value={this.state.selectedService} />
+                        </ModalSelector>
+
+                    </View>
+
+
+                    <View style={styles.modalRow}>
+                        <Text style={styles.modalLabel}>Pet Name</Text>
+                        <TextInput
+                            onChangeText={itemValue => this.setState({ names: itemValue.split(", ") })}
+                            value={this.state.names}
+                            supportedOrientations={['landscape']}
+                            placeholder="Enter"
+                            keyboardType="default"
+                            style={styles.modalItem}
+                        />
+                    </View>
+                    <View style={styles.modalRow}>
+                        <Text style={styles.modalLabel}>Pet Breed/Species</Text>
+                        <TextInput
+                            onChangeText={itemValue => this.setState({ breeds: itemValue.split(", ") })}
+                            value={this.state.breeds}
+                            supportedOrientations={['landscape']}
+                            placeholder="Enter"
+                            keyboardType="default"
+                            style={styles.modalItem}
+                        />
+                    </View>
+                    <View style={styles.modalRowWFoot}>
+                        <Text style={styles.modalLabel}>Pet Size</Text>
+                        <TextInput
+                            onChangeText={itemValue => this.setState({ sizes: itemValue.split(", ") })}
+                            value={this.state.sizes}
+                            supportedOrientations={['landscape']}
+                            placeholder="Enter"
+                            keyboardType="default"
+                            style={styles.modalItem}
+                        />
+                    </View>
+                    <Text style={styles.footerLabel}>If multiple, please seperate with a comma</Text>
+
+
+                    <View style={styles.modalRow}>
+                        <Text style={styles.modalLabel}>Date(s)</Text>
+                        <Button
+                            onPress={() =>
+                                this.setState({ showCalendar: !this.state.showCalendar })
+                            }
+                            title={`${this.state.startDate === null ? 'Select' : this.state.startDate}${this.state.endDate === null ? "" : " - " + this.state.endDate}`}
+                            color='#A4C936'
+                            accessibilityLabel='Tap me to select a date(s)'
+                        />
+                    </View>
+                    <View style={{ marginBottom: 20 }}></View>
+
+
+                    {this.state.showCalendar && (
+                        <CalendarPicker
+                            allowRangeSelection={true}
+                            minDate={new Date()}
+                            todayBackgroundColor="#f2e6ff"
+                            selectedDayColor="#7300e6"
+                            selectedDayTextColor="#FFFFFF"
+                            onDateChange={this.onDateChange}
+                        />
+                    )}
+                    {!!this.state.error && (
+                        <Text style={{ color: "red", marginLeft: 20, marginBottom: 10 }}>{this.state.error}</Text>
+                    )}
+
+
+
+                    <View>
+                        <Button
+                            onPress={() => {
+                                if (this.state.numPets === 0 || this.state.names === "" || this.state.breeds === "" || this.state.sizes === "" || this.state.selectedService === "" || this.state.startDate === null) {
+                                    this.setState(() => ({ error: "Please complete form." }));
+                                } else {
+                                    this.setState(() => ({ error: null }));
+                                    this.handleRequest();
+
+                                }
+                            }}
+                            title='Compose request message'
+                            color='#A4C936'
+                            accessibilityLabel='Tap me'
+                        />
+                        <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message. {"\n"}If your pet has special requirements, please send as seperate message.</Text>
+                    </View>
+
+                </ScrollView>
+            </Modal>
         </View>
     )
 }

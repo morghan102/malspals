@@ -1,3 +1,7 @@
+// not using this anymore!!
+
+
+
 import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
 // import styles from './styles';
@@ -6,7 +10,7 @@ import { firebase } from '../config/Firebase';
 
 export default function EditUserAccount(props) {
 
-    
+
     const [petName, setPetName] = useState('')
     const [entities, setEntities] = useState([])
     const [petSpecies, setPetSpecies] = useState('')
