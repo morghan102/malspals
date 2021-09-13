@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet, Modal } from 'react-native'
 import { firebase } from '../config/Firebase';
 import EditUserAccount from './EditUserAccount';
 
@@ -92,15 +92,15 @@ export default function UserAccount(props) {
         )
     }
 
-    toggleModal = () => {
-        this.setState({ showModal: !this.state.showModal });
-    }
+    // toggleModal = () => {
+    //     this.setState({ showModal: !this.state.showModal });
+    // }
 
-    handleSubmitEdit = () => {
-        console.log(JSON.stringify(this.state));
-        this.toggleModal();
-        this.resetmodal();
-    }
+    // handleSubmitEdit = () => {
+    //     console.log(JSON.stringify(this.state));
+    //     this.toggleModal();
+    //     this.resetmodal();
+    // }
 
     resetmodal = () => {
         this.setState({
@@ -199,7 +199,7 @@ export default function UserAccount(props) {
                 </TouchableOpacity>
             </View>
 
-            <Modal
+            {/* <Modal
                 animationType={'slide'}
                 transparent={false}
                 visible={this.state.showModal}
@@ -342,7 +342,7 @@ export default function UserAccount(props) {
                     </View>
 
                 </ScrollView>
-            </Modal>
+            </Modal> */}
         </View>
     )
 }
