@@ -106,6 +106,7 @@ class Home extends Component {
             );
         }
 
+        //!!!!!!!!!!!!!!!!! put all this info in firestore.collection.homepage or something
 
         function RenderExperience() {
             return (

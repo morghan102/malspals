@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Modal } from 'react-native'
 import { ListItem } from 'react-native-elements';
 import { firebase } from '../config/Firebase';
-import EditUserAccount from './EditUserAccount';
 
 export default function UserAccount(props) {
 
@@ -18,16 +17,19 @@ export default function UserAccount(props) {
 
 
     const petRef = firebase.firestore().collection('pets')
-    const userRef = firebase.firestore().collection('users')
+    const userRef = firebase.firestore().collection('users')//this is not happy, same as above
     const userID = props.screenProps.user.id
     const user = props.screenProps.user
 
     useEffect(() => {
+        // console.log(petRef.where("authorID", "==", userID))
         petRef
             .where("authorID", "==", userID) //find correct user for the data
             .orderBy('createdAt', 'desc')
             .onSnapshot(
                 querySnapshot => {
+                    // console.log(querySnapshot)
+                    // console.log("--------------------")
                     const newPets = [];
                     querySnapshot.forEach(doc => {
                         const pet = doc.data()
@@ -40,33 +42,97 @@ export default function UserAccount(props) {
                     console.log(error)
                 }
             )
-            userRef //not sure this will work??? cuz you're updating your own info
-            .where("authorID", "==", userID)
-            .orderBy('createdAt', 'desc')
-            .onSnapshot(
-                querySnapshot => {
-                    const newInfo = []; //this is for updating address and stuff
-                    querySnapshot.forEach(doc => {
-                        const user = doc.data()
-                        user.id = doc.id
-                        newInfo.push(pet)
-                    });
-                    setUserInfo(newInfo)
-                },
-                error => {
-                    console.log(error)
-                }
-            )
     }, [])
 
+    useEffect(() => {
+        setUserInfo(user)
+        // not sure if i need that other stuff, i couldnt get it working anyways
+
+
+        // (userRef.where("id", "==", userID).orderBy('createdAt', 'desc').onSnapshot(x => {
+        //     x.forEach(doc => {
+        //     // console.log(doc)
+        //     const user = doc.data()
+        //     console.log(user)
+        //     user.id = doc.id
+        //                 console.log(user.id = doc.id)
+        //     })
+        // })
+        // )
+
+        // console.log(userRef)
+        // const newInfo = []; //this is for updating address and stuff
+        // console.log("------------------")
+
+
+
+
+        // userRef.doc(userID).get().then(snapshot => {
+        //     // console.log(snapshot)
+        //     // snapshot.forEach(doc => {
+        //     // console.log(doc)
+        //     const userData = snapshot.data()
+        //     // user.id = doc.id
+        //     // console.log(userData)
+        //     newInfo.push(userData)
+        //     // })
+        //     // console.log(userData)
+        // })
+        // console.table(newInfo)
+        // setUserInfo(newInfo)
+
+
+
+
+
+
+        // userRef //not sure this will work??? cuz you're updating your own info
+        //     .where("id", "==", userID)
+        //     .orderBy('createdAt', 'desc')
+        //     .onSnapshot(
+        //         querySnapshot => {
+        //             const newInfo = []; //this is for updating address and stuff
+        //             querySnapshot.forEach(doc => {
+        //                 // console.log(doc)
+        //                 const user = doc.data()
+        //                 user.id = doc.id
+        //                 newInfo.push(user)
+        //             });
+        //             // console.log(newInfo) //empty arr
+        //             setUserInfo(newInfo)
+        //         },
+        //         error => {
+        //             console.log(error)
+        //         }
+        //     )
+        //     console.log(user)
+        // setUserInfo(user)
+        // doGetUserProfile(userID, setUserInfo(userID))
+        // console.log(userInfo)
+
+
+        // const currUser = userRef.doc(user.id)
+        // f.update({
+        //     fullName: "Joey Travolta"
+        // })
+        // console.log(userInfo)
+    }, [])
+
+
+    // dont think i can use this but it's here just in case. For userInfo update
+    // const doProfileUpdate = (profile) => {
+    //     return userRef
+    //       .doc(this.auth.currentUser.uid)
+    //       .set(profile)
+    //       .catch((error) => console.error("Error: ", error));
+    //   };
 
     function RenderPetsList() {
         return (
             <View>
-                <View style={styles.infoContainer}>
+                <View style={styles.infoHeaderContainer}>
                     <Text style={styles.textStyle}>Your Pets</Text>
                 </View>
-                {/* below this needs to change */}
                 {pets && (
                     <View style={styles.listContainer}>
                         <FlatList
@@ -105,14 +171,13 @@ export default function UserAccount(props) {
     function RenderPersonalInfoList() {
         return (
             <View>
-                <View style={styles.infoContainer}>
+                <View style={styles.infoHeaderContainer}>
                     <Text style={styles.textStyle}>Your Info</Text>
                 </View>
-                {/* below this needs to change */}
                 {userInfo && (
                     <View style={styles.listContainer}>
                         <FlatList
-                            data={userInfo}
+                            data={[userInfo]} //data needs to be objs in an arr
                             renderItem={renderPersonalInfo}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
@@ -188,19 +253,46 @@ export default function UserAccount(props) {
     }
 
 
-    const renderPersonalInfo = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
+    const renderPersonalInfo = ({ item }) => {
+        console.log(item)//this is rendered w flatlist. not sure where the index is coming from
         return (
-            // <View style={styles.entityContainer}>
-            //     <Text style={styles.entityText}>
-            //         {index}. {item.name}
-            //     </Text>
-            // </View>
-            <ListItem
-                title={item.email}
-                subtitle={`${item.fullName}`}
-                rightSubtitle={`${item.specialNeeds}`}
+            <View style={styles.bigInfoCont}>
+                {/* <View style={styles.leftInfo}> not using these bc of flexbox */}
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {item.fullName}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {item.email}
+                    </Text>
+                </View>
+                {/* </View> */}
+                {/* <View style={styles.rightInfo}> */}
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {item.address}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {"Phone: " + item.phone}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {"Emergency Contact: " + item.emergencyNum}
+                    </Text>
+                </View>
+                {/* </View> */}
+            </View>
+            // <ListItem
+            //     title={item.email}
+            //     subtitle={`${item.fullName}`}
+            //     rightSubtitle={`${item.address}`}
 
-            />
+            // />
         )
     }
 
@@ -469,7 +561,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 30
     },
-    infoContainer: {
+    infoHeaderContainer: {
         flex: 1,
         borderBottomWidth: 1,
         borderRadius: 50,
@@ -526,14 +618,37 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         // borderWidth: 2 //remove later
     },
-    entityContainer: {
-        marginTop: 10,
-        borderBottomColor: '#cccccc',
-        borderBottomWidth: 1,
-        paddingBottom: 10
+    bigInfoCont: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'column',
+        // height: 'auto',
+        alignContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        // borderWidth: 2
+        // columnGap: 5
     },
-    entityText: {
+    infoContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: 5,
+
+        // borderBottomColor: '#cccccc',
+        // borderBottomWidth: 1,
+        // paddingBottom: 10,
+        // borderWidth: 2
+    },
+    infoText: {
         fontSize: 15,
-        color: '#333333'
-    }
+        color: '#333333',
+        textAlign: 'center',
+        lineHeight: 23,
+    },
+    // leftInfo: {
+    //     textAlign: "left"
+    // },
+    // rightInfo: {
+    //     textAlign: "right",
+    // }
 })
