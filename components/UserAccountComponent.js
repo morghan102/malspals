@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, StyleSheet, Modal } from 'react-native'
+import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Modal } from 'react-native'
+import { ListItem } from 'react-native-elements';
 import { firebase } from '../config/Firebase';
 import EditUserAccount from './EditUserAccount';
 
 export default function UserAccount(props) {
 
     const [petName, setPetName] = useState('')
-    const [entities, setEntities] = useState([])
+    const [pets, setPets] = useState([])
+    const [userInfo, setUserInfo] = useState([]) //this is not showing up in the flatlist for yourInfo
     const [petSpecies, setPetSpecies] = useState('')
     const [petSize, setPetSize] = useState('')
     const [specialNeeds, setSpecialNeeds] = useState('')
@@ -16,7 +18,9 @@ export default function UserAccount(props) {
 
 
     const petRef = firebase.firestore().collection('pets')
+    const userRef = firebase.firestore().collection('users')
     const userID = props.screenProps.user.id
+    const user = props.screenProps.user
 
     useEffect(() => {
         petRef
@@ -24,19 +28,104 @@ export default function UserAccount(props) {
             .orderBy('createdAt', 'desc')
             .onSnapshot(
                 querySnapshot => {
-                    const newPets = []
+                    const newPets = [];
                     querySnapshot.forEach(doc => {
                         const pet = doc.data()
                         pet.id = doc.id
                         newPets.push(pet)
                     });
-                    setEntities(newPets)
+                    setPets(newPets)
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+            userRef //not sure this will work??? cuz you're updating your own info
+            .where("authorID", "==", userID)
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(
+                querySnapshot => {
+                    const newInfo = []; //this is for updating address and stuff
+                    querySnapshot.forEach(doc => {
+                        const user = doc.data()
+                        user.id = doc.id
+                        newInfo.push(pet)
+                    });
+                    setUserInfo(newInfo)
                 },
                 error => {
                     console.log(error)
                 }
             )
     }, [])
+
+
+    function RenderPetsList() {
+        return (
+            <View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.textStyle}>Your Pets</Text>
+                </View>
+                {/* below this needs to change */}
+                {pets && (
+                    <View style={styles.listContainer}>
+                        <FlatList
+                            data={pets}
+                            renderItem={renderPet}
+                            keyExtractor={(item) => item.id}
+                            removeClippedSubviews={true}
+                        />
+                    </View>
+                )}
+                {/* <View>
+                    <Text style={styles.smallText}>
+                    </Text>
+                </View> */}
+            </View>
+        );
+    }
+
+    // skipping this for now bc I need to figure out how to do this
+    // function RenderPastServices() {
+    //     return (
+    //         <View>
+    //             <View style={styles.infoContainer}>
+    //                 <Text style={styles.textStyle}>Past Services</Text>
+    //             </View>
+    //             <View>
+    //                 <Text style={styles.smallText}>
+    //                     {'hudcnjladbkc'}
+    //                 </Text>
+    //             </View>
+    //         </View>
+    //     );
+    // }
+
+
+    function RenderPersonalInfoList() {
+        return (
+            <View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.textStyle}>Your Info</Text>
+                </View>
+                {/* below this needs to change */}
+                {userInfo && (
+                    <View style={styles.listContainer}>
+                        <FlatList
+                            data={userInfo}
+                            renderItem={renderPersonalInfo}
+                            keyExtractor={(item) => item.id}
+                            removeClippedSubviews={true}
+                        />
+                    </View>
+                )}
+                {/* <View>
+                    <Text style={styles.smallText}>
+                    </Text>
+                </View> */}
+            </View>
+        );
+    }
 
     const onAddButtonPress = () => {
         if (petName && petName.length > 0) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
@@ -82,13 +171,36 @@ export default function UserAccount(props) {
 
     }
 
-    const renderPet = ({ item, index }) => { //this is rendered w flatlist
+    const renderPet = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
         return (
-            <View style={styles.entityContainer}>
-                <Text style={styles.entityText}>
-                    {index}. {item.name}
-                </Text>
-            </View>
+            // <View style={styles.entityContainer}>
+            //     <Text style={styles.entityText}>
+            //         {index}. {item.name}
+            //     </Text>
+            // </View>
+            <ListItem
+                title={item.name}
+                subtitle={`${item.species} - ${item.breed} - ${item.size}`}
+                rightSubtitle={`${item.specialNeeds}`}
+
+            />
+        )
+    }
+
+
+    const renderPersonalInfo = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
+        return (
+            // <View style={styles.entityContainer}>
+            //     <Text style={styles.entityText}>
+            //         {index}. {item.name}
+            //     </Text>
+            // </View>
+            <ListItem
+                title={item.email}
+                subtitle={`${item.fullName}`}
+                rightSubtitle={`${item.specialNeeds}`}
+
+            />
         )
     }
 
@@ -123,15 +235,17 @@ export default function UserAccount(props) {
 
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             {/* {!editing ? (ee) : (cc)} //trying to add ability to conditionall render either acct info or edit info screen */}
-            <View>
-                <Text>Header</Text>
-            </View>
-            <View>
-                <Text>info they inputted when signed up</Text>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerText}>Hello, {user.fullName}!</Text>
             </View>
 
+            <RenderPetsList />
+            {/* <RenderPastServices /> */}
+            <RenderPersonalInfoList />
+
+            {/* inside the modal -> */}
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}
@@ -182,17 +296,7 @@ export default function UserAccount(props) {
                     <Text style={styles.buttonText}>Save Changes</Text>
                 </TouchableOpacity>
             </View>
-            {/* below this needs to change */}
-            {entities && (
-                <View style={styles.listContainer}>
-                    <FlatList
-                        data={entities}
-                        renderItem={renderPet}
-                        keyExtractor={(item) => item.id}
-                        removeClippedSubviews={true}
-                    />
-                </View>
-            )}
+
             <View>
                 <TouchableOpacity style={styles.button} onPress={() => setEditing(true)}>
                     <Text style={styles.buttonText}>Edit info</Text>
@@ -343,7 +447,7 @@ export default function UserAccount(props) {
 
                 </ScrollView>
             </Modal> */}
-        </View>
+        </ScrollView>
     )
 }
 
@@ -352,8 +456,36 @@ export default function UserAccount(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        // alignItems: 'flex-start'
     },
+    headerContainer: {
+        // flex: 1,
+        height: 60,
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    headerText: {
+        flex: 1,
+        textAlign: 'center',
+        fontSize: 30
+    },
+    infoContainer: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderRadius: 50,
+    },
+    textStyle: {
+        textAlign: 'left',
+        // color: '#fff',
+        fontSize: 20,
+        padding: 7,
+        marginLeft: 7
+    },
+    // smallText: {
+    //     marginBottom: 15,
+    //     marginLeft: 20,
+    //     marginRight: 20
+    // },
     formContainer: {
         flexDirection: 'row',
         height: 80,
@@ -389,17 +521,19 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     listContainer: {
-        marginTop: 20,
-        padding: 20,
+        // marginTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        // borderWidth: 2 //remove later
     },
     entityContainer: {
-        marginTop: 16,
+        marginTop: 10,
         borderBottomColor: '#cccccc',
         borderBottomWidth: 1,
-        paddingBottom: 16
+        paddingBottom: 10
     },
     entityText: {
-        fontSize: 20,
+        fontSize: 15,
         color: '#333333'
     }
 })
