@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Modal } from 'react-native'
 import { ListItem } from 'react-native-elements';
 import { firebase } from '../config/Firebase';
+// import { useCollection } from "react-firebase-hooks/firestore";
+
 
 export default function UserAccount(props) {
 
@@ -13,7 +15,10 @@ export default function UserAccount(props) {
     const [specialNeeds, setSpecialNeeds] = useState('')
     const [petBreed, setPetBreed] = useState('')
 
+    const [fullName, setFullName] = useState('')
+
     const [editing, setEditing] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
 
     const petRef = firebase.firestore().collection('pets')
@@ -137,7 +142,7 @@ export default function UserAccount(props) {
                     <View style={styles.listContainer}>
                         <FlatList
                             data={pets}
-                            renderItem={renderPet}
+                            renderItem={editing ? renderEditPet : renderPet}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
                         />
@@ -178,7 +183,7 @@ export default function UserAccount(props) {
                     <View style={styles.listContainer}>
                         <FlatList
                             data={[userInfo]} //data needs to be objs in an arr
-                            renderItem={renderPersonalInfo}
+                            renderItem={editing ? renderEditPersonalInfo : renderPersonalInfo}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
                         />
@@ -188,6 +193,45 @@ export default function UserAccount(props) {
                     <Text style={styles.smallText}>
                     </Text>
                 </View> */}
+            </View>
+        );
+    }
+
+    function EditPetsList() {
+        return (
+            <View>
+                <View style={styles.infoHeaderContainer}>
+                    <Text style={styles.textStyle}>Your Pets</Text>
+                </View>
+                {pets && (
+                    <View style={styles.listContainer}>
+                        <FlatList
+                            data={pets}
+                            renderItem={editing ? renderEditPet : renderPet}
+                            keyExtractor={(item) => item.id}
+                            removeClippedSubviews={true}
+                        />
+                    </View>
+                )}
+            </View>
+        );
+    }
+    function EditPersonalInfoList() {
+        return (
+            <View>
+                <View style={styles.infoHeaderContainer}>
+                    <Text style={styles.textStyle}>Your Info</Text>
+                </View>
+                {userInfo && (
+                    <View style={styles.listContainer}>
+                        <FlatList
+                            data={[userInfo]}
+                            renderItem={renderEditPersonalInfo}
+                            keyExtractor={(item) => item.id}
+                            removeClippedSubviews={true}
+                        />
+                    </View>
+                )}
             </View>
         );
     }
@@ -204,14 +248,6 @@ export default function UserAccount(props) {
                 authorID: userID,
                 createdAt: timestamp,
             };
-
-
-            // const usersRef = firebase.firestore().collection('users')
-            // petRef.doc(uid).set(account).then(() => {
-            //     navigation.navigate('App', { user: account })
-            //     console.log(account)
-
-            // })
             petRef
                 .add(data)
                 .then(_doc => {
@@ -252,12 +288,37 @@ export default function UserAccount(props) {
         )
     }
 
+    const renderEditPet = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
+        return (
+            // <View style={styles.entityContainer}>
+            //     <Text style={styles.entityText}>
+            //         {index}. {item.name}
+            //     </Text>
+            // </View>
+            // <ListItem
+            //     title={item.name}
+            //     subtitle={`${item.species} - ${item.breed} - ${item.size}`}
+            //     rightSubtitle={`${item.specialNeeds}`}
+
+            // />
+
+            <TextInput
+                onChangeText={itemValue => setPetName(itemValue)}
+                defaultValue={item.petName}
+                supportedOrientations={['landscape']}
+                placeholder={item.petName}
+                keyboardType="default"
+            // style={styles.modalItem}
+            />
+        )
+    }
+
+
 
     const renderPersonalInfo = ({ item }) => {
-        console.log(item)//this is rendered w flatlist. not sure where the index is coming from
+        // console.log(item)//this is rendered w flatlist. not sure where the index is coming from
         return (
             <View style={styles.bigInfoCont}>
-                {/* <View style={styles.leftInfo}> not using these bc of flexbox */}
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {item.fullName}
@@ -268,8 +329,6 @@ export default function UserAccount(props) {
                         {item.email}
                     </Text>
                 </View>
-                {/* </View> */}
-                {/* <View style={styles.rightInfo}> */}
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {item.address}
@@ -285,26 +344,126 @@ export default function UserAccount(props) {
                         {"Emergency Contact: " + item.emergencyNum}
                     </Text>
                 </View>
-                {/* </View> */}
             </View>
-            // <ListItem
-            //     title={item.email}
-            //     subtitle={`${item.fullName}`}
-            //     rightSubtitle={`${item.address}`}
-
-            // />
         )
     }
 
-    // toggleModal = () => {
-    //     this.setState({ showModal: !this.state.showModal });
-    // }
+    const renderEditPersonalInfo = ({ item }) => {
+        // console.log(item)//this is rendered w flatlist. not sure where the index is coming from
+        return (
+            <View style={styles.bigInfoCont}>
+                <View style={styles.infoContainer}>
+                    <TextInput
+                        style={{ height: 40 }}
+                        placeholder="Type here to translate!"
+                        onChangeText={text => setFullName(text)}
+                        defaultValue={fullName}
+                    />
+                    {/* {item.fullName} */}
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {item.email}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {item.address}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {"Phone: " + item.phone}
+                    </Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.infoText}>
+                        {"Emergency Contact: " + item.emergencyNum}
+                    </Text>
+                </View>
+            </View >
+        )
+    }
 
-    // handleSubmitEdit = () => {
-    //     console.log(JSON.stringify(this.state));
-    //     this.toggleModal();
-    //     this.resetmodal();
-    // }
+
+    // CRUD operations
+
+    // pets
+    const getAllPets = () => {
+        return petRef;
+    };
+
+    const createPets = (data) => {
+        return petRef.add(data);
+    };
+
+    const updatePets = (id, value) => {
+        return petRef.doc(id).update(value);
+    };
+
+    const removePets = (id) => {
+        return petRef.doc(id).delete();
+    };
+
+    const PetService = { //I'd like to combine those here.
+        getAllPets,
+        createPets,
+        updatePets,
+        removePets
+    };
+
+
+    //   userinfo
+    const getAllUserInfo = () => {
+        return userRef;
+    };
+
+    const createUserInfo = (data) => {
+        return userRef.add(data);
+    };
+
+    const updateUserInfo = (id, value) => {
+        return userRef.doc(id).update(value);
+    };
+
+    const removeUserInfo = (id) => {
+        return userRef.doc(id).delete();
+    };
+
+    const UserInfoService = { //might have to edit these to get to specific info. change??
+        getAllUserInfo,
+        createUserInfo,
+        updateUserInfo,
+        removeUserInfo
+    };
+
+
+    //   for handling the form BUT I THINK THE ONADDBTNPRESS FUNCTION ALREADY HANDLES THIS
+    //   const AddPet = () => {
+    //       const initialPetState = {
+    //           name: "",
+    //           breed: "",
+    //           size: "",
+    //           specialNeeds: "",
+    //           species: ""
+    //       }
+    //   }
+
+
+
+
+
+    // MODAL - meybs dont need this?
+
+    toggleModal = () => {
+        setShowModal(!showModal);
+    }
+
+    handleSubmitEdit = () => {
+        // console.log(JSON.stringify(this.state));
+        toggleModal();
+        resetmodal();
+    }
 
     resetmodal = () => {
         this.setState({
@@ -324,86 +483,104 @@ export default function UserAccount(props) {
             // showAlert: false
         });
     }
-
-
+    // END MODAL 
+    {/* <View>
+                <TextInput
+                    style={{ paddingTop: 10, height: 30, margin: 30 }}
+                    placeholder="here"
+                    value={petName}
+                    onChangeText={text => setPetName(text)}
+                    editable={editing}
+                    onBlur={() => setEditing(!editing)}
+                    // onBlur function that changes editing to false and submits changes to firebase
+                />
+            </View> */}
     return (
         <ScrollView style={styles.container}>
-            {/* {!editing ? (ee) : (cc)} //trying to add ability to conditionall render either acct info or edit info screen */}
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>Hello, {user.fullName}!</Text>
             </View>
-
-            <RenderPetsList />
-            {/* <RenderPastServices /> */}
-            <RenderPersonalInfoList />
-
-            {/* inside the modal -> */}
-            <View style={styles.formContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Pet name'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setPetName(text)}
-                    value={petName}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Species'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setPetSpecies(text)}
-                    value={petSpecies}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Breed'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setPetBreed(text)}
-                    value={petBreed}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Size (lbs)'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setPetSize(text)}
-                    value={petSize}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Special needs?'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setSpecialNeeds(text)}
-                    value={specialNeeds}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-                    <Text style={styles.buttonText}>Save Changes</Text>
-                </TouchableOpacity>
-            </View>
-
+            {/* {!editing ? ( */}
             <View>
-                <TouchableOpacity style={styles.button} onPress={() => setEditing(true)}>
-                    <Text style={styles.buttonText}>Edit info</Text>
-                </TouchableOpacity>
+                <RenderPetsList />
+                {/* <RenderPastServices /> */}
+                <RenderPersonalInfoList/>
+
+                <View style={{ alignItems: 'center', margin: 20 }}>
+                    <TouchableOpacity style={styles.button} onPress={() => setEditing(!editing)}>
+                        {/* {console.log(editing)} function to do setEditin(!editing) and also to change the maybe change the button to like "accept changes" */}
+                        <Text style={styles.buttonText}>Edit info</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            {/* <Modal
+
+
+            {/* start of physical modal */}
+            <Modal
                 animationType={'slide'}
                 transparent={false}
-                visible={this.state.showModal}
-                onRequestClose={() => this.toggleModal()}
+                visible={showModal}
+                onRequestClose={() => toggleModal()}
             >
                 <ScrollView>
+                    {/* styles.modal doesnt exist here */}
                     <View style={styles.modal}>
-                        <Text style={styles.modalHeader}>Service Request</Text>
+                        <Text style={styles.modalHeader}>Edit Information</Text>
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Pet name'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setPetName(text)}
+                            value={petName}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Species'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setPetSpecies(text)}
+                            value={petSpecies}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Breed'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setPetBreed(text)}
+                            value={petBreed}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Size (lbs)'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setPetSize(text)}
+                            value={petSize}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Special needs?'
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={(text) => setSpecialNeeds(text)}
+                            value={specialNeeds}
+                            underlineColorAndroid="transparent"
+                            autoCapitalize="none"
+                        />
+                        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+                            <Text style={styles.buttonText}>Save Changes</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {/*<View style={styles.modal}>
+                        <Text style={styles.modalHeader}>Edit Information</Text>
                     </View>
                     <View style={styles.modalRow}>
                         <Text style={styles.modalLabel}>Number of Pets</Text>
@@ -487,38 +664,14 @@ export default function UserAccount(props) {
                         />
                     </View>
                     <Text style={styles.footerLabel}>If multiple, please seperate with a comma</Text>
+ */}
 
-
-                    <View style={styles.modalRow}>
-                        <Text style={styles.modalLabel}>Date(s)</Text>
-                        <Button
-                            onPress={() =>
-                                this.setState({ showCalendar: !this.state.showCalendar })
-                            }
-                            title={`${this.state.startDate === null ? 'Select' : this.state.startDate}${this.state.endDate === null ? "" : " - " + this.state.endDate}`}
-                            color='#A4C936'
-                            accessibilityLabel='Tap me to select a date(s)'
-                        />
-                    </View>
-                    <View style={{ marginBottom: 20 }}></View>
-
-
-                    {this.state.showCalendar && (
-                        <CalendarPicker
-                            allowRangeSelection={true}
-                            minDate={new Date()}
-                            todayBackgroundColor="#f2e6ff"
-                            selectedDayColor="#7300e6"
-                            selectedDayTextColor="#FFFFFF"
-                            onDateChange={this.onDateChange}
-                        />
-                    )}
-                    {!!this.state.error && (
+                    {/* {!!this.state.error && (
                         <Text style={{ color: "red", marginLeft: 20, marginBottom: 10 }}>{this.state.error}</Text>
-                    )}
+                    )} */}
 
-
-
+                    {/* i think i need to change below  */}
+                    {/* 
                     <View>
                         <Button
                             onPress={() => {
@@ -534,11 +687,10 @@ export default function UserAccount(props) {
                             color='#A4C936'
                             accessibilityLabel='Tap me'
                         />
-                        <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message. {"\n"}If your pet has special requirements, please send as seperate message.</Text>
-                    </View>
+                    </View> */}
 
                 </ScrollView>
-            </Modal> */}
+            </Modal>
         </ScrollView>
     )
 }
@@ -578,9 +730,21 @@ const styles = StyleSheet.create({
     //     marginLeft: 20,
     //     marginRight: 20
     // },
+    modal: {
+        justifyContent: 'center',
+        marginTop: 30
+    },
+    modalHeader: {
+        fontSize: 25,
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderBottomWidth: 1.5,
+        marginBottom: 8,
+    },
     formContainer: {
-        flexDirection: 'row',
-        height: 80,
+        flexDirection: 'column',
+        // height: 80,
         marginTop: 40,
         marginBottom: 20,
         flex: 1,
@@ -588,8 +752,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
+        // justifyContent: 'center',
+        // alignItems: 'center'
     },
     input: {
         height: 48,
@@ -603,8 +767,8 @@ const styles = StyleSheet.create({
     button: {
         height: 47,
         borderRadius: 5,
-        backgroundColor: '#788eec',
-        width: 80,
+        backgroundColor: 'green',
+        width: 100,
         alignItems: "center",
         justifyContent: 'center'
     },
@@ -645,10 +809,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 23,
     },
-    // leftInfo: {
-    //     textAlign: "left"
-    // },
-    // rightInfo: {
-    //     textAlign: "right",
-    // }
 })
