@@ -3,6 +3,7 @@ import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView
 import { ListItem } from 'react-native-elements';
 import { firebase } from '../config/Firebase';
 // import { useCollection } from "react-firebase-hooks/firestore";
+import EditableText from 'react-native-inline-edit';
 
 
 export default function UserAccount(props) {
@@ -16,9 +17,14 @@ export default function UserAccount(props) {
     const [petBreed, setPetBreed] = useState('')
 
     const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [emergencyNum, setEmergencyNum] = useState('')
 
     const [editing, setEditing] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [textArray, setTextArray] = useState([])
+    const [focusedIndex, setFocusedIndex] = useState(null)
 
 
     const petRef = firebase.firestore().collection('pets')
@@ -51,86 +57,27 @@ export default function UserAccount(props) {
 
     useEffect(() => {
         setUserInfo(user)
-        // not sure if i need that other stuff, i couldnt get it working anyways
 
-
-        // (userRef.where("id", "==", userID).orderBy('createdAt', 'desc').onSnapshot(x => {
-        //     x.forEach(doc => {
-        //     // console.log(doc)
-        //     const user = doc.data()
-        //     console.log(user)
-        //     user.id = doc.id
-        //                 console.log(user.id = doc.id)
-        //     })
-        // })
-        // )
-
-        // console.log(userRef)
-        // const newInfo = []; //this is for updating address and stuff
-        // console.log("------------------")
-
-
-
-
-        // userRef.doc(userID).get().then(snapshot => {
-        //     // console.log(snapshot)
-        //     // snapshot.forEach(doc => {
-        //     // console.log(doc)
-        //     const userData = snapshot.data()
-        //     // user.id = doc.id
-        //     // console.log(userData)
-        //     newInfo.push(userData)
-        //     // })
-        //     // console.log(userData)
-        // })
-        // console.table(newInfo)
-        // setUserInfo(newInfo)
-
-
-
-
-
-
-        // userRef //not sure this will work??? cuz you're updating your own info
+        // userRef
         //     .where("id", "==", userID)
         //     .orderBy('createdAt', 'desc')
         //     .onSnapshot(
         //         querySnapshot => {
-        //             const newInfo = []; //this is for updating address and stuff
+        //             const newEntities = []
         //             querySnapshot.forEach(doc => {
-        //                 // console.log(doc)
-        //                 const user = doc.data()
-        //                 user.id = doc.id
-        //                 newInfo.push(user)
+        //                 const entity = doc.data()
+        //                 entity.id = doc.id
+        //                 newEntities.push(entity)
         //             });
-        //             // console.log(newInfo) //empty arr
-        //             setUserInfo(newInfo)
+        //             setUserInfo(newEntities)
         //         },
         //         error => {
         //             console.log(error)
         //         }
         //     )
-        //     console.log(user)
-        // setUserInfo(user)
-        // doGetUserProfile(userID, setUserInfo(userID))
-        // console.log(userInfo)
-
-
-        // const currUser = userRef.doc(user.id)
-        // f.update({
-        //     fullName: "Joey Travolta"
-        // })
-        // console.log(userInfo)
     }, [])
 
 
-    // dont think i can use this but it's here just in case. For userInfo update
-    // const doProfileUpdate = (profile) => {
-    //     return userRef
-    //       .doc(this.auth.currentUser.uid)
-    //       .set(profile)
-    //       .catch((error) => console.error("Error: ", error));
-    //   };
 
     function RenderPetsList() {
         return (
@@ -138,20 +85,21 @@ export default function UserAccount(props) {
                 <View style={styles.infoHeaderContainer}>
                     <Text style={styles.textStyle}>Your Pets</Text>
                 </View>
-                {pets && (
-                    <View style={styles.listContainer}>
+                {/* <EditableText
+                    text={"Add a new pet!"}
+                    sendText={text => onAddButtonPress(text)}
+                /> */}
+                <View style={styles.listContainer}>
+                    {pets && (
                         <FlatList
                             data={pets}
-                            renderItem={editing ? renderEditPet : renderPet}
+                            renderItem={renderPet}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
                         />
-                    </View>
-                )}
-                {/* <View>
-                    <Text style={styles.smallText}>
-                    </Text>
-                </View> */}
+                    )}
+                </View>
+
             </View>
         );
     }
@@ -183,151 +131,125 @@ export default function UserAccount(props) {
                     <View style={styles.listContainer}>
                         <FlatList
                             data={[userInfo]} //data needs to be objs in an arr
-                            renderItem={editing ? renderEditPersonalInfo : renderPersonalInfo}
+                            renderItem={renderPersonalInfo}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
                         />
                     </View>
                 )}
-                {/* <View>
-                    <Text style={styles.smallText}>
-                    </Text>
-                </View> */}
             </View>
         );
     }
 
-    function EditPetsList() {
-        return (
-            <View>
-                <View style={styles.infoHeaderContainer}>
-                    <Text style={styles.textStyle}>Your Pets</Text>
-                </View>
-                {pets && (
-                    <View style={styles.listContainer}>
-                        <FlatList
-                            data={pets}
-                            renderItem={editing ? renderEditPet : renderPet}
-                            keyExtractor={(item) => item.id}
-                            removeClippedSubviews={true}
-                        />
-                    </View>
-                )}
-            </View>
-        );
-    }
-    function EditPersonalInfoList() {
-        return (
-            <View>
-                <View style={styles.infoHeaderContainer}>
-                    <Text style={styles.textStyle}>Your Info</Text>
-                </View>
-                {userInfo && (
-                    <View style={styles.listContainer}>
-                        <FlatList
-                            data={[userInfo]}
-                            renderItem={renderEditPersonalInfo}
-                            keyExtractor={(item) => item.id}
-                            removeClippedSubviews={true}
-                        />
-                    </View>
-                )}
-            </View>
-        );
-    }
 
     const onAddButtonPress = () => {
         if (petName && petName.length > 0) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
-            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-            const data = {
-                name: petName,
-                species: petSpecies,
-                size: petSize,
-                breed: petBreed,
-                specialNeeds: specialNeeds,
-                authorID: userID,
-                createdAt: timestamp,
-            };
-            petRef
-                .add(data)
-                .then(_doc => {
-                    setPetName('')
-                    setPetSize('')
-                    setPetSpecies('')
-                    setSpecialNeeds('')
-                    setPetBreed('')
-                    Keyboard.dismiss()
-                })
-                .catch((error) => {
-                    alert(error)
-                });
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        const data = {
+            name: petName,
+            species: petSpecies,
+            size: petSize,
+            breed: petBreed,
+            specialNeeds: specialNeeds,
+            authorID: userID,
+            createdAt: timestamp,
+        };
+        petRef
+            // .doc(name)//to update i need the id's of the pet im referencing or to set the id as the name but petName does nothing
+            .add(data)
+            .then(_doc => {
+                setPetName('')
+                setPetSize('')
+                setPetSpecies('')
+                setSpecialNeeds('')
+                setPetBreed('')
+                Keyboard.dismiss()
+            })
+            .catch((error) => {
+                alert(error)
+            });
         }
     }
 
-    const onBeginEditBtnPress = () => {
 
+    const updatePet = (txt) => { //this is for updating to firebase but i couldn't get it to work
+        // const id = pets.forEach((pet) => {
+        //     if (pet.name === txt) { console.log(pet.id) && pet.id }
+        // })
+        petRef.doc(txt).update({
+            name: txt
+        })
+        console.log(petRef.doc(txt))
     }
 
-    const onConfirmEditBtnPress = () => {
-
-    }
-
-    const renderPet = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
+    const renderPet = ({ item }) => {
         return (
-            // <View style={styles.entityContainer}>
-            //     <Text style={styles.entityText}>
-            //         {index}. {item.name}
-            //     </Text>
-            // </View>
             <ListItem
                 title={item.name}
                 subtitle={`${item.species} - ${item.breed} - ${item.size}`}
                 rightSubtitle={`${item.specialNeeds}`}
-
             />
         )
+        // editable text for editing the documents in firebase firestore
+        // return (
+        //     <View >
+        //         <EditableText
+        //             style={styles.input}
+        //             sendText={(text) => updatePet(text)}
+        //             text={item.name}
+        //         />
+        //         <EditableText
+        //             style={styles.input}
+        //             sendText={(text) => setPetSpecies(text)}
+        //             text={item.species}
+        //         />
+        //         <EditableText
+        //             style={styles.input}
+        //             sendText={(text) => (setPetBreed(text))}
+        //             text={item.breed}
+        //         />
+        //         <EditableText
+        //             style={styles.input}
+        //             sendText={(text) => setPetSize(text)}
+        //             text={item.size}
+        //         />
+        //         <View style={{ backgroundColor: 'gray' }}>
+        //             <EditableText
+        //                 style={{ textSize: 80 }}
+        //                 sendText={(text) => setSpecialNeeds(text)}
+        //                 text={item.specialNeeds}
+        //             />
+        //         </View>
+        //         <View>
+        //             <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+        //                 <Text style={styles.buttonText}>Save Changes</Text>
+        //                 {/* i want this to look diff. change */}
+        //             </TouchableOpacity>
+        //         </View>
+        //     </View>
+        // )
     }
-
-    const renderEditPet = ({ item, index }) => { //this is rendered w flatlist. not sure where the index is coming from
-        return (
-            // <View style={styles.entityContainer}>
-            //     <Text style={styles.entityText}>
-            //         {index}. {item.name}
-            //     </Text>
-            // </View>
-            // <ListItem
-            //     title={item.name}
-            //     subtitle={`${item.species} - ${item.breed} - ${item.size}`}
-            //     rightSubtitle={`${item.specialNeeds}`}
-
-            // />
-
-            <TextInput
-                onChangeText={itemValue => setPetName(itemValue)}
-                defaultValue={item.petName}
-                supportedOrientations={['landscape']}
-                placeholder={item.petName}
-                keyboardType="default"
-            // style={styles.modalItem}
-            />
-        )
-    }
-
-
 
     const renderPersonalInfo = ({ item }) => {
-        // console.log(item)//this is rendered w flatlist. not sure where the index is coming from
         return (
             <View style={styles.bigInfoCont}>
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {item.fullName}
                     </Text>
-                </View>
+                    {/* <EditableText
+                        text={item.fullName}
+                        sendText={(txt) => setFullName(txt)}
+                    />*/}
+                </View> 
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {item.email}
                     </Text>
+                    {/* <EditableText
+                        text={item.email}
+                        sendText={(txt) => setEmail(txt)}
+                    /> */}
                 </View>
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
@@ -385,74 +307,6 @@ export default function UserAccount(props) {
         )
     }
 
-
-    // CRUD operations
-
-    // pets
-    const getAllPets = () => {
-        return petRef;
-    };
-
-    const createPets = (data) => {
-        return petRef.add(data);
-    };
-
-    const updatePets = (id, value) => {
-        return petRef.doc(id).update(value);
-    };
-
-    const removePets = (id) => {
-        return petRef.doc(id).delete();
-    };
-
-    const PetService = { //I'd like to combine those here.
-        getAllPets,
-        createPets,
-        updatePets,
-        removePets
-    };
-
-
-    //   userinfo
-    const getAllUserInfo = () => {
-        return userRef;
-    };
-
-    const createUserInfo = (data) => {
-        return userRef.add(data);
-    };
-
-    const updateUserInfo = (id, value) => {
-        return userRef.doc(id).update(value);
-    };
-
-    const removeUserInfo = (id) => {
-        return userRef.doc(id).delete();
-    };
-
-    const UserInfoService = { //might have to edit these to get to specific info. change??
-        getAllUserInfo,
-        createUserInfo,
-        updateUserInfo,
-        removeUserInfo
-    };
-
-
-    //   for handling the form BUT I THINK THE ONADDBTNPRESS FUNCTION ALREADY HANDLES THIS
-    //   const AddPet = () => {
-    //       const initialPetState = {
-    //           name: "",
-    //           breed: "",
-    //           size: "",
-    //           specialNeeds: "",
-    //           species: ""
-    //       }
-    //   }
-
-
-
-
-
     // MODAL - meybs dont need this?
 
     toggleModal = () => {
@@ -495,25 +349,145 @@ export default function UserAccount(props) {
                     // onBlur function that changes editing to false and submits changes to firebase
                 />
             </View> */}
+
+
+
+
+
+    // this function will handle setting of the state when each TextInput changes
+    onPetsMap = (text, index) => {
+        // as there are going to be a lot of setState calls
+        // we need access the prevState before we set the next state.
+        // this.setState(prevState => {
+        textArray[index] = text;
+        return setTextArray(textArray);
+        //, () => console.log(textArray)
+        // }, () => console.log(this.state.textArray))
+    }
+
+    // handle the border color
+    handleBorderColor = (index) => {
+        return index === focusedIndex ? 'red' : 'grey'
+    }
+
+    // const addDoc = (txt) => {
+    //     return petRef.add({
+    //         name: txt
+    //     });
+    // }
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>Hello, {user.fullName}!</Text>
             </View>
             {/* {!editing ? ( */}
-            <View>
-                <RenderPetsList />
-                {/* <RenderPastServices /> */}
-                <RenderPersonalInfoList/>
+                <View>
+                    <RenderPetsList />
+                    {/* <RenderPastServices /> */}
+                    <RenderPersonalInfoList />
 
-                <View style={{ alignItems: 'center', margin: 20 }}>
-                    <TouchableOpacity style={styles.button} onPress={() => setEditing(!editing)}>
-                        {/* {console.log(editing)} function to do setEditin(!editing) and also to change the maybe change the button to like "accept changes" */}
-                        <Text style={styles.buttonText}>Edit info</Text>
-                    </TouchableOpacity>
+                    {/* <View style={{ alignItems: 'center', margin: 20 }}>
+                        <TouchableOpacity style={styles.button} onPress={() => setEditing(!editing)}>
+                            <Text style={styles.buttonText}>Edit info</Text>
+                        </TouchableOpacity>
+                    </View> */}
                 </View>
-            </View>
 
+
+
+            {/* ) : ( */}
+                <View>
+
+                    {/* <EditableText
+                        text={fullName}
+                        sendText={(txt) => setFullName(txt)} //like onBlur()
+
+                        // loading: isLoading
+                        isTextEditable={true}
+                    // textProps={ }
+                    // textInputProps={ }
+                    /> */}
+                    {/* {pets.map((text, index) => { */}
+                    <View>
+                        {/* name */}
+                        {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={pets[index].name}
+                                placeholder={pets[index].name}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                        {/* species */}
+                        {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                        {/* breed */}
+                        {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                        {/* size */}
+                        {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                        {/* special needs */}
+                        {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                    </View>
+                    {/* })} */}
+                    {/* <TextInput
+                        style={styles.input}
+                        placeholder='Pet name'
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={(text) => setPetName(text)}
+                        value={petName}
+                        underlineColorAndroid="transparent"
+                        autoCapitalize="none"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Pet name'
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={(text) => setPetName(text)}
+                        value={petName}
+                        underlineColorAndroid="transparent"
+                        autoCapitalize="none"
+                    />
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Pet name'
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={(text) => setPetName(text)}
+                        value={petName}
+                        underlineColorAndroid="transparent"
+                        autoCapitalize="none"
+                    /> */}
+                </View>
+
+            {/* )} */}
 
 
             {/* start of physical modal */}
@@ -810,3 +784,89 @@ const styles = StyleSheet.create({
         lineHeight: 23,
     },
 })
+
+
+
+
+
+// from the useeffect for the user
+    // not sure if i need that other stuff, i couldnt get it working anyways
+
+
+    // (userRef.where("id", "==", userID).orderBy('createdAt', 'desc').onSnapshot(x => {
+    //     x.forEach(doc => {
+    //     // console.log(doc)
+    //     const user = doc.data()
+    //     console.log(user)
+    //     user.id = doc.id
+    //                 console.log(user.id = doc.id)
+    //     })
+    // })
+    // )
+
+    // console.log(userRef)
+    // const newInfo = []; //this is for updating address and stuff
+    // console.log("------------------")
+
+
+
+
+    // userRef.doc(userID).get().then(snapshot => {
+    //     // console.log(snapshot)
+    //     // snapshot.forEach(doc => {
+    //     // console.log(doc)
+    //     const userData = snapshot.data()
+    //     // user.id = doc.id
+    //     // console.log(userData)
+    //     newInfo.push(userData)
+    //     // })
+    //     // console.log(userData)
+    // })
+    // console.table(newInfo)
+    // setUserInfo(newInfo)
+
+
+
+
+
+
+    // userRef //not sure this will work??? cuz you're updating your own info
+    //     .where("id", "==", userID)
+    //     .orderBy('createdAt', 'desc')
+    //     .onSnapshot(
+    //         querySnapshot => {
+    //             const newInfo = []; //this is for updating address and stuff
+    //             querySnapshot.forEach(doc => {
+    //                 // console.log(doc)
+    //                 const user = doc.data()
+    //                 user.id = doc.id
+    //                 newInfo.push(user)
+    //             });
+    //             // console.log(newInfo) //empty arr
+    //             setUserInfo(newInfo)
+    //         },
+    //         error => {
+    //             console.log(error)
+    //         }
+    //     )
+    //     console.log(user)
+    // setUserInfo(user)
+    // doGetUserProfile(userID, setUserInfo(userID))
+    // console.log(userInfo)
+
+
+    // const currUser = userRef.doc(user.id)
+    // f.update({
+    //     fullName: "Joey Travolta"
+    // })
+    // console.log(userInfo)
+    // }, [])
+
+
+    // dont think i can use this but it's here just in case. For userInfo update
+    // const doProfileUpdate = (profile) => {
+    //     return userRef
+    //       .doc(this.auth.currentUser.uid)
+    //       .set(profile)
+    //       .catch((error) => console.error("Error: ", error));
+    //   };
