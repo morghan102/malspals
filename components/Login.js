@@ -1,32 +1,19 @@
 
 import React, { useState } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
-// import { createSwitchNavigator, createAppContainer } from 'react-navigation'
-// import Login from '../screens/Login'
-import Signup from './Signup'
-import Profile from './Profile'
+import { Image, View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
 import { firebase } from '../config/Firebase'
 
 
 function Login({ navigation }) {
-    // class Login extends React.Component {
-    // state = {
-    //     email: '',
-    //     password: ''
-    // }
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
 
     const handleLogin = () => {
-        
+
         firebase.auth()
             .signInWithEmailAndPassword(email, password)
             .then((res) => {
-                // console.log(res);
-
-                // navigation.navigate('Main')
                 const uid = res.user.uid
                 const usersRef = firebase.firestore().collection('users')
                 usersRef.doc(uid).get().then(firestoreDocument => {
@@ -40,23 +27,29 @@ function Login({ navigation }) {
                     .catch(err => {
                         alert(err)
                     });
-            }) 
+            })
             .catch(error => alert(error))
     }
 
     return (
         <View style={styles.container}>
+            <View >
+                <Image
+                    style={styles.logo}
+                    source={require('../assets/icon.png')}
+                />
+            </View>
             <TextInput
                 style={styles.inputBox}
                 value={email}
-                onChangeText={email => setEmail( email.trim() )}
+                onChangeText={email => setEmail(email.trim())}
                 placeholder='Email'
                 autoCapitalize='none'
             />
             <TextInput
                 style={styles.inputBox}
                 value={password}
-                onChangeText={password => setPassword( password )}
+                onChangeText={password => setPassword(password)}
                 placeholder='Password'
                 secureTextEntry={true}
             />
@@ -64,6 +57,7 @@ function Login({ navigation }) {
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <Button
+            color={'#B980D4'}
                 title="Don't have an account yet? Sign up"
                 onPress={() => navigation.navigate('Signup')}
             />
@@ -94,7 +88,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        // borderWidth: 2
+    },
+    logo: {
+        // flex: 1,
+        height: 150,
+        width: 170,
+        alignSelf: "center",
+        margin: 30
     },
     inputBox: {
         width: '85%',
@@ -110,8 +112,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#F6820D',
-        borderColor: '#F6820D',
+        backgroundColor: '#557ABE',
+        borderColor: '#557ABE',
         borderWidth: 1,
         borderRadius: 5,
         width: 200

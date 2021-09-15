@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { firebase } from '../config/Firebase';
 import { AppNavigator } from './MainComponent';
 // import firestore from '@react-native-firebase/firestore'; //this is an issue
@@ -77,6 +77,10 @@ function Signup({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Image
+                style={styles.logo}
+                source={require('../assets/icon.png')}
+            />
             <TextInput
                 style={styles.inputBox}
                 value={fullName}
@@ -110,11 +114,11 @@ function Signup({ navigation }) {
                 placeholder='Confirm Password'
                 secureTextEntry={true}
             />
-            <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+            <TouchableOpacity style={styles.buttonAccept} onPress={() => handleSignUp()}>
                 <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity style={styles.buttonLogin} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.buttonText}>Already have an account?</Text>
             </TouchableOpacity>
         </View>
@@ -126,36 +130,56 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        // borderWidth: 1
     },
     inputBox: {
         width: '85%',
-        margin: 10,
-        padding: 15,
+        margin: 5,
+        padding: 10,
         fontSize: 16,
         borderColor: '#d3d3d3',
         borderBottomWidth: 1,
         textAlign: 'center'
     },
-    button: {
-        marginTop: 30,
-        marginBottom: 20,
+    buttonAccept: {
+        marginTop: 20,
+        marginBottom: 10,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#FFA611',
-        borderColor: '#FFA611',
+        backgroundColor: '#B980D4',
+        borderColor: '#B980D4',
         borderWidth: 1,
         borderRadius: 5,
         width: 200
     },
-    buttonText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#fff'
+    buttonLogin: {
+        marginTop: 20,
+        marginBottom: 10,
+        paddingVertical: 5,
+        alignItems: 'center',
+        backgroundColor: '#557ABE',
+        borderColor: '#557ABE',
+        borderWidth: 1,
+        borderRadius: 5,
+        width: 220
     },
+    buttonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        // lineHeight: 25
+        },
     buttonSignup: {
         fontSize: 12
-    }
+    },
+    logo: {
+        flex: 1,
+        // height: 50,
+        width: 170,
+        alignSelf: "center",
+        // margin: 30
+    },
 })
 
 
