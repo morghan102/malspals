@@ -11,8 +11,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 // import * as MailComposer from 'expo-mail-composer';
 
 import ViewMoreText from 'react-native-view-more-text';
-// import Accordion from 'react-native-collapsible/Accordion';
-// import LottieView from 'lottie-react-native';
 
 
 
@@ -93,7 +91,7 @@ class Home extends Component {
 
         function HeroImage() {
             return (
-                
+
                 <View style={styles.heroContStyle}>
                     <Tile
                         imageSrc={require('./images/malWFlag.jpg')}
@@ -234,7 +232,7 @@ class Home extends Component {
 
         const shareMal = () => {
             Share.share({
-                title: 'MalsPals, a professional petcare service',
+                title: 'MalsPals, the professional petcare service',
                 message: `Check out who's been watching my furry friends lately!`,
                 url: 'https://linktr.ee/malspals'
             });
@@ -270,9 +268,9 @@ class Home extends Component {
                     /> */}
                     {/* <ReviewButtons /> */}
                 </View>
-                
+
                 <FlatList
-                //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
+                    //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
                     ListHeaderComponent={ListHeader("pics")}
                     data={this.props.clientImages.clientImages}
                     renderItem={renderClientImages}
@@ -281,18 +279,21 @@ class Home extends Component {
                     keyExtractor={item => item.id.toString()}
                 />
                 <View style={styles.shareBox}>
-                    <Text style={styles.shareText}>Share Mal and get a free walk!</Text>
-                    {/* move email to the reservation thing.
-                    stylize the share thing */}
-                    <View style={styles.shareIcons}>
-                        <Icon
+                    <TouchableOpacity
+                        onPress={() => shareMal()}
+                        style={styles.shareBtn}
+                    >
+                        <Text style={styles.shareText}>Share Mal and get a free walk!</Text>
+                        {/* <View style={styles.shareIcons}> */}
+                        {/* <Icon
                             name={'share'}
                             type='font-awesome'
                             color='#A4C936'
                             raised
                             reverse
                             onPress={() => shareMal()}
-                        />
+                        /> */}
+                        {/* email useable elsewhere?? */}
                         {/* <Button
                             title="Send Email"
                             buttonStyle={{ backgroundColor: '#A4C936', margin: 40 }}
@@ -304,16 +305,8 @@ class Home extends Component {
                             />}
                             onPress={() => this.sendMail()}
                         /> */}
-                    </View>
-                    {/* { source: { uri: baseUrl + item.image } } */}
-                    {/* <TouchableOpacity>
-                        <LottieView
-                            source={require('../assets/lottie/dog-walking.json')}
-                            style={{ width: 75, height: 75 }}
-                            loop={true}
-                            autoplay={true}
-                        />
-                    </TouchableOpacity> */}
+                        {/* </View> */}
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         )
@@ -350,7 +343,21 @@ const styles = StyleSheet.create({
         // marginTop: 10
     },
     shareBox: {
-        margin: 10,
+        flex: 1,
+        marginTop: 10,
+        marginBottom: 15,
+        // borderWidth: 4,
+        width: 'auto',
+        alignSelf: 'center',
+        alignItems: 'center',
+
+    },
+    shareBtn: {
+        borderRadius: 20,
+        height: 50,
+        backgroundColor: '#B980D4',
+        // borderColor: '#B980D4',        
+        width: 'auto'        
     },
     // heroStyle: {
     //     // height:((MAX_WIDTH-22)/7),
@@ -376,8 +383,12 @@ const styles = StyleSheet.create({
     },
     shareText: {
         textAlign: 'center',
+        // textAlignVertical: 'center',
         marginHorizontal: MAX_WIDTH / 10,
-        fontSize: 18
+        fontSize: 17,
+        marginTop: 12,
+        fontWeight: '900'
+        // color: 'white'
     },
     smallText: {
         marginBottom: 15,
