@@ -77,10 +77,12 @@ function Signup({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image
-                style={styles.logo}
-                source={require('../assets/icon.png')}
-            />
+            <View style={styles.logoBox}>
+                <Image
+                    style={styles.logo}
+                    source={require('../assets/icon.png')}
+                />
+            </View>
             <TextInput
                 style={styles.inputBox}
                 value={fullName}
@@ -147,8 +149,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#B980D4',
-        borderColor: '#B980D4',
+        backgroundColor: '#557ABE',
+        borderColor: '#557ABE',
         borderWidth: 1,
         borderRadius: 5,
         width: 200
@@ -158,8 +160,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#557ABE',
-        borderColor: '#557ABE',
+        backgroundColor: '#B980D4',
+        borderColor: '#B980D4',
         borderWidth: 1,
         borderRadius: 5,
         width: 220
@@ -169,9 +171,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         // lineHeight: 25
-        },
+    },
     buttonSignup: {
         fontSize: 12
+    },
+    logoBox: {
+        height: 150,
+        width: 'auto',
+        // borderWidth: 1
+        marginBottom: 20
     },
     logo: {
         flex: 1,

@@ -289,7 +289,7 @@ function ServiceInfo(props) {
         <ScrollView>
             <Button
                 title="Make a Service Request"
-                color='#A4C936'
+                color='#557ABE'
                 onPress={() => toggleModal()}
                 style={styles.button}
             // cancel btn?
@@ -435,7 +435,7 @@ function ServiceInfo(props) {
                                 setShowCalendar(!showCalendar)
                             }
                             title={`${startDate === null ? 'Select' : startDate}${endDate === null ? "" : " - " + endDate}`}
-                            color='#A4C936'
+                            color='#B980D4'
                             accessibilityLabel='Tap me to select a date(s)'
                         />
                     </View>
@@ -447,7 +447,7 @@ function ServiceInfo(props) {
                             allowRangeSelection={true}
                             minDate={new Date()}
                             todayBackgroundColor="#f2e6ff"
-                            selectedDayColor="#7300e6"
+                            selectedDayColor="#B980D4"
                             selectedDayTextColor="#FFFFFF"
                             onDateChange={onDateChange}
                         />
@@ -470,7 +470,7 @@ function ServiceInfo(props) {
                                 }
                             }}
                             title='Compose request message'
-                            color='#A4C936'
+                            color='#B980D4'
                             accessibilityLabel='Tap me'
                         />
                         <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message. {"\n"}If your pet has special requirements, please send as seperate message.</Text>
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 7,
         borderRadius: 5,
-        backgroundColor: "#F57E4A",
+        backgroundColor: "#B980D4",
     },
     text: {
         color: '#fff',

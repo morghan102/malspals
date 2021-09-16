@@ -357,7 +357,8 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#B980D4',
         // borderColor: '#B980D4',        
-        width: 'auto'        
+        width: 'auto',
+        // color: 'white'   
     },
     // heroStyle: {
     //     // height:((MAX_WIDTH-22)/7),
@@ -387,8 +388,8 @@ const styles = StyleSheet.create({
         marginHorizontal: MAX_WIDTH / 10,
         fontSize: 17,
         marginTop: 12,
-        fontWeight: '900'
-        // color: 'white'
+        fontWeight: 'bold',
+        color: 'white'
     },
     smallText: {
         marginBottom: 15,

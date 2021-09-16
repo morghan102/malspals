@@ -5,6 +5,7 @@ import Chat from './ChatComponent';
 import UserAccount from "./UserAccountComponent";
 import Login from "./Login";
 import Signup from "./Signup";
+import AddPet from "./AddPetComponent";
 // import AuthLoadingScreen from './AuthLoading';
 
 import { View, Platform, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet } from 'react-native';
@@ -93,10 +94,29 @@ const AppNav = createMaterialTopTabNavigator(
 
             },
         },
-        Chat: {
-            screen: Chat,
+        // Chat: {
+        //     screen: Chat,
+        //     navigationOptions: {
+        //         tabBarLabel: 'Chat',
+        //         tabBarIcon: ({ tintColor }) => (
+        //             <View>
+        //                 <Icon
+        //                     size={25}
+        //                     name='ios-chatboxes'
+        //                     type='ionicon'
+        //                     color={tintColor}
+        //                 />
+        //             </View>
+        //         ),
+        //         activeColor: '#4B0082',
+        //         inactiveColor: '#226557',
+        //         barStyle: { backgroundColor: '#B0C4DE' },
+        //     },
+        // },
+        AddPet: {
+            screen: AddPet,
             navigationOptions: {
-                tabBarLabel: 'Chat',
+                tabBarLabel: 'Add a Pet',
                 tabBarIcon: ({ tintColor }) => (
                     <View>
                         <Icon
@@ -112,6 +132,7 @@ const AppNav = createMaterialTopTabNavigator(
                 barStyle: { backgroundColor: '#B0C4DE' },
             },
         },
+
     },
     {
         animationEnabled: true,
