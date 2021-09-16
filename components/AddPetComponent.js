@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Modal } from 'react-native'
-import { ListItem } from 'react-native-elements';
+import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Modal, Alert } from 'react-native'
+import { ListItem, Card } from 'react-native-elements';
 import { firebase } from '../config/Firebase';
 
 export default function AddPet(props) {
@@ -38,7 +38,7 @@ export default function AddPet(props) {
 
 
     const onAddButtonPress = () => {
-        if (petName && petName.length > 0) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
+        if (petName && petName.length > 0 && petSpecies && petSize && petBreed && specialNeeds) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
             const timestamp = firebase.firestore.FieldValue.serverTimestamp();
             const data = {
                 name: petName,
@@ -63,13 +63,15 @@ export default function AddPet(props) {
                 .catch((error) => {
                     alert(error)
                 });
+        } else {
+            Alert.alert('', 'Please completely fill in the form.')
         }
     }
 
 
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>Add a New Pet</Text>
             </View>
@@ -132,10 +134,9 @@ export default function AddPet(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: 'flex-start'
+        marginTop: 30,
     },
     headerContainer: {
-        // flex: 1,
         height: 60,
         alignItems: 'center',
         flexDirection: 'row'
@@ -143,20 +144,18 @@ const styles = StyleSheet.create({
     headerText: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 30
+        fontSize: 30,
+        borderBottomWidth: 1,
+        margin: 80
     },
     formContainer: {
         flexDirection: 'column',
-        // height: 80,
-        marginTop: 40,
         marginBottom: 20,
         flex: 1,
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
-        // justifyContent: 'center',
-        // alignItems: 'center'
     },
     input: {
         height: 48,
@@ -170,10 +169,11 @@ const styles = StyleSheet.create({
     button: {
         height: 47,
         borderRadius: 5,
-        backgroundColor: 'green',
-        width: 100,
+        backgroundColor: '#B980D4',
+        width: 'auto',
         alignItems: "center",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 30
     },
     buttonText: {
         color: 'white',
