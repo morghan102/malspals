@@ -40,26 +40,68 @@ function ServiceInfo(props) {
 
     // }
 
-    const [numPets, setNumPets] = useState(0)
     const [names, setNames] = useState([])
-    const [data, setData] = useState([])
-    const [species, setSpecies] = useState('')
-    const [sizes, setSizes] = useState([])
-    // const [specialNeeds, setSpecialNeeds] = useState('')
-    const [breeds, setBreeds] = useState([])
+    const [pets, setPets] = useState([])
     const [selectedService, setSelectedService] = useState('')
+
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
+
+    const [error, setError] = useState(null)
+    
     const [showCalendar, setShowCalendar] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
     const [services, setServices] = useState([])
+    const [selectedPets, setSelectedPets] = useState([])
+    const [selectedPetsNames, setSelectedPetsNames] = useState([])
 
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [editing, setEditing] = useState(false)
 
-
+    const petRef = firebase.firestore().collection('pets')
+    const userRef = firebase.firestore().collection('users')
+    const userID = props.screenProps.user.id
+    const user = props.screenProps.user
     const servicesRef = firebase.firestore().collection('services')
+
+    useEffect(() => {
+        petRef
+            .where("authorID", "==", userID)
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(
+                querySnapshot => {
+                    const newPets = [];
+                    querySnapshot.forEach(doc => {
+                        const pet = doc.data()
+                        pet.id = doc.id
+                        newPets.push(pet)
+                    });
+                    setPets(newPets)
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+    }, [])
+
+    useEffect(() => {
+        servicesRef
+            .onSnapshot(querySnapshot => {
+                const services = [];
+                querySnapshot.forEach(documentSnapshot => {
+                    services.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
+                });
+                setServices(services);
+                setLoading(false);
+            });
+
+        // Unsubscribe from events when no longer in use
+        // return () => subscriber();
+    }, []);
 
 
     //for the alert popup
@@ -76,23 +118,46 @@ function ServiceInfo(props) {
     }
 
     function handleRequest() {
-        console.log(JSON.stringify(names)); //it wont be state...
-        this.toggleModal();
-        this.resetmodal();
+        // console.log(JSON.stringify(names)); //it wont be state...
+        toggleModal();
+        // console.log(selectedPets)
+        // console.log("-------------")
+        // console.log(selectedPetsNames)
+        // console.log("-------------")
+
+        // console.log(selectedService)
+        // console.log("-------------")
+
+        // console.log(error)
+
+        resetmodal();
         // this.sendMessage(this.state);//need to make a data object
     }
 
     function resetmodal() {
-        setNumPets(0); //fetch all this info from firebase for the current user
-        setNames([]);
-        setBreeds([]);
-        setSizes([]);
+        // setNumPets(0); //fetch all this info from firebase for the current user
+        // setNames([]);
+        // setBreeds([]);
+        // setSizes([]);
+        // setPets(pets);
+        console.log(setSelectedPets([]));
+        setSelectedPetsNames([]);
         setSelectedService("");
         setStartDate(null)
         setEndDate(null);
         setShowCalendar(false);
         setShowModal(false);
         setShowAlert(false);
+        // console.log("reset")
+        // console.log(selectedPets)
+        // console.log("-------------")
+        // console.log(selectedPetsNames)
+        // console.log("-------------")
+
+        // console.log(selectedService)
+        // console.log("-------------")
+
+        // console.log(error)
     }
 
     function onDateChange(date, type) {
@@ -136,7 +201,7 @@ function ServiceInfo(props) {
         }
     }
 
-
+    // in functional comp? change
     async function sendMessage(props) {
         const isAvailable = await SMS.isAvailableAsync(); // returns promise of t/f
         if (isAvailable) {
@@ -229,28 +294,6 @@ function ServiceInfo(props) {
         );
     }
 
-    useEffect(() => {
-        // const subscriber = firestore()
-        //     .collection('services')
-        servicesRef
-            .onSnapshot(querySnapshot => {
-                const services = [];
-
-                querySnapshot.forEach(documentSnapshot => {
-                    services.push({
-                        ...documentSnapshot.data(),
-                        key: documentSnapshot.id,
-                    });
-                });
-
-                setServices(services);
-                setLoading(false);
-            });
-
-        // Unsubscribe from events when no longer in use
-        return () => subscriber();
-    }, []);
-
 
     // these 2 below need to be updated for firebase and functional comp
     // if (this.props.services.isLoading) { //below is followiung firebase suggestion
@@ -274,16 +317,6 @@ function ServiceInfo(props) {
     //         </ScrollView>
     //     );
     // }
-
-
-    const numbers = [
-        { key: 1, label: "1" },
-        { key: 2, label: "2" },
-        { key: 3, label: "3" },
-        { key: 4, label: "4" },
-        { key: 5, label: "5" },
-        { key: 6, label: "6" },
-    ];
 
     return (
         <ScrollView>
@@ -329,7 +362,7 @@ function ServiceInfo(props) {
                 <FlatList
                     data={services}
                     renderItem={RenderService}
-                    // keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item.id.toString()}
                 />
             </Card>
 
@@ -343,19 +376,21 @@ function ServiceInfo(props) {
                     <View style={styles.modal}>
                         <Text style={styles.modalHeader}>Service Request</Text>
                     </View>
+
+
                     <View style={styles.modalRow}>
-                        <Text style={styles.modalLabel}>Number of Pets</Text>
+                        <Text style={styles.modalLabel}>Which Pets?</Text>
                         <ModalSelector
                             style={styles.modalItem}
-                            data={numbers}
-                            onChange={itemValue => {
-                                setNumPets(itemValue.label)
-                                // setState({ numPets: itemValue.label }); 
-                                // (<PetInfo /> * itemValue.key)
-
+                            data={pets}
+                            keyExtractor={item => item.id}
+                            labelExtractor={item => item.name}
+                            onChange={pet => {
+                                setSelectedPets(arr => [...arr, pet])
+                                setSelectedPetsNames(arr => [...arr, pet.name])
                             }}
                             cancelButtonAccessibilityLabel={'Cancel Button'}
-                            initValue="How many pets?"
+                            initValue="Who do you need care for?"
                             supportedOrientations={['landscape']}
                             accessible={true}
                             scrollViewAccessibilityLabel={'Scrollable options'}
@@ -364,17 +399,21 @@ function ServiceInfo(props) {
                                 style={{ paddingTop: 10, height: 30 }}
                                 editable={false}
                                 placeholder="Select"
-                                value={numPets}
+                            // value={numPets}
                             />
                         </ModalSelector>
                     </View>
-
+                    <View style={styles.modalRow}>
+                        <Text>{selectedPetsNames.join(", ")}</Text>
+                    </View>
 
                     <View style={styles.modalRow}>
                         <Text style={styles.modalLabel}>Service</Text>
                         <ModalSelector
                             style={styles.modalItem}
                             data={services}
+                            keyExtractor={item => item.id}
+                            labelExtractor={item => item.name}
                             onChange={itemValue => setSelectedService(itemValue.name)}
                             cancelButtonAccessibilityLabel={'Cancel Button'}
                             initValue="Which service?"
@@ -383,50 +422,16 @@ function ServiceInfo(props) {
                             scrollViewAccessibilityLabel={'Scrollable options'}
                         >
                             <TextInput
-                                style={{ paddingTop: 10, height: 30 }}
+                                style={{ paddingTop: 10, height: 30, color: 'black' }}
                                 editable={false}
                                 placeholder="Select"
-                                value={selectedService} />
+                                value={selectedService} 
+                                multiline={true}
+                                placeholderTextColor='#a8a8a8'
+                                />
                         </ModalSelector>
 
                     </View>
-
-
-                    <View style={styles.modalRow}>
-                        <Text style={styles.modalLabel}>Pet Name</Text>
-                        <TextInput
-                            onChangeText={itemValue => setNames(itemValue.split(", "))}
-                            value={names}
-                            supportedOrientations={['landscape']}
-                            placeholder="Enter"
-                            keyboardType="default"
-                            style={styles.modalItem}
-                        />
-                    </View>
-                    <View style={styles.modalRow}>
-                        <Text style={styles.modalLabel}>Pet Breed/Species</Text>
-                        <TextInput
-                            onChangeText={itemValue => setBreeds(itemValue.split(", ") )}
-                            value={breeds}
-                            supportedOrientations={['landscape']}
-                            placeholder="Enter"
-                            keyboardType="default"
-                            style={styles.modalItem}
-                        />
-                    </View>
-                    <View style={styles.modalRowWFoot}>
-                        <Text style={styles.modalLabel}>Pet Size</Text>
-                        <TextInput
-                            onChangeText={itemValue => setSizes(itemValue.split(", "))}
-                            value={sizes}
-                            supportedOrientations={['landscape']}
-                            placeholder="Enter"
-                            keyboardType="default"
-                            style={styles.modalItem}
-                        />
-                    </View>
-                    <Text style={styles.footerLabel}>If multiple, please seperate with a comma</Text>
-
 
                     <View style={styles.modalRow}>
                         <Text style={styles.modalLabel}>Date(s)</Text>
@@ -452,28 +457,28 @@ function ServiceInfo(props) {
                             onDateChange={onDateChange}
                         />
                     )}
-                    {/* {!!this.state.error && ( //change
-                        <Text style={{ color: "red", marginLeft: 20, marginBottom: 10 }}>{this.state.error}</Text>
-                    )} */}
+                    {!!error && ( //change
+                        <Text style={{ color: "red", marginLeft: 20, marginBottom: 10 }}>{error}</Text>
+                    )}
 
 
 
-                    <View>
+                    <View style={{marginTop: 20}}>
                         <Button
                             onPress={() => {
-                                if (numPets === 0 || names === "" || breeds === "" || sizes === "" || selectedService === "" || startDate === null) {
-                                    setState(() => ({ error: "Please complete form." }));//change
+                                if (selectedPets === [] || selectedService === "" || startDate === null) {
+                                    setError("Please complete form.");
+                                    Alert.alert("", "Please complete form.")
                                 } else {
-                                    setState(() => ({ error: null }));//change
+                                    setError(null);
                                     handleRequest();
-
                                 }
                             }}
                             title='Compose request message'
                             color='#B980D4'
                             accessibilityLabel='Tap me'
                         />
-                        <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message. {"\n"}If your pet has special requirements, please send as seperate message.</Text>
+                        <Text style={styles.footerMessage}>Click will take you to your messaging app. {"\n"}Please do not alter message.</Text>
                     </View>
 
                 </ScrollView>
@@ -506,7 +511,7 @@ const styles = StyleSheet.create({
     },
     modal: {
         justifyContent: 'center',
-        marginTop: 10
+        marginTop: 50
     },
     modalHeader: {
         fontSize: 20,
@@ -514,14 +519,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         borderBottomWidth: 1.5,
-        marginBottom: 8,
+        marginBottom: 20,
     },
     modalRow: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
         flexDirection: 'row',
-        margin: 20,
+        margin: 30,
         marginBottom: 3
     },
     modalRowWFoot: {
@@ -555,3 +560,40 @@ const styles = StyleSheet.create({
 })
 export default ServiceInfo;
 // export default connect(mapStateToProps)(ServiceInfo);
+
+
+
+// <View style={styles.modalRow}>
+// <Text style={styles.modalLabel}>Pet Name</Text>
+// <TextInput
+//     onChangeText={itemValue => setNames(itemValue.split(", "))}
+//     value={names}
+//     supportedOrientations={['landscape']}
+//     placeholder="Enter"
+//     keyboardType="default"
+//     style={styles.modalItem}
+// />
+// </View>
+// <View style={styles.modalRow}>
+// <Text style={styles.modalLabel}>Pet Breed/Species</Text>
+// <TextInput
+//     onChangeText={itemValue => setBreeds(itemValue.split(", "))}
+//     value={breeds}
+//     supportedOrientations={['landscape']}
+//     placeholder="Enter"
+//     keyboardType="default"
+//     style={styles.modalItem}
+// />
+// </View>
+// <View style={styles.modalRowWFoot}>
+// <Text style={styles.modalLabel}>Pet Size</Text>
+// <TextInput
+//     onChangeText={itemValue => setSizes(itemValue.split(", "))}
+//     value={sizes}
+//     supportedOrientations={['landscape']}
+//     placeholder="Enter"
+//     keyboardType="default"
+//     style={styles.modalItem}
+// />
+// </View>
+// <Text style={styles.footerLabel}>If multiple, please seperate with a comma</Text>
