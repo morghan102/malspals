@@ -131,7 +131,7 @@ function ServiceInfo(props) {
         // console.log(error)
 
         resetmodal();
-        // this.sendMessage(this.state);//need to make a data object
+        sendMessage();//need to make a data object
     }
 
     function resetmodal() {
@@ -140,7 +140,7 @@ function ServiceInfo(props) {
         // setBreeds([]);
         // setSizes([]);
         // setPets(pets);
-        console.log(setSelectedPets([]));
+        setSelectedPets([]);
         setSelectedPetsNames([]);
         setSelectedService("");
         setStartDate(null)
@@ -201,18 +201,18 @@ function ServiceInfo(props) {
         }
     }
 
-    // in functional comp? change
-    async function sendMessage(props) {
+    async function sendMessage() {
         const isAvailable = await SMS.isAvailableAsync(); // returns promise of t/f
         if (isAvailable) {
-            const { result } = await SMS.sendSMSAsync( // returns promise of "sent", "canceled", or "unknown"
+            const { result } = await SMS.sendSMSAsync( // returns promise of "sent", "canceled", or "unknown"There is ${props.numPets} pets: ${props.names}, ${props.breeds}, weighing ${props.sizes}.`
                 "5094949647", //array of strings of recipients 
-                `MP app: I am requesting a ${props.selectedService} on ${props.startDate} ${props.endDate != null ? ("to " + props.endDate) : ""}. There is ${props.numPets} pets: ${props.names}, ${props.breeds}, weighing ${props.sizes}.`
+                `MP app: I am requesting a ${selectedService} on ${startDate} ${endDate != null ? ("to " + endDate) : ""}.`
+                
             );
 
             if (result != null && result === "sent") {
                 console.log("message went through");
-                this.presentLocalNotification(props.startDate, props.selectedService);
+                this.presentLocalNotification(startDate, selectedService);
             } else if (Platform.OS === 'android') {
                 console.log("Note: Device OS is android, message status unknown due to Expo SMS & Android interaction");
             } else {
