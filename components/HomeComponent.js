@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, Dimensions, Button, Linking, Share, TouchableOpacity } from 'react-native';
 // ImageBackground it DID NOT LIKE ithis one
 import { Tile, Icon, Rating } from 'react-native-elements';
@@ -17,26 +17,34 @@ import ViewMoreText from 'react-native-view-more-text';
 // not sure ill use loading comp here.
 // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3925 referhere for how to connect the loading comp
 
-const mapStateToProps = state => {
-    return {
-        services: state.services,
-        reviews: state.reviews,
-        clientImages: state.clientImages
-    };
-};
+// const mapStateToProps = state => {
+//     return {
+//         services: state.services,
+//         reviews: state.reviews,
+//         clientImages: state.clientImages
+//     };
+// };
+
+Home['navigationOptions'] = screenProps => ({
+    title: 'Home'
+}) //not sure I need this at all
 
 
 
-class Home extends Component {
-    state = {
-        activeSections: [],
-        extraData: this.props.extraData
-    };
+// class Home extends Component {
+function Home(props) {
+    // state = {
+    //     activeSections: [],extraData
+    //     extraData: this.props.
+    // };
+    const [images, setimages] = useState([
+        require('./images/maxStanding.jpeg'),
+        // require('./images/mika.jpeg'),
+        // require('./assets/image3.png'),
+        // require('./assets/image4.png'),
+        // require('./assets/image5.png')
+    ]);
 
-
-    static navigationOptions = {
-        title: 'Home'
-    }
 
     // eveything for the accordan
 
@@ -86,164 +94,191 @@ class Home extends Component {
     //     })
     // }
 
-    render() {
-        const { navigate } = this.props.navigation;
+    const { navigate } = props.navigation;
 
-        function HeroImage() {
-            return (
+    function HeroImage() {
+        return (
 
-                <View style={styles.heroContStyle}>
-                    <Tile
-                        imageSrc={require('./images/malWFlag.jpg')}
-                        title="What can Mal do for you?"
-                        featured
-                        onPress={() => navigate('ServiceInfo')}
-                        titleStyle={{ marginBottom: 100 }}
-                    />
+            <View style={styles.heroContStyle}>
+                <Tile
+                    imageSrc={require('./images/malWFlag.jpg')}
+                    title="What can Mal do for you?"
+                    featured
+                    onPress={() => navigate('ServiceInfo')}
+                    titleStyle={{ marginBottom: 100 }}
+                />
+            </View>
+        );
+    }
+
+    //!!!!!!!!!!!!!!!!! put all this info in firestore.collection.homepage or something
+
+    function RenderExperience() {
+        return (
+            <View>
+                <View style={styles.headerStyle}>
+                    <Text style={styles.textStyle}>My Experience</Text>
                 </View>
-            );
-        }
-
-        //!!!!!!!!!!!!!!!!! put all this info in firestore.collection.homepage or something
-
-        function RenderExperience() {
-            return (
                 <View>
-                    <View style={styles.headerStyle}>
-                        <Text style={styles.textStyle}>My Experience</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.smallText}>
-                            {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-                        </Text>
-                    </View>
+                    <Text style={styles.smallText}>
+                        {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+                    </Text>
                 </View>
-            );
-        }
+            </View>
+        );
+    }
 
 
-        function RenderBio() {
-            //i may want to put this on the server instead of right here
-            return (
+    function RenderBio() {
+        //i may want to put this on the server instead of right here
+        return (
+            <View>
+                <View style={styles.headerStyle}>
+                    <Text style={styles.textStyle}>About Me</Text>
+                </View>
                 <View>
-                    <View style={styles.headerStyle}>
-                        <Text style={styles.textStyle}>About Me</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.smallText}>
-                            {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-                        </Text>
-                    </View>
+                    <Text style={styles.smallText}>
+                        {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+                    </Text>
                 </View>
-            );
-        }
+            </View>
+        );
+    }
 
-        // function ReviewButtons() {
-        //     return (
-        //         <View>
-        //             <Text style={styles.moreReviews}>See more reviews:</Text>
-        //             <View style={styles.reviewButtons}>
-        //                 <Button
-        //                     title="    Wag    "
-        //                     onPress={() => Linking.openURL('https://wagwalking.com/walker-profile/MALLORY48314')}
-        //                     color='#28B78C'
-        //                     style={{ width: '200' }}
-        //                 />
-        //                 <Button
-        //                     title="   Rover   "
-        //                     onPress={() => Linking.openURL('https://www.rover.com/members/mallory-m-love-animals-lots-of-experience/?utm_medium=direct&utm_campaign=977262825&utm_content=ssp&utm_source=sit-link&utm_term=7811029')}
-        //                     color='#00BD70'
-        //                 />
-        //             </View>
-        //         </View>
+    // function ReviewButtons() {
+    //     return (
+    //         <View>
+    //             <Text style={styles.moreReviews}>See more reviews:</Text>
+    //             <View style={styles.reviewButtons}>
+    //                 <Button
+    //                     title="    Wag    "
+    //                     onPress={() => Linking.openURL('https://wagwalking.com/walker-profile/MALLORY48314')}
+    //                     color='#28B78C'
+    //                     style={{ width: '200' }}
+    //                 />
+    //                 <Button
+    //                     title="   Rover   "
+    //                     onPress={() => Linking.openURL('https://www.rover.com/members/mallory-m-love-animals-lots-of-experience/?utm_medium=direct&utm_campaign=977262825&utm_content=ssp&utm_source=sit-link&utm_term=7811029')}
+    //                     color='#00BD70'
+    //                 />
+    //             </View>
+    //         </View>
 
-        //     );
-        // }
+    //     );
+    // }
 
-        function RenderReviews({ comments }) {
+    function RenderReviews({ comments }) {
 
-            const reviewItem = ({ item }) => {
-                return (
-                    <View style={styles.smallText}>
-                        <ViewMoreText
-                            numberOfLines={3}
-                            renderViewMore={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View more</Text>) })}
-                            renderViewLess={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View less</Text>) })}
-                        >
-                            <Text stmayle={{ fontSize: 14.5 }}>{item.text}{"\n"}</Text>
-                            {/* <Rating
+        const reviewItem = ({ item }) => {
+            return (
+                <View style={styles.smallText}>
+                    <ViewMoreText
+                        numberOfLines={3}
+                        renderViewMore={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View more</Text>) })}
+                        renderViewLess={(onPress => { return (<Text style={{ color: 'blue' }} onPress={onPress}>View less</Text>) })}
+                    >
+                        <Text stmayle={{ fontSize: 14.5 }}>{item.text}{"\n"}</Text>
+                        {/* <Rating
                                 style={{ alignItems: 'flex-start', paddingVertical: '5%' }}
                                 startingValue={item.rating}
                                 imageSize={10}
                                 readonly
                             /> */}
-                            <Text style={{ fontSize: 13 }}>{`-- ${item.author}, ${item.date}`}</Text>
-                        </ViewMoreText>
-                    </View>
-                );
-            };
-
-            return (
-                <View>
-                    <FlatList
-                        ListHeaderComponent={ListHeader("rvws")}
-                        data={comments}
-                        renderItem={reviewItem}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                    <Text style={styles.smallText}>{`More reviews avaiable upon request.`}</Text>
+                        <Text style={{ fontSize: 13 }}>{`-- ${item.author}, ${item.date}`}</Text>
+                    </ViewMoreText>
                 </View>
             );
-
-            // leftAvatar={{ source: require('./images/arabica.jpg') }}
-            // i can change the image source to be the server. refer to instructions
-            // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3923
-            // />
-
-        };
-
-        const ListHeader = (src) => {
-            if (src === "rvws") {
-                return (
-                    <View style={styles.headerStyle}>
-                        <Text style={styles.textStyle}>Rave Reviews</Text>
-                    </View>
-                );
-            } else if (src === "pics") {
-                return (
-                    <View style={styles.headerStyle}>
-                        <Text style={styles.textStyle}>See who Mal's been watching lately</Text>
-                    </View>
-                );
-
-            }
-        };
-
-        const renderClientImages = ({ item }) => {
-            return (
-                <Tile
-                    title={item.name}
-                    imageSrc={{ uri: baseUrl + item.image }}
-                    featured
-                    activeOpacity={1}
-                />
-            );
-        };
-
-        const shareMal = () => {
-            Share.share({
-                title: 'MalsPals, the professional petcare service',
-                message: `Check out who's been watching my furry friends lately!`,
-                url: 'https://linktr.ee/malspals'
-            });
         };
 
         return (
-            <ScrollView>
-                <HeroImage />
-                <View>
-                    {/* {console.log(this.props.extraData)} */}
-                    {/* <Accordion
+            <View>
+                <FlatList
+                    ListHeaderComponent={ListHeader("rvws")}
+                    data={comments}
+                    renderItem={reviewItem}
+                    keyExtractor={item => item.id.toString()}
+                />
+                <Text style={styles.smallText}>{`More reviews avaiable upon request.`}</Text>
+            </View>
+        );
+
+        // leftAvatar={{ source: require('./images/arabica.jpg') }}
+        // i can change the image source to be the server. refer to instructions
+        // https://learn.nucamp.co/mod/book/view.php?id=3408&chapterid=3923
+        // />
+
+    };
+
+    const ListHeader = (src) => {
+        if (src === "rvws") {
+            return (
+                <View style={styles.headerStyle}>
+                    <Text style={styles.textStyle}>Rave Reviews</Text>
+                </View>
+            );
+        } else if (src === "pics") {
+            return (
+                <View style={styles.headerStyle}>
+                    <Text style={styles.textStyle}>See Mal's Pets</Text>
+                </View>
+            );
+
+        }
+    };
+
+    const RenderClientImages = ({ item }) => {
+        return (
+            <View>
+                <Tile
+                    title={'Max'}
+                    // imageSrc={item}//not wure what to put here
+                    imageSrc={require('./images/maxStanding.jpeg')}
+                    // imageSrc={{ data: baseUrl + item.image }}
+                    featured
+                    activeOpacity={1}
+                />
+                <Tile
+                    title={'Mika'}
+                    // imageSrc={item}//not wure what to put here
+                    imageSrc={require('./images/mika.jpeg')}
+                    // imageSrc={{ data: baseUrl + item.image }}
+                    featured
+                    activeOpacity={1}
+                />
+                <Tile
+                    title={'Marlowe'}
+                    // imageSrc={item}//not wure what to put here
+                    imageSrc={require('./images/maxStanding.jpeg')}
+                    // imageSrc={{ data: baseUrl + item.image }}
+                    featured
+                    activeOpacity={1}
+                />
+                <Tile
+                    title={'Malcolm'}
+                    // imageSrc={item}//not wure what to put here
+                    imageSrc={require('./images/maxStanding.jpeg')}
+                    // imageSrc={{ data: baseUrl + item.image }}
+                    featured
+                    activeOpacity={1}
+                />
+            </View>
+        );
+    };
+
+    const shareMal = () => {
+        Share.share({
+            title: 'MalsPals, the professional petcare service',
+            message: `Check out who's been watching my furry friends lately!`,
+            url: 'https://linktr.ee/malspals'
+        });
+    };
+
+    return (
+        <ScrollView>
+            <HeroImage />
+            <View>
+                {/* {console.log(this.props.extraData)} */}
+                {/* <Accordion
                         sections={this.props.reviews.reviews}
                         activeSections={this.state.activeSections}
                         renderSectionTitle={this.renderSectionTitle}
@@ -253,11 +288,11 @@ class Home extends Component {
                         underlayColor='white'
                         renderAsFlatList='true'
                     /> */}
-                    {/* {ListHeader("rvws")} */}
-                    <RenderExperience />
-                    <RenderBio />
-                    <RenderReviews comments={this.props.reviews.reviews.slice(0, 3)} />
-                    {/* <FlatList
+                <RenderExperience />
+                <RenderBio />
+                {ListHeader("pics")}
+                {/* <RenderReviews comments={this.props.reviews.reviews.slice(0, 3)} /> mal doesnt want this*/}
+                {/* <FlatList
                         ListHeaderComponent={ListHeader("rvws")}
                         data={this.props.reviews.reviews}
                         renderItem={renderReviews}
@@ -266,26 +301,26 @@ class Home extends Component {
                         // onEndReached & onEndReachedThreshold
                         keyExtractor={item => item.id.toString()}
                     /> */}
-                    {/* <ReviewButtons /> */}
-                </View>
+                {/* <ReviewButtons /> */}
+            </View>
 
-                <FlatList
-                    //mal wants to get rid of this but i'm going to leave this bc maybe the pics can be used in another way and i want it here for inspo
-                    ListHeaderComponent={ListHeader("pics")}
-                    data={this.props.clientImages.clientImages}
-                    renderItem={renderClientImages}
-                    initialNumToRender={3}
-                    // ItemSeparatorComponent={"highlighted"}
-                    keyExtractor={item => item.id.toString()}
-                />
-                <View style={styles.shareBox}>
-                    <TouchableOpacity
-                        onPress={() => shareMal()}
-                        style={styles.shareBtn}
-                    >
-                        <Text style={styles.shareText}>Share Mal and get a free walk!</Text>
-                        {/* <View style={styles.shareIcons}> */}
-                        {/* <Icon
+            {/* <FlatList
+                ListHeaderComponent={ListHeader("pics")}
+                data={images}//i want to import from assets folder
+                renderItem={renderClientImages}
+                initialNumToRender={3}
+                // ItemSeparatorComponent={"highlighted"}
+                keyExtractor={item => item.id.toString()}
+            /> */}
+            <RenderClientImages />
+            <View style={styles.shareBox}>
+                <TouchableOpacity
+                    onPress={() => shareMal()}
+                    style={styles.shareBtn}
+                >
+                    <Text style={styles.shareText}>Share Mal and get a free walk!</Text>
+                    {/* <View style={styles.shareIcons}> */}
+                    {/* <Icon
                             name={'share'}
                             type='font-awesome'
                             color='#A4C936'
@@ -293,8 +328,8 @@ class Home extends Component {
                             reverse
                             onPress={() => shareMal()}
                         /> */}
-                        {/* email useable elsewhere?? */}
-                        {/* <Button
+                    {/* email useable elsewhere?? */}
+                    {/* <Button
                             title="Send Email"
                             buttonStyle={{ backgroundColor: '#A4C936', margin: 40 }}
                             icon={<Icon
@@ -305,12 +340,11 @@ class Home extends Component {
                             />}
                             onPress={() => this.sendMail()}
                         /> */}
-                        {/* </View> */}
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        )
-    };
+                    {/* </View> */}
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
+    )
 }
 
 const {
@@ -409,4 +443,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(Home);
+// export default connect(mapStateToProps)(Home);
+export default Home;
