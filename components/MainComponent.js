@@ -120,8 +120,8 @@ const AppNav = createMaterialTopTabNavigator(
                 tabBarIcon: ({ tintColor }) => (
                     <View>
                         <Icon
-                            size={25}
-                            name='ios-chatboxes'
+                            size={30}
+                            name='ios-add'
                             type='ionicon'
                             color={tintColor}
                         />

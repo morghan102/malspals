@@ -30,13 +30,16 @@ function Signup({ navigation }) {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [address, setAddress] = useState('')
+    const [phone, setPhone] = useState('')
+    const [emergencyNum, setEmergencyNum] = useState('')
+
 
 
     const handleSignUp = () => {
-        if (password !== confirmPassword) {
-            alert("Passwords don't match.")
-            return
-        }
+        // if (password !== confirmPassword) {
+        //     alert("Passwords don't match.")
+        //     return
+        // }
 
         firebase.auth()
             .createUserWithEmailAndPassword(email, password)
@@ -47,7 +50,9 @@ function Signup({ navigation }) {
                     id: uid,
                     email,
                     fullName,
-                    address
+                    address,
+                    emergencyNum,
+                    phone
                 };
                 const usersRef = firebase.firestore().collection('users')
                 usersRef.doc(uid).set(account).then(() => {
@@ -97,6 +102,20 @@ function Signup({ navigation }) {
             />
             <TextInput
                 style={styles.inputBox}
+                value={phone}
+                onChangeText={phone => setPhone(phone)}
+                placeholder='Phone Number'
+                autoCapitalize='none'
+            />
+            {/* <TextInput
+                style={styles.inputBox}
+                value={emergencyNum}
+                onChangeText={num => setEmergencyNum(num)}
+                placeholder='Emergency Number'
+                autoCapitalize='none'
+            /> */}
+            <TextInput
+                style={styles.inputBox}
                 value={email}
                 onChangeText={email => setEmail(email.trim())}
                 placeholder='Email'
@@ -109,13 +128,13 @@ function Signup({ navigation }) {
                 placeholder='Password'
                 secureTextEntry={true}
             />
-            <TextInput
+            {/* <TextInput
                 style={styles.inputBox}
                 value={confirmPassword}
                 onChangeText={password => setConfirmPassword(password)}
                 placeholder='Confirm Password'
                 secureTextEntry={true}
-            />
+            /> */}
             <TouchableOpacity style={styles.buttonAccept} onPress={() => handleSignUp()}>
                 <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>

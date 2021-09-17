@@ -90,13 +90,17 @@ export default function UserAccount(props) {
                     sendText={text => onAddButtonPress(text)}
                 /> */}
                 <View style={styles.listContainer}>
-                    {pets && (
+                    {pets.length >= 1 ? (
+                        // {pets && (
                         <FlatList
                             data={pets}
                             renderItem={renderPet}
                             keyExtractor={(item) => item.id}
                             removeClippedSubviews={true}
                         />
+                        // )}
+                    ) : (
+                        <Text style={styles.addNewPet}>Add a new pet in the next tab!</Text>
                     )}
                 </View>
 
@@ -144,30 +148,30 @@ export default function UserAccount(props) {
 
     const onAddButtonPress = () => {
         if (petName && petName.length > 0) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
-        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        const data = {
-            name: petName,
-            species: petSpecies,
-            size: petSize,
-            breed: petBreed,
-            specialNeeds: specialNeeds,
-            authorID: userID,
-            createdAt: timestamp,
-        };
-        petRef
-            // .doc(name)//to update i need the id's of the pet im referencing or to set the id as the name but petName does nothing
-            .add(data)
-            .then(_doc => {
-                setPetName('')
-                setPetSize('')
-                setPetSpecies('')
-                setSpecialNeeds('')
-                setPetBreed('')
-                Keyboard.dismiss()
-            })
-            .catch((error) => {
-                alert(error)
-            });
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            const data = {
+                name: petName,
+                species: petSpecies,
+                size: petSize,
+                breed: petBreed,
+                specialNeeds: specialNeeds,
+                authorID: userID,
+                createdAt: timestamp,
+            };
+            petRef
+                // .doc(name)//to update i need the id's of the pet im referencing or to set the id as the name but petName does nothing
+                .add(data)
+                .then(_doc => {
+                    setPetName('')
+                    setPetSize('')
+                    setPetSpecies('')
+                    setSpecialNeeds('')
+                    setPetBreed('')
+                    Keyboard.dismiss()
+                })
+                .catch((error) => {
+                    alert(error)
+                });
         }
     }
 
@@ -241,7 +245,7 @@ export default function UserAccount(props) {
                         text={item.fullName}
                         sendText={(txt) => setFullName(txt)}
                     />*/}
-                </View> 
+                </View>
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {item.email}
@@ -261,11 +265,12 @@ export default function UserAccount(props) {
                         {"Phone: " + item.phone}
                     </Text>
                 </View>
-                <View style={styles.infoContainer}>
+                {/* add this back later once I figure out how to fit it on the register screen */}
+                {/* <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
                         {"Emergency Contact: " + item.emergencyNum}
                     </Text>
-                </View>
+                </View> */}
             </View>
         )
     }
@@ -382,24 +387,24 @@ export default function UserAccount(props) {
                 <Text style={styles.headerText}>Hello, {user.fullName}!</Text>
             </View>
             {/* {!editing ? ( */}
-                <View>
-                    <RenderPetsList />
-                    {/* <RenderPastServices /> */}
-                    <RenderPersonalInfoList />
+            <View>
+                <RenderPetsList />
+                {/* <RenderPastServices /> */}
+                <RenderPersonalInfoList />
 
-                    {/* <View style={{ alignItems: 'center', margin: 20 }}>
+                {/* <View style={{ alignItems: 'center', margin: 20 }}>
                         <TouchableOpacity style={styles.button} onPress={() => setEditing(!editing)}>
                             <Text style={styles.buttonText}>Edit info</Text>
                         </TouchableOpacity>
                     </View> */}
-                </View>
+            </View>
 
 
 
             {/* ) : ( */}
-                <View>
+            <View>
 
-                    {/* <EditableText
+                {/* <EditableText
                         text={fullName}
                         sendText={(txt) => setFullName(txt)} //like onBlur()
 
@@ -408,10 +413,10 @@ export default function UserAccount(props) {
                     // textProps={ }
                     // textInputProps={ }
                     /> */}
-                    {/* {pets.map((text, index) => { */}
-                    <View>
-                        {/* name */}
-                        {/* <TextInput
+                {/* {pets.map((text, index) => { */}
+                <View>
+                    {/* name */}
+                    {/* <TextInput
                                 style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
                                 onChangeText={text => onPetsMap(text, index)}
                                 value={pets[index].name}
@@ -419,45 +424,45 @@ export default function UserAccount(props) {
                                 onFocus={() => setFocusedIndex(index)}
                                 onBlur={() => setFocusedIndex(null)}
                             /> */}
-                        {/* species */}
-                        {/* <TextInput
-                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
-                                onChangeText={text => onPetsMap(text, index)}
-                                value={textArray[index]}
-                                placeholder={`placeholder for ${index}`}
-                                onFocus={() => setFocusedIndex(index)}
-                                onBlur={() => setFocusedIndex(null)}
-                            /> */}
-                        {/* breed */}
-                        {/* <TextInput
-                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
-                                onChangeText={text => onPetsMap(text, index)}
-                                value={textArray[index]}
-                                placeholder={`placeholder for ${index}`}
-                                onFocus={() => setFocusedIndex(index)}
-                                onBlur={() => setFocusedIndex(null)}
-                            /> */}
-                        {/* size */}
-                        {/* <TextInput
-                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
-                                onChangeText={text => onPetsMap(text, index)}
-                                value={textArray[index]}
-                                placeholder={`placeholder for ${index}`}
-                                onFocus={() => setFocusedIndex(index)}
-                                onBlur={() => setFocusedIndex(null)}
-                            /> */}
-                        {/* special needs */}
-                        {/* <TextInput
-                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
-                                onChangeText={text => onPetsMap(text, index)}
-                                value={textArray[index]}
-                                placeholder={`placeholder for ${index}`}
-                                onFocus={() => setFocusedIndex(index)}
-                                onBlur={() => setFocusedIndex(null)}
-                            /> */}
-                    </View>
-                    {/* })} */}
+                    {/* species */}
                     {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                    {/* breed */}
+                    {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                    {/* size */}
+                    {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                    {/* special needs */}
+                    {/* <TextInput
+                                style={{ height: 40, marginVertical: 10, borderColor: handleBorderColor(index), borderWidth: 1 }}
+                                onChangeText={text => onPetsMap(text, index)}
+                                value={textArray[index]}
+                                placeholder={`placeholder for ${index}`}
+                                onFocus={() => setFocusedIndex(index)}
+                                onBlur={() => setFocusedIndex(null)}
+                            /> */}
+                </View>
+                {/* })} */}
+                {/* <TextInput
                         style={styles.input}
                         placeholder='Pet name'
                         placeholderTextColor="#aaaaaa"
@@ -485,7 +490,7 @@ export default function UserAccount(props) {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     /> */}
-                </View>
+            </View>
 
             {/* )} */}
 
@@ -685,7 +690,8 @@ const styles = StyleSheet.create({
     headerText: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 30
+        fontSize: 30,
+        color: 'black'
     },
     infoHeaderContainer: {
         flex: 1,
@@ -698,6 +704,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 7,
         marginLeft: 7
+    },
+    addNewPet: {
+        margin: 30,
+        alignSelf: 'center',
+        color: '#557ABE',
+        fontWeight: 'bold',
+        fontSize: 15
     },
     // smallText: {
     //     marginBottom: 15,
