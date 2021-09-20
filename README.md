@@ -1,7 +1,11 @@
-Overview
-This is a fullstack app for petcare service providers to display their services, communicate with, and book clients. 
-Describe the purpose of the project.
-- Link to a live working demo whenever possible. If you have a live working. Screenshots, videos, or gifs of your work in action. Don’t assume someone will take the time to clone your project to see how it works. Screenshots, videos, and gifs accomplish the same thing right on the page. Seeing that something works and looks good is very enticing.
+#MalsPals
+
+#Overview
+This is a fullstack app for petcare service providers to display their services, communicate with, and book clients, who can request these services in their very own account with their personal details and pets.
+
+This application uses React Native for the front and Firebase on the backend.
+
+
 
 Features:
 - Different appearance depending on if client or provider logs in.
