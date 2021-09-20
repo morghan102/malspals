@@ -6,8 +6,17 @@ This is a fullstack app for petcare service providers to display their services,
 This application uses React Native for the front and Firebase on the backend.
 
 
+Full App after logging in
+https://user-images.githubusercontent.com/48462502/134087116-2bcb5f34-62d7-492f-9bee-e954bd3b69fd.mp4
 
-Features:
+https://user-images.githubusercontent.com/48462502/134085801-9584e90b-0a47-4266-a7a9-e0ca101eab19.mp4
+
+
+Signup Flow
+https://user-images.githubusercontent.com/48462502/134087129-7d697fe0-c526-4e00-9dc0-0c75bac29049.mp4
+
+
+#Features:
 - Different appearance depending on if client or provider logs in.
     For clients: 4 navigation tabs (home, services, chat, & user info).
     For provider: 2 navigation tabs (chat & calendar).
@@ -16,64 +25,18 @@ Range pricing allowing clients to choose how much they pay.
 Chat component allowing users and provider to chat directly.
 Login where users can add pets, care instructions, and personal address.
 
-Setup & Installation
-Install npm, nodejs ...??
-Pull project and install .... <??>
-Give instructions on how to set up and install your project.
-Link to an installer or release if you have one available.
+#Setup & Installation
+download and yarn add or npm install
+Create project on firebase and add your data to the firebase folder with the config info.
 
-
-Usage & Details
-Explain how to use your project.
-Include a design diagram if your application is complex.
-
-
-ChangeLog & Roadmap
-Currently with a working home & services components.
-In future, chat & user components will be implemented, as well as the interface for the provider. There is a lot of work left to do, not the least of which being a functioning backend.
-Lay out your vision for the project’s future. What new features do you want to add? Which bugs do you want to squash
-
+#Future features
+1. Chat component will be implemented - interface for the provider and client to communicate directly on the app. 
+2. 2 different flows for client and admin: client side will show what I have now, what's on the videos. Admin side will be for admin to use the chat component and see who has created an account. This can also be acheived by using firebase but I want it to be available in the app as well.
+3. User screen: will allow editing of personal and pet information as well as adding a thumbnail image of user and/or pet.
+4. ServiceInfoComponent modal: currently resets state after about a minute. I will get this to reset immediately.
+5. Styling: add color to user and add pet components and change the images on the homescreen.
+6. Instagram linkage?: this will depend on if Mal puts more in her business' Instagram, but I'd like to add this to the homepage.
 
 Credits
-Use someone else’s code for any part of your project? Couldn’t function without dependencies? Lean heavily on someone’s guide? Give them credit! Always cite your sources.
-
-
-
-
-
-project for MalsPals
-
-Installed packages include (but aren't limited to):
-- **UNUSED yarn add react-native-collapsible-list ** UNUSED   
-- **UNUSED expo install @react-native-community/datetimepicker
-
-- https://github.com/peacechen/react-native-modal-selector
-- yarn add react-native-calendar-picker & yarn add moment
-- @aws-sdk/client-s3
-- @aws-sdk/client-cognito-identity @aws-sdk/credential-provider-cognito-identity
-<!-- - yarn add lottie-react-native ??? but this doesnt work??? idgi -->
-    - expo install expo-sms
-- yarn add react-native-awesome-alerts https://www.npmjs.com/package/react-native-awesome-alerts
---->>> will need to alter that code a bit for pretty-ing up
------>>> as an alternate idea to the btn, having a popup that displays when the screen 1st focuses on that tab would be cool, couldnt figure it out.
-    https://medium.com/technoetics/creating-first-time-user-welcome-screen-in-react-native-42f08cb0ebbe (async storage want working initially): https://react-native-async-storage.github.io/async-storage/docs/usage : https://stackoverflow.com/questions/47954666/the-bind-value-at-index-1-is-null-getting-data-from-from-asyncstorage-in-react : https://blog.jscrambler.com/how-to-use-react-native-asyncstorage/ : 
-    https://reactjs.org/docs/react-component.html#componentdidmount
-    https://stackoverflow.com/questions/56808330/componentdidmount-working-only-at-first-time-screen-load-in-react-native
-    https://reactnavigation.org/docs/4.x/function-after-focusing-screen/
-
-
-
-Components:
-
-TODO:
-1. Complete components + linkage
-2. Instagram on homepage
-3. add alt text to images
-4. C         fix homepage hero - reviews header malfunction
-5. more images
-6. fix comments
-7. error & loading messages
-8. make reviews on homepage collapsible
-9. Add share capabilities & email contact
-10. Cancel btn for service request
-11. add login page that appears on app startup
+This app could not have been done without the inspiration of my sister who is running her own petcare business in Raleigh, NC. She is doing a great job and her clients love her.
+As for the app itself, I had so much help and encouragement from friends and family. Huge credits to freecodecamp for some of their react + firebase tutorials.
