@@ -11,6 +11,7 @@ import { Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Loading from './LoadingComponent';
 import { firebase } from '../config/Firebase';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 
 // const mapStateToProps = state => {
@@ -40,7 +41,6 @@ function ServiceInfo(props) {
 
     // }
 
-    const [names, setNames] = useState([])
     const [pets, setPets] = useState([])
     const [selectedService, setSelectedService] = useState('')
 
@@ -103,6 +103,7 @@ function ServiceInfo(props) {
         // return () => subscriber();
     }, []);
 
+    const initialState = {selectedPetsNames: [], selectedPets: [], selectedService: '', startDate: null, endDate: '', showCalendar: false, showModal: false, showAlert: false}
 
     //for the alert popup
     function showAlertFunc() {
@@ -118,46 +119,21 @@ function ServiceInfo(props) {
     }
 
     function handleRequest() {
-        // console.log(JSON.stringify(names)); //it wont be state...
         toggleModal();
-        // console.log(selectedPets)
-        // console.log("-------------")
-        // console.log(selectedPetsNames)
-        // console.log("-------------")
-
-        // console.log(selectedService)
-        // console.log("-------------")
-
-        // console.log(error)
-
         resetmodal();
-        sendMessage();//need to make a data object
+        sendMessage();
     }
 
-    function resetmodal() {
-        // setNumPets(0); //fetch all this info from firebase for the current user
-        // setNames([]);
-        // setBreeds([]);
-        // setSizes([]);
-        // setPets(pets);
+    function resetmodal() {    //resets but it takes a minute
         setSelectedPets([]);
         setSelectedPetsNames([]);
-        setSelectedService("");
+        setSelectedService('');
         setStartDate(null)
         setEndDate(null);
         setShowCalendar(false);
         setShowModal(false);
         setShowAlert(false);
-        // console.log("reset")
-        // console.log(selectedPets)
-        // console.log("-------------")
-        // console.log(selectedPetsNames)
-        // console.log("-------------")
-
-        // console.log(selectedService)
-        // console.log("-------------")
-
-        // console.log(error)
+        setError(null);
     }
 
     function onDateChange(date, type) {
@@ -204,9 +180,10 @@ function ServiceInfo(props) {
     async function sendMessage() {
         const isAvailable = await SMS.isAvailableAsync(); // returns promise of t/f
         if (isAvailable) {
+            console.log(selectedPets)
             const { result } = await SMS.sendSMSAsync( // returns promise of "sent", "canceled", or "unknown"There is ${props.numPets} pets: ${props.names}, ${props.breeds}, weighing ${props.sizes}.`
                 "5094949647", //array of strings of recipients 
-                `MP app: I am requesting a ${selectedService} on ${startDate} ${endDate != null ? ("to " + endDate) : ""}.`
+                `MP app: I am requesting a ${selectedService} on ${startDate} ${endDate != null ? ("to " + endDate) : ""} for ${selectedPetsNames.join(", ")}.`
                 
             );
 
@@ -230,58 +207,6 @@ function ServiceInfo(props) {
 
     }
 
-    //this is not working bc the navigation thing is just for an entire componenet. i need meybs the usefocus effect hook
-    // https://reactnavigation.org/docs/function-after-focusing-screen/
-    // function ToggleAlert(navigation) {
-    //     return (
-    //     React.useEffect(() => {
-    //         const unsub = navigation.addListener('focus', () => {
-    //             Alert.alert("title", "message");
-    //         });
-    //     }, [navigation])
-    //     );
-    // }
-    // function AlertPopup() {
-    //     return (this.props.isFocused ? Alert.alert("hi") : "");
-    // }
-
-    // const { showAlert } = this.state;
-
-    function PricingAlert() {
-        return (
-            <View style={styles.container}>
-
-                <Text>I'm AwesomeAlert</Text>
-                <TouchableOpacity onPress={() => {
-                    showAlertFunc();
-                }}>
-                    <View style={styles.button}>
-                        <Text style={styles.text}>Try me!</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <AwesomeAlert
-                    show={showAlert}
-                    showProgress={false}
-                    title="AwesomeAlert"
-                    message="I have a message for you!"
-                    closeOnTouchOutside={true}
-                    closeOnHardwareBackPress={false}
-                    showCancelButton={true}
-                    showConfirmButton={true}
-                    cancelText="No, cancel"
-                    confirmText="Yes, delete it"
-                    confirmButtonColor="#DD6B55"
-                    onCancelPressed={() => {
-                        hideAlert();
-                    }}
-                    onConfirmPressed={() => {
-                        hideAlert();
-                    }}
-                />
-            </View>
-        );
-    };
 
     const RenderService = ({ item }) => {
         return (
@@ -323,7 +248,9 @@ function ServiceInfo(props) {
             <Button
                 title="Make a Service Request"
                 color='#557ABE'
-                onPress={() => toggleModal()}
+                onPress={() => {
+                    pets.length > 0 ? toggleModal() : Alert.alert("", "Please add a pet first")
+                }}
                 style={styles.button}
             // cancel btn?
             />
@@ -370,7 +297,10 @@ function ServiceInfo(props) {
                 animationType={'slide'}
                 transparent={false}
                 visible={showModal}
-                onRequestClose={() => toggleModal()}
+                onRequestClose={() => {
+                    toggleModal()
+                    resetmodal()
+                }}
             >
                 <ScrollView>
                     <View style={styles.modal}>
@@ -399,7 +329,6 @@ function ServiceInfo(props) {
                                 style={{ paddingTop: 10, height: 30 }}
                                 editable={false}
                                 placeholder="Select"
-                            // value={numPets}
                             />
                         </ModalSelector>
                     </View>

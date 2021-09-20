@@ -41,6 +41,7 @@ export default function AddPet(props) {
         if (petName && petName.length > 0 && petSpecies && petSize && petBreed && specialNeeds) { //i can probably map over the entire thing of entries and check that they're all filled out. or do it some other way
             const timestamp = firebase.firestore.FieldValue.serverTimestamp();
             const data = {
+                id: Math.floor(Math.random() * 1000000),
                 name: petName,
                 species: petSpecies,
                 size: petSize,
